@@ -5,54 +5,54 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebAPI.Models;
 using WebAPI.DB;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class ShipmentController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly ShipdbContext _context;
 
-        public UsersController(UserContext context)
+        public ShipmentController(ShipdbContext context)
         {
             _context = context;
         }
 
-        // GET: api/User
+        // GET: api/Shipment
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUserItems()
+        public async Task<ActionResult<IEnumerable<Shipment>>> GetShipments()
         {
-            return await _context.UserItems.ToListAsync();
+            return await _context.Shipments.ToListAsync();
         }
 
-        // GET: api/User/5
+        // GET: api/Shipment/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(long id)
+        public async Task<ActionResult<Shipment>> GetShipment(int id)
         {
-            var user = await _context.UserItems.FindAsync(id);
+            var shipment = await _context.Shipments.FindAsync(id);
 
-            if (user == null)
+            if (shipment == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return shipment;
         }
 
-        // PUT: api/User/5
+        // PUT: api/Shipment/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(long id, User user)
+        public async Task<IActionResult> PutShipment(int id, Shipment shipment)
         {
-            if (id != user.Id)
+            if (id != shipment.ShipmentId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(shipment).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!ShipmentExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/User
+        // POST: api/Shipment
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Shipment>> PostShipment(Shipment shipment)
         {
-            _context.UserItems.Add(user);
+            _context.Shipments.Add(shipment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetShipment", new { id = shipment.ShipmentId }, shipment);
         }
 
-        // DELETE: api/User/5
+        // DELETE: api/Shipment/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(long id)
+        public async Task<IActionResult> DeleteShipment(int id)
         {
-            var user = await _context.UserItems.FindAsync(id);
-            if (user == null)
+            var shipment = await _context.Shipments.FindAsync(id);
+            if (shipment == null)
             {
                 return NotFound();
             }
 
-            _context.UserItems.Remove(user);
+            _context.Shipments.Remove(shipment);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserExists(long id)
+        private bool ShipmentExists(int id)
         {
-            return _context.UserItems.Any(e => e.Id == id);
+            return _context.Shipments.Any(e => e.ShipmentId == id);
         }
     }
 }

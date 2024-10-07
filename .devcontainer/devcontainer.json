@@ -9,7 +9,8 @@
     },
 	"runArgs": ["--name", "devenv-spa-stack"],
 	"mounts": [
-  		"source=/Users/seanhig/Workspace/spa-stack,target=/host,type=bind,consistency=cached"
+  		"source=${localEnv:HOME}/Workspace/spa-stack,target=/host,type=bind,consistency=cached",
+  		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
 	]
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

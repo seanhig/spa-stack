@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Models;
 
-namespace WebAPI.Models;
+namespace WebAPI.DB;
 
 public class UserContext : DbContext
 {

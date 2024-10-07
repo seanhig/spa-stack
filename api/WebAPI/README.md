@@ -51,3 +51,28 @@ To switch SPA front ends for production builds, change the SPA target to one of 
       <Exec Command="$(ProjectDir)build-web.sh vanilla" />
   </Target>
 ```
+
+```
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+dotnet add package Pomelo.EntityFrameworkCore.MySql
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Oracle.EntityFrameworkCore
+
+dotnet tool install --global dotnet-ef
+
+# reverse engineer the erpdb and shipdb sample tables from the flink-stack
+dotnet ef dbcontext scaffold "Server=host.docker.internal;Database=erpdb;Uid=root;Pwd=Fender2000;" Pomelo.EntityFrameworkCore.MySql \
+--context-dir DB --output-dir Models \
+--context-namespace WebAPI.DB --namespace WebAPI.Models
+
+dotnet ef dbcontext scaffold "Server=host.docker.internal;Database=shipdb;Uid=postgres;Pwd=Fender2000;" Npgsql.EntityFrameworkCore.PostgreSQL \
+--context-dir DB --output-dir Models \
+--context-namespace WebAPI.DB --namespace WebAPI.Models
+
+dotnet aspnet-codegenerator controller -name OrderController -async -api -m Order -dc ErpdbContext -outDir Controllers
+dotnet aspnet-codegenerator controller -name ProductController -async -api -m Product -dc ErpdbContext -outDir Controllers
+dotnet aspnet-codegenerator controller -name ShipmentController -async -api -m Shipment -dc ShipdbContext -outDir Controllers
+
+
+```

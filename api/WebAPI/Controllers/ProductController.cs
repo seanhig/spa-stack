@@ -5,54 +5,54 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebAPI.Models;
+using WebAPI;
 using WebAPI.DB;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly ErpdbContext _context;
 
-        public UsersController(UserContext context)
+        public ProductController(ErpdbContext context)
         {
             _context = context;
         }
 
-        // GET: api/User
+        // GET: api/Product
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUserItems()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.UserItems.ToListAsync();
+            return await _context.Products.ToListAsync();
         }
 
-        // GET: api/User/5
+        // GET: api/Product/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(long id)
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var user = await _context.UserItems.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-            if (user == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return product;
         }
 
-        // PUT: api/User/5
+        // PUT: api/Product/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(long id, User user)
+        public async Task<IActionResult> PutProduct(int id, Product product)
         {
-            if (id != user.Id)
+            if (id != product.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(product).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!ProductExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/User
+        // POST: api/Product
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            _context.UserItems.Add(user);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 
-        // DELETE: api/User/5
+        // DELETE: api/Product/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(long id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            var user = await _context.UserItems.FindAsync(id);
-            if (user == null)
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            _context.UserItems.Remove(user);
+            _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserExists(long id)
+        private bool ProductExists(int id)
         {
-            return _context.UserItems.Any(e => e.Id == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

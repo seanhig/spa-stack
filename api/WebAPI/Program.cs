@@ -2,6 +2,7 @@ using log4net;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
+using WebAPI.DB;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +10,11 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
 builder.Services.AddControllers();
+
 builder.Services.AddDbContext<UserContext>(opt =>
     opt.UseInMemoryDatabase("Users"));
+builder.Services.AddDbContext<ErpdbContext>();
+builder.Services.AddDbContext<ShipdbContext>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
