@@ -2,27 +2,30 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+using Microsoft.Extensions.Hosting;
 
 namespace WebAPI.DB;
 
 public partial class ErpdbContext : DbContext
 {
-    public ErpdbContext()
+    public ErpdbContext(IConfiguration configuration)
     {
+        this.config = configuration;
     }
 
-    public ErpdbContext(DbContextOptions<ErpdbContext> options)
+    public ErpdbContext(DbContextOptions<ErpdbContext> options, IConfiguration configuration)
         : base(options)
     {
+        this.config = configuration;
     }
 
+    private readonly IConfiguration config;
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=host.docker.internal;database=erpdb;uid=root;pwd=Fender2000", Microsoft.EntityFrameworkCore.ServerVersion.Parse("11.5.2-mariadb"));
+        => optionsBuilder.UseMySql( config["ErpDBConnectionString"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("11.5.2-mariadb"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
