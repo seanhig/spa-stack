@@ -5,8 +5,8 @@ An evolving scaffold of the latest dotnet core WebAPI + SPA framework
 ## What's Working
 
 - Dev environment proxying to SPA `webserver`, production hosted builds inline.  Changes in 8.0 introduced some regressions with [UseProxyToSpaDevelopmentServer](https://exploding-kitten.com/2024/08-usespa-minimal-api).
-- [NSwag]() and the `/swagger` url.
-- [Entity Framework]()
+- [NSwag](https://github.com/RicoSuter/NSwag) and the `/swagger` url.
+- [EF Core](https://learn.microsoft.com/en-us/ef/core/)
 
 > __Note__: In development SPA engine must be running prior to starting the WebAPI when you are launching the web from the `dotnet run` environment.  However, the reverse is true if you working in the SPA `:4200` environment, which then proxies over to the `webapi:8080/api` and `webapi:8080/swagger` endpoints.
 
