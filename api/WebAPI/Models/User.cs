@@ -1,10 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace WebAPI.Models;
 
-public class User
+public class User : IdentityUser
 {
-    public long Id { get; set; }
-    public string? Name { get; set; }
-    public string? Email { get; set; }
     public string? Provider { get; set; }
     public string? ProviderId { get; set; }
     public bool IsAdmin { get; set; }

@@ -8,9 +8,13 @@ namespace WebAPI.Controllers
     [ApiController]
     public class AboutController : ControllerBase
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(AboutController));
+        private readonly ILogger _log;
 
         private object aboutResponse = new { ApiName = "This is WebAPI!", Version = "v1.0.0" };
+
+        public AboutController(ILogger<AboutController> log) {
+            _log = log;
+        }
 
         [HttpGet]
         public IActionResult Get() {

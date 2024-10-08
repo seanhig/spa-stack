@@ -7,6 +7,8 @@ An evolving scaffold of the latest dotnet core WebAPI + SPA framework
 - Dev environment proxying to SPA `webserver`, production hosted builds inline.  Changes in 8.0 introduced some regressions with [UseProxyToSpaDevelopmentServer](https://exploding-kitten.com/2024/08-usespa-minimal-api).
 - [NSwag](https://github.com/RicoSuter/NSwag) and the `/swagger` url.
 - [EF Core](https://learn.microsoft.com/en-us/ef/core/)
+- [ASP.NET Core Identity](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization?view=aspnetcore-8.0)
+   - With Google External OAuth
 
 > __Note__: In development SPA engine must be running prior to starting the WebAPI when you are launching the web from the `dotnet run` environment.  However, the reverse is true if you working in the SPA `:4200` environment, which then proxies over to the `webapi:8080/api` and `webapi:8080/swagger` endpoints.
 
@@ -74,5 +76,12 @@ dotnet aspnet-codegenerator controller -name OrderController -async -api -m Orde
 dotnet aspnet-codegenerator controller -name ProductController -async -api -m Product -dc ErpdbContext -outDir Controllers
 dotnet aspnet-codegenerator controller -name ShipmentController -async -api -m Shipment -dc ShipdbContext -outDir Controllers
 
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+# Configure Google Client ID
+dotnet user-secrets set "Authentication:Google:ClientId" "<client-id>"
+dotnet user-secrets set "Authentication:Google:ClientSecret" "<client-secret>"
+
+dotnet add package Microsoft.AspNetCore.Authentication.Google
 
 ```
