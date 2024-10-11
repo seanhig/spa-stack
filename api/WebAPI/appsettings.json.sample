@@ -1,0 +1,44 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    },
+    "Console": {
+            "LogLevel": {
+                "Default": "Debug",
+                "Microsoft": "Debug",
+                "Microsoft.Hosting.Lifetime": "Debug"
+            },
+            "FormatterName": "simple",
+            "FormatterOptions": {
+                "SingleLine": true,
+                "IncludeScopes": false,
+                "TimestampFormat": "HH:mm:ss ",
+                "UseUtcTimestamp": true,
+                "JsonWriterOptions": {
+                    "Indented": true
+                }
+            }
+        }
+  },
+  "Kestrel": {
+    "Certificates": {
+      "Default": {
+        "Path": "../../.devcontainer/devcert.pfx",
+        "Password": "mycertpassword"
+      }
+    }
+  },
+  "AllowedHosts": "*",
+  "devServer": "http://localhost:4200",
+  "ConnectionStrings": {
+    "UserDBConnectionString": "server=host.docker.internal;database=spa_stack;uid=root;pwd=Fender2000;",
+    "ErpDBConnectionString": "server=host.docker.internal;database=erpdb;uid=root;pwd=Fender2000;",
+    "ShipDBConnectionString": "Server=host.docker.internal;Database=shipdb;Uid=postgres;Pwd=Fender2000;"
+  },
+  "GoogleClientId": "",
+  "GoogleClientSecret": "",
+  "MicrosoftClientId": "",
+  "MicrosoftClientSecret": ""
+}

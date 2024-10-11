@@ -1,0 +1,106 @@
+<div class="container-fluid" style="padding-right: 25px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="card text-bg-light mb-3 p-0">
+                <div class="card-header">
+                    <h4><span class="bi bi-bag me-1"></span> Place An Order:</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="newOrderForm" (ngSubmit)="submitOrder()" class="container-fluid p-0">
+                        <div class="row mt-2">
+                            <div class="col-5">
+                                <div class="input-group mb-1">
+                                    <label class="input-group-text" for="newOrderProductSelect">Product:</label>
+                                    <select class="form-select" id="newOrderProductSelect"
+                                        formControlName="newOrderProductSelect">
+                                        <option selected>Choose a Product...</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="text-danger text-end pe-3" *ngIf="
+                                    newOrderForm?.get('newOrderProductSelect')?.touched &&
+                                      newOrderForm?.get('newOrderProductSelect')?.invalid
+                                    ">
+                                    <div class="text-danger"
+                                        *ngIf="newOrderForm?.get('newOrderProductSelect')?.errors?.['required']">
+                                        This field is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group mb-1">
+                                    <span class="input-group-text">Quantity:</span>
+                                    <input id="newOrderQuantity" formControlName="newOrderQuantity" type="text"
+                                        class="form-control" aria-label="Amount (to the nearest dollar)">
+                                </div>
+                                <div class="text-danger text-end pe-3" *ngIf="
+                                newOrderForm?.get('newOrderQuantity')?.touched &&
+                                  newOrderForm?.get('newOrderQuantity')?.invalid
+                                ">
+                                    <div
+                                        *ngIf="newOrderForm?.get('newOrderQuantity')?.errors?.['required']">
+                                        This field is required
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-3">
+                                <div class="mb-1">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="newOrderTotalLabel">Order Total:</span>
+                                        <label class="form-control" id="newOrderTotal"
+                                            aria-describedby="newOrderTotalLabel newOrderWarningSublabel"></label>
+                                    </div>
+                                    <div class="form-text" id="newOrderWarningSublabel">Not including tax.</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row align-items-start">
+                            <div class="col-5">
+                                <div class="input-group mt-2">
+                                    <span class="input-group-text">Destination</span>
+                                    <input id="newOrderDestination" formControlName="newOrderDestination" type="text"
+                                        class="form-control" aria-label="The destination for the order delivery">
+                                </div>
+                                <div class="text-danger text-end pe-3" *ngIf="
+                                newOrderForm?.get('newOrderDestination')?.touched &&
+                                  newOrderForm?.get('newOrderDestination')?.invalid
+                                ">
+                                    <div *ngIf="newOrderForm?.get('newOrderDestination')?.errors?.['required']">
+                                        This field is required
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+                                <div class="mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" readonly class="form-control-plaintext" id="newOrderCustomer"
+                                            placeholder="me@somewhere.com" value="me@somewhere.com">
+                                        <label for="newOrderCustomer">Deliver to Customer:</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 text-end mt-2 align-bottom ">
+                                <button type="submit" [disabled]="newOrderForm.invalid"
+                                    class="btn btn-sm btn-success mt-1">Place Order</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row px-3">
+        <h4><span class="bi bi-bag me-1"></span> My Orders</h4>
+    </div>
+    <div class="row px-3">
+        <div class="col-12">
+            <app-orders-table></app-orders-table>
+        </div>
+    </div>
+</div>

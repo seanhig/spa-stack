@@ -1,0 +1,29 @@
+
+.form-group label {
+    color: #888;
+}
+
+.btn-google {
+    color: #545454;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 1px #ddd;
+    font-size: 1em;
+    width: 75%;
+}
+
+.btn-microsoft {
+    color: #545454;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 1px #ddd;
+    font-size: 1em;
+    width: 75%;
+}
+
+.btn-google, 
+.btn-microsoft {
+    width: 85%;
+}
+
+.provider-image {
+    height: 32px;
+}
