@@ -1,30 +1,32 @@
-import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe, NgFor } from '@angular/common';
 import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Order } from '../../../shared/model/order';
-import { OrderService } from '../../../services/order.service';
+import { OrderController } from '../../../controllers/order.controller';
 import { NgbdOrderSortableHeader, SortEvent } from '../../../shared/directives/order.sortable.directive';
 import { FormsModule } from '@angular/forms';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { tableConfig } from '../table.config';
 
 @Component({
   selector: 'app-orders-table',
   standalone: true,
-	imports: [DecimalPipe, DatePipe, FormsModule, AsyncPipe, NgbHighlight, NgbdOrderSortableHeader, NgbPaginationModule],
+	imports: [DecimalPipe, NgFor, DatePipe, FormsModule, AsyncPipe, NgbHighlight, NgbdOrderSortableHeader, NgbPaginationModule],
   templateUrl: './orders-table.component.html',
   styleUrl: './orders-table.component.scss',
-	providers: [OrderService, DecimalPipe, DatePipe]
+	providers: [OrderController, DecimalPipe, DatePipe]
 })
 export class OrdersTableComponent {
 	orders$: Observable<Order[]>;
 	total$: Observable<number>;
+  pageSizes: number[] = tableConfig.pageSizes;
 
 	@ViewChildren(NgbdOrderSortableHeader) headers: QueryList<NgbdOrderSortableHeader> | undefined;
 
-	constructor(public service: OrderService) {
-		this.orders$ = service.orders$;
-		this.total$ = service.total$;
+	constructor(public _controller: OrderController) {
+		this.orders$ = _controller.orders$;
+		this.total$ = _controller.total$;
 	}
 
 	onSort({ column, direction }: SortEvent) {
@@ -35,8 +37,8 @@ export class OrdersTableComponent {
 			}
 		});
 
-		this.service.sortColumn = column;
-		this.service.sortDirection = direction;
+		this._controller.sortColumn = column;
+		this._controller.sortDirection = direction;
 	}
 }
 

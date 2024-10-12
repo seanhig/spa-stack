@@ -9,26 +9,24 @@ import { FormsModule } from '@angular/forms';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { OrdersTableComponent } from '../../shared/orders-table/orders-table.component';
-import { tableConfig } from '../../shared/table.config';
 
 @Component({
-  selector: 'app-orders',
+  selector: 'app-all-orders',
   standalone: true,
 	imports: [OrdersTableComponent, DecimalPipe, DatePipe, FormsModule, AsyncPipe, NgbHighlight, NgbdOrderSortableHeader, NgbPaginationModule],
-  templateUrl: './orders.component.html',
-  styleUrl: './orders.component.scss',
+  templateUrl: './all-orders.component.html',
+  styleUrl: './all-orders.component.scss',
 	providers: [OrderController, DecimalPipe, DatePipe]
 })
 export class AllOrdersComponent {
 	orders$: Observable<Order[]>;
 	total$: Observable<number>;
-	pageSizes: number[] = tableConfig.pageSizes;
 
 	@ViewChildren(NgbdOrderSortableHeader) headers: QueryList<NgbdOrderSortableHeader> | undefined;
 
-	constructor(public _controller: OrderController) {
-		this.orders$ = _controller.orders$;
-		this.total$ = _controller.total$;
+	constructor(public service: OrderController) {
+		this.orders$ = service.orders$;
+		this.total$ = service.total$;
 	}
 
 	onSort({ column, direction }: SortEvent) {
@@ -39,8 +37,8 @@ export class AllOrdersComponent {
 			}
 		});
 
-		this._controller.sortColumn = column;
-		this._controller.sortDirection = direction;
+		this.service.sortColumn = column;
+		this.service.sortDirection = direction;
 	}
 }
 

@@ -13,18 +13,20 @@
                             type="text"
                             class="form-control"
                             name="searchTerm"
-                            [(ngModel)]="service.searchTerm"
+                            [(ngModel)]="_controller.searchTerm"
                         />
                     </div>
-                    @if (service.loading$ | async) {
-                        <span class="col col-form-label">Loading...</span>
+                    <div class="col-1">
+                        <button type="button" (click)="_controller.search()" class="btn btn-sm btn-outline btn-refresh m-0 p-0"><span class="bi bi-arrow-clockwise"></span></button>
+                    </div>            
+                    @if (_controller.loading$ | async) {
+                        <span class="col col-form-label">Refreshing...</span>
                     }
                 </div>
             
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col" sortable="order_id" (sort)="onSort($event)">Order #</th>
                             <th scope="col" sortable="origin" (sort)="onSort($event)">Origin</th>
                             <th scope="col" sortable="destination" (sort)="onSort($event)">Destination</th>
@@ -34,11 +36,10 @@
                     <tbody>
                         @for (shipment of shipments$ | async; track shipment.shipment_id) {
                             <tr>
-                                <th scope="row">{{ shipment.shipment_id }}</th>
-                                <td><ngb-highlight [result]="shipment.order_id | number" [term]="service.searchTerm" /></td>
-                                <td><ngb-highlight [result]="shipment.origin" [term]="service.searchTerm" /></td>
-                                <td><ngb-highlight [result]="shipment.destination" [term]="service.searchTerm" /></td>
-                                <td><ngb-highlight [result]="shipment.is_arrived ? 'true' : 'false'" [term]="service.searchTerm" /></td>
+                                <td><ngb-highlight [result]="shipment.order_id.toString()" [term]="_controller.searchTerm" /></td>
+                                <td><ngb-highlight [result]="shipment.origin" [term]="_controller.searchTerm" /></td>
+                                <td><ngb-highlight [result]="shipment.destination" [term]="_controller.searchTerm" /></td>
+                                <td><ngb-highlight [result]="shipment.is_arrived ? 'true' : 'false'" [term]="_controller.searchTerm" /></td>
                             </tr>
                         } @empty {
                             <tr>
@@ -49,13 +50,11 @@
                 </table>
             
                 <div class="d-flex justify-content-between p-2">
-                    <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="_controller.page" [pageSize]="_controller.pageSize">
                     </ngb-pagination>
             
-                    <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
-                        <option [ngValue]="2">2 items per page</option>
-                        <option [ngValue]="4">4 items per page</option>
-                        <option [ngValue]="6">6 items per page</option>
+                    <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="_controller.pageSize">
+                        <option *ngFor="let pageSize of pageSizes"  [ngValue]="pageSize">{{ pageSize }} items per page</option>
                     </select>
                 </div>
             </form>

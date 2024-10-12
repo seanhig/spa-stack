@@ -2,3 +2,27 @@
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+
+.btn-refresh {
+    max-height: 2.65em;
+    border-radius: 20px;
+    
+}
+
+.btn-refresh .bi {
+    font-weight: bold!important;
+    font-size: 1.5em;
+    padding: .25em;
+    padding-top: .15em;
+    padding-left: .3em;
+    padding-right: .3em;
+    display: inline-block;
+}
+
+.btn-refresh:hover .bi {
+    color: rgb(13, 110, 253);
+}
+
+.btn-refresh:hover {
+    border: 1px solid rgb(13, 110, 253);
+}

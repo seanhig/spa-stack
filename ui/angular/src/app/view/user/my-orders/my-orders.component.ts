@@ -3,7 +3,7 @@ import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angu
 import { Observable } from 'rxjs';
 
 import { Order } from '../../../shared/model/order';
-import { OrderService } from '../../../services/order.service';
+import { OrderController } from '../../../controllers/order.controller';
 import { NgbdOrderSortableHeader, SortEvent } from '../../../shared/directives/order.sortable.directive';
 import {
   FormGroup,
@@ -19,6 +19,7 @@ import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router, RouterLink } from '@angular/router';
 
 import { OrdersTableComponent } from '../../shared/orders-table/orders-table.component';
+import { tableConfig } from '../../shared/table.config';
 
 @Component({
   selector: 'app-my-orders',
@@ -36,11 +37,12 @@ import { OrdersTableComponent } from '../../shared/orders-table/orders-table.com
   ],
   templateUrl: './my-orders.component.html',
   styleUrl: './my-orders.component.scss',
-	providers: [OrderService, DecimalPipe, DatePipe]
+	providers: [OrderController, DecimalPipe, DatePipe]
 })
 export class MyOrdersComponent {
   newOrderForm: FormGroup = {} as FormGroup;
   errorMessage: string = '';
+  pageSizes: number[] = tableConfig.pageSizes;
 
 	orders$: Observable<Order[]>;
 	total$: Observable<number>;
@@ -49,11 +51,11 @@ export class MyOrdersComponent {
 
 	@ViewChildren(NgbdOrderSortableHeader) headers: QueryList<NgbdOrderSortableHeader> | undefined;
 
-	constructor(public _orderService: OrderService, 
+	constructor(public _orderController: OrderController, 
     private _fb: FormBuilder,
     private _router: Router) {
-		this.orders$ = _orderService.orders$;
-		this.total$ = _orderService.total$;
+		this.orders$ = _orderController.orders$;
+		this.total$ = _orderController.total$;
 	}
 
   ngOnInit(): void {
@@ -97,8 +99,8 @@ export class MyOrdersComponent {
 			}
 		});
 
-		this._orderService.sortColumn = column;
-		this._orderService.sortDirection = direction;
+		this._orderController.sortColumn = column;
+		this._orderController.sortDirection = direction;
 	}
 }
 

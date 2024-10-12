@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card text-bg-light mb-3 p-0">
                 <div class="card-header">
-                    <h4><span class="bi bi-bag me-1"></span> Place An Order:</h4>
+                    <span class="place-order-title"><span class="bi bi-bag me-1"></span><h4> Place An Order</h4></span>
                 </div>
                 <div class="card-body">
                     <form [formGroup]="newOrderForm" (ngSubmit)="submitOrder()" class="container-fluid p-0">
@@ -96,7 +96,7 @@
         </div>
     </div>
     <div class="row px-3">
-        <h4><span class="bi bi-bag me-1"></span> My Orders</h4>
+        <span class="my-orders-title"><span class="bi bi-bag me-1"></span><h3> My Orders</h3></span>
     </div>
     <div class="row px-3">
         <div class="col-12">
