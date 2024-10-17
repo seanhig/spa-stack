@@ -1,33 +1,33 @@
 <div class="container-fluid" style="padding-right: 25px;">
     <div class="row">
         <div class="col-12">
-            <div class="card text-bg-light mb-3 p-0" >
+            <div class="card text-bg-light mb-3 p-0">
                 <div class="card-header p-1 ps-2">
-                    <span class="place-order-title"><h4> Place An Order</h4></span>
+                    <span class="place-order-title">
+                        <h4> Place An Order</h4>
+                    </span>
                 </div>
                 <div class="card-body pb-1">
                     <form [formGroup]="newOrderForm" (ngSubmit)="submitOrder()" class="container-fluid p-0">
                         <div class="row mt-2">
                             <div class="col-6">
                                 <div class="input-group mb-1">
-                                    <label class="input-group-text" for="productId">Product:</label>
-                                    <select class="form-select" 
-                                        id="productId"
-                                        (blur)="calculateOrderTotal()"
-                                        (change)="calculateOrderTotal()"
-                                        formControlName="productId">
+                                    <label class="input-group-text" for="product_id">Product:</label>
+                                    <select class="form-select" id="product_id" (blur)="calculateOrderTotal()"
+                                        (change)="calculateOrderTotal()" formControlName="product_id">
                                         @for (product of products$ | async; track product.id) {
 
-                                            <option value="{{ product.id }}">{{ product.name }} - ({{ product.price | currency }})</option>
+                                        <option value="{{ product.id }}">{{ product.name }} - ({{ product.price |
+                                            currency }})</option>
                                         }
                                     </select>
                                 </div>
                                 <div class="text-danger text-end pe-3" *ngIf="
-                                    newOrderForm?.get('productId')?.touched &&
-                                      newOrderForm?.get('productId')?.invalid
+                                    newOrderForm?.get('product_id')?.touched &&
+                                      newOrderForm?.get('product_id')?.invalid
                                     ">
                                     <div class="text-danger"
-                                        *ngIf="newOrderForm?.get('productId')?.errors?.['required']">
+                                        *ngIf="newOrderForm?.get('product_id')?.errors?.['required']">
                                         This field is required
                                     </div>
                                 </div>
@@ -38,15 +38,16 @@
                                     <input id="quantity" 
                                         formControlName="quantity" 
                                         type="text"
-                                        (blur)="calculateOrderTotal()"
-                                        class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        (keypress)="numberOnly($event)"
+                                        (blur)="calculateOrderTotal()" 
+                                        class="form-control"
+                                        aria-label="Amount (to the nearest dollar)">
                                 </div>
                                 <div class="text-danger text-end pe-3" *ngIf="
                                 newOrderForm?.get('quantity')?.touched &&
                                   newOrderForm?.get('quantity')?.invalid
                                 ">
-                                    <div
-                                        *ngIf="newOrderForm?.get('quantity')?.errors?.['required']">
+                                    <div *ngIf="newOrderForm?.get('quantity')?.errors?.['required']">
                                         This field is required
                                     </div>
                                 </div>
@@ -56,8 +57,9 @@
                                 <div class="mb-1">
                                     <div class="input-group">
                                         <span class="input-group-text" id="newOrderTotalLabel">Order Total:</span>
-                                        <label class="form-control" id="newOrderTotal"
-                                            aria-describedby="newOrderTotalLabel newOrderWarningSublabel">{{ orderTotal | currency }}</label>
+                                        <label class="form-control bg-transparent" id="newOrderTotal"
+                                            aria-describedby="newOrderTotalLabel newOrderWarningSublabel">{{ orderTotal
+                                            | currency }}</label>
                                     </div>
                                     <div class="form-text" id="newOrderWarningSublabel">Not including tax.</div>
                                 </div>
@@ -84,9 +86,7 @@
                             <div class="col-4">
                                 <div class="mb-3">
                                     <div class="form-floating">
-                                        <input type="text" readonly 
-                                            class="form-control-plaintext" 
-                                            id="customerName"
+                                        <input type="text" readonly class="form-control-plaintext" id="customerName"
                                             value="{{ _authService.activeUsername() }}">
                                         <label for="customerName">Deliver to Customer:</label>
                                     </div>
@@ -97,17 +97,30 @@
                                     class="btn btn-success mt-1">Place Order</button>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-12">
+                                @if (successMessage) {
+                                <ngb-alert id="successMessageAlert" #successMessageAlert type="success"
+                                    (closed)="successMessage = ''" [innerHTML]="successMessage"></ngb-alert>
+                                }
+                                @if (errorMessage) {
+                                <ngb-alert id="errorMessageAlert" #errorMessageAlert type="danger"
+                                    (closed)="errorMessage = ''" [innerHTML]="errorMessage"></ngb-alert>
+                                }
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
     <div class="row px-3 mb-0">
-        <span class="my-orders-title pb-2"><span class="bi bi-bag-fill me-1"></span><h3 class="mb-1"> My Orders</h3></span>
+        <span class="my-orders-title pb-2"><span class="bi bi-bag-fill me-1"></span>
+            <h3 class="mb-1"> My Orders</h3>
+        </span>
     </div>
     <div class="row px-3">
-        <hr/>
+        <hr />
         <div class="col-12">
             <app-orders-table [mode]="ORDERMODE.MyOrders"></app-orders-table>
         </div>

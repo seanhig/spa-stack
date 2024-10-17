@@ -1,8 +1,8 @@
 export interface WebOrder {
-	webOrderId: string;
-	orderDate: Date;
-	customerName: string;
+	web_order_id: string;
+	order_date: number;
+	customer_name: string;
 	destination: string;
 	quantity: number;
-	productId: number;
+	product_id: number;
 }

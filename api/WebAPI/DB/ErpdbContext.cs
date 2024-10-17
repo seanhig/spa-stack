@@ -8,6 +8,7 @@ namespace WebAPI.DB;
 
 public partial class ErpdbContext : DbContext
 {
+    private readonly IConfiguration config;
     public ErpdbContext(IConfiguration configuration)
     {
         this.config = configuration;
@@ -19,7 +20,6 @@ public partial class ErpdbContext : DbContext
         this.config = configuration;
     }
 
-    private readonly IConfiguration config;
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }

@@ -14,11 +14,15 @@ import {
   FormBuilder,
   Validators,
   FormControl,
-  AbstractControl,
+  AbstractControl
 } from '@angular/forms';
 
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router, RouterLink } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
+import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { OrdersTableComponent } from '../../shared/orders-table/orders-table.component';
 import { tableConfig } from '../../shared/table.config';
@@ -38,7 +42,8 @@ import { AuthService } from '../../../services/auth.service';
     NgbdOrderSortableHeader, 
     NgbPaginationModule,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    NgbAlertModule
   ],
   templateUrl: './my-orders.component.html',
   styleUrl: './my-orders.component.scss',
@@ -46,7 +51,12 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class MyOrdersComponent {
   newOrderForm: FormGroup = {} as FormGroup;
-  errorMessage: string = '';
+
+  errorMessage: string = "";
+  successMessage: string = "";
+  private _successMessage$ = new Subject<string>();
+  private _errorMessage$ = new Subject<string>();
+
   pageSizes: number[] = tableConfig.pageSizes;
 
 	orders$: Observable<Order[]>;
@@ -56,6 +66,9 @@ export class MyOrdersComponent {
 	total$: Observable<number>;
 
   @ViewChild('productId', { static: false }) newOrderProductSelect: ElementRef | undefined;  
+  
+  @ViewChild('successMessageAlert', { static: false }) successMessageAlert: NgbAlert | undefined;
+  @ViewChild('errorMessageAlert', { static: false }) errorMessageAlert: NgbAlert | undefined;
 
 	@ViewChildren(NgbdOrderSortableHeader) headers: QueryList<NgbdOrderSortableHeader> | undefined;
 
@@ -68,10 +81,32 @@ export class MyOrdersComponent {
 		this.orders$ = _orderController.orders$;
 		this.products$ = _orderController.products$;
 		this.total$ = _orderController.total$;
+
+    this._successMessage$
+    .pipe(
+      takeUntilDestroyed(),
+      tap((message) => (this.successMessage = message)),
+      debounceTime(5000),
+    )
+    .subscribe(() => { 
+      console.log(this.successMessageAlert);
+      this.successMessageAlert?.close()
+    });
+
+    this._errorMessage$
+    .pipe(
+      takeUntilDestroyed(),
+      tap((message) => (this.errorMessage = message)),
+      debounceTime(5000),
+    )
+    .subscribe(() => { 
+      console.log(this.errorMessageAlert);
+      this.errorMessageAlert?.close()
+    });
+
 	}
 
   ngOnInit(): void {
-
     this._orderController.fetchProducts();
 
     this.buildBasicForm();
@@ -79,13 +114,11 @@ export class MyOrdersComponent {
   }
 
   buildBasicForm() {
-
     this.newOrderForm = this._fb.group({
-      productId: ['', [Validators.required]],
+      product_id: ['', [Validators.required]],
       quantity: ['', [Validators.required]],
       destination: ['', [Validators.required]]
     });
-
     setTimeout(()=>{ // this will make the execution after the above boolean has changed
       this.newOrderProductSelect?.nativeElement.focus();
     },100); 
@@ -93,7 +126,7 @@ export class MyOrdersComponent {
   }
 
   calculateOrderTotal() {
-    var productId = this.newOrderForm.get("productId")?.value;
+    var productId = this.newOrderForm.get("product_id")?.value;
     var quantity = this.newOrderForm.get("quantity")?.value;
 
     console.log("qty: " + quantity);
@@ -114,26 +147,43 @@ export class MyOrdersComponent {
     console.log("calculate: productId: " + productId + ", qty: " + quantity);
   }
 
+  hasErrorMessage() : boolean {
+    return this.errorMessage !== "";
+  }
+
+  hasSuccessMessage() : boolean {
+    return this.successMessage !== "";
+  }
+
   submitOrder() {
     this.errorMessage = '';
-    console.log("New Order:");
-    //console.log(this.newOrderForm.value);
 
     var webOrder: WebOrder = this.newOrderForm.value;
-    webOrder.webOrderId = Guid.create().toString();
+    webOrder.web_order_id = Guid.create().toString();
+    webOrder.order_date = Date.now();
     if(this._authService.activeUser !== undefined) {
-      webOrder.customerName = this._authService.activeUser.userName;
+      webOrder.customer_name = this._authService.activeUser.userName;
     }
 
-    console.log("sending:");
+    console.log("sending web order:");
     console.log(webOrder);
 
-    try {
-      this._orderController.submitWebOrder(webOrder);
-      console.log("Web Order SENT!");
-    } catch(ex) {
-      console.log("error sending: " + ex);
-    }
+    this._orderController.submitWebOrder(webOrder).subscribe({ 
+      next: () => {
+        console.log("submitted web order!");
+        var msg = "Web Order <strong>#" + webOrder.web_order_id + "</strong> has been placed!";
+        this._successMessage$.next(msg);
+          },
+      error: (error) => {
+        console.error("submitting web order:" + error);
+        console.log(error);
+        var msg = "Error placing Web Order: " + error.toString();
+        this._errorMessage$.next(msg);
+      },
+      complete: () => {
+        console.log("web order submission complete!")
+      }
+    });
   }  
 
 	onSort({ column, direction }: SortEvent) {
@@ -147,5 +197,14 @@ export class MyOrdersComponent {
 		this._orderController.sortColumn = column;
 		this._orderController.sortDirection = direction;
 	}
+
+  numberOnly(event : any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+
+  }  
 }
 

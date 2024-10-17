@@ -30,6 +30,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders([FromQuery] string customerName = "")
         {
             if(customerName != "") {
+                _log.LogInformation("Fetching Orders for: " + customerName);
                 return await _context.Orders
                     .Where(order => order.CustomerName == customerName)
                     .OrderByDescending( order => order.OrderDate)
@@ -37,6 +38,7 @@ namespace WebAPI.Controllers
                     .ToListAsync();
 
             } else {
+                _log.LogInformation("Fetching ALL Orders");
                 return await _context.Orders
                     .OrderByDescending( order => order.OrderDate)
                     .Take(MAX_RECORDS)

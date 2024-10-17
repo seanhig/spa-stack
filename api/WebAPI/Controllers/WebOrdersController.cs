@@ -13,9 +13,12 @@ namespace WebAPI.Controllers
     public class WebOrdersController : ControllerBase
     {
         private readonly ILogger _log;
+        private readonly IConfiguration _config;
 
-        public WebOrdersController(ILogger<WebOrdersController> log) {
+        public WebOrdersController(ILogger<WebOrdersController> log,
+            IConfiguration configuration) {
             _log = log;
+            _config = configuration;
         }
 
 
@@ -24,8 +27,8 @@ namespace WebAPI.Controllers
         {
             _log.LogWarning("We have a new web order! [" + weborder.web_order_id + "]");
             try {
-                using (var schemaRegistry = new CachedSchemaRegistryClient(new SchemaRegistryConfig { Url = "http://host.docker.internal:8081" }))
-                using (var producer = new ProducerBuilder<string, WebOrder>(new ProducerConfig { BootstrapServers = "host.docker.internal:29092"  })
+                using (var schemaRegistry = new CachedSchemaRegistryClient(new SchemaRegistryConfig { Url = this._config.GetValue<String>("KafkaSchemaRegistryUrl") }))
+                using (var producer = new ProducerBuilder<string, WebOrder>(new ProducerConfig { BootstrapServers = this._config.GetValue<String>("KafkaBootstrapServers")  })
                         .SetValueSerializer(new AvroSerializer<WebOrder>(schemaRegistry))
                         .Build())
                 {

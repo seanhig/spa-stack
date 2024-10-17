@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule, JsonPipe, NgIf } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 
@@ -13,13 +13,18 @@ import { AuthService } from '../../../services/auth.service';
 export class HeaderComponent {
   @Input() showSignin = true;
   
-  constructor(public _authService: AuthService) {
+  constructor(public _authService: AuthService, 
+    private _router: Router) {
     
   }
 
-  public signOut() {
-    //alert("You are signed out!  Not really");
-    this._authService.signout();
+  public signOut(event: any) {
+    event.preventDefault();
+    console.log("We are doing the signout");
+
+    this._authService.signout().subscribe((ok) => {
+      window.location.reload();
+    });
   }
 
 }

@@ -130,8 +130,8 @@ export class OrderController {
 		});
 	}
 
-	public submitWebOrder(webOrder: WebOrder) {
-		this._orderService.submitWebOrder(webOrder);
+	public submitWebOrder(webOrder: WebOrder) : Observable<Object> {
+		return this._orderService.submitWebOrder(webOrder);
 	}
 
 	public search() {

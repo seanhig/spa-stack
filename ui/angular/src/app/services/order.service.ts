@@ -18,14 +18,13 @@ export class OrderService {
 
 	public getMyOrders(customerName: string): Observable<Order[]> {
 		console.log("get my orders for: " + customerName);
-		return this._httpClient.get<Order[]>("/api/order?customerName=" + customerName);
+		return this._httpClient.get<Order[]>("/api/order", {
+			params: { "customerName": customerName}
+		});
 	}
 
-	public submitWebOrder(webOrder: WebOrder) {
-		this._httpClient.post("/api/weborders", webOrder).subscribe( response => {
-			console.log("submitted web order!");
-			console.log(response);
-		});
+	public submitWebOrder(webOrder: WebOrder) : Observable<Object> {
+		return this._httpClient.post("/api/weborders", webOrder);
 	}
 
 	
