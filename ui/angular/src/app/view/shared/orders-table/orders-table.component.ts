@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, DecimalPipe, NgFor } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe, CurrencyPipe, NgFor } from '@angular/common';
 import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { AuthService } from '../../../services/auth.service';
 @Component({
 	selector: 'app-orders-table',
 	standalone: true,
-	imports: [DecimalPipe, NgFor, DatePipe, FormsModule, AsyncPipe, NgbHighlight, NgbdOrderSortableHeader, NgbPaginationModule],
+	imports: [DecimalPipe, NgFor, DatePipe, CurrencyPipe, FormsModule, AsyncPipe, NgbHighlight, NgbdOrderSortableHeader, NgbPaginationModule],
 	templateUrl: './orders-table.component.html',
 	styleUrl: './orders-table.component.scss',
 	providers: [OrderController, DecimalPipe, DatePipe]
