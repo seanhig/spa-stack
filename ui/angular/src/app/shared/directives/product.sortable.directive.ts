@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
-import { Product } from '../model/product';
+import { Product } from '../../model/product';
 
 export type ProductSortColumn = keyof(Product) |  '';
 

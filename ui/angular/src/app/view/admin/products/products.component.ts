@@ -2,7 +2,7 @@ import { AsyncPipe, DecimalPipe, NgFor } from '@angular/common';
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Product } from '../../../shared/model/product';
+import { Product } from '../../../model/product';
 import { ProductController } from '../../../controllers/product.controller';
 import { NgbdProductSortableHeader, SortEvent } from '../../../shared/directives/product.sortable.directive';
 import { FormsModule } from '@angular/forms';
@@ -29,6 +29,10 @@ export class ProductsComponent {
 		this.total$ = _controller.total$;
 	}
 
+	ngOnInit() {
+		this._controller.search();
+	}
+	
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
 		this.headers?.forEach((header) => {

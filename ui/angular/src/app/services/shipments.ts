@@ -1,25 +1,25 @@
-import { Shipment } from "../shared/model/shipment";
+import { Shipment } from "../model/shipment";
 
 export const SHIPMENTS: Shipment[] = [
 	{
-		shipment_id: 101,
-		order_id: 1001,
+		shipmentId: 101,
+		orderId: 1001,
 		origin: "Honalulu, Hawaii",
 		destination: "Calgary, Alberta",
-		is_arrived: false
+		hasArrived: false
 	},
 	{
-		shipment_id: 102,
-		order_id: 1002,
+		shipmentId: 102,
+		orderId: 1002,
 		origin: "Makiki, Hawaii",
 		destination: "Calgary, Alberta",
-		is_arrived: false
+		hasArrived: false
 	},
 	{
-		shipment_id: 103,
-		order_id: 1003,
+		shipmentId: 103,
+		orderId: 1003,
 		origin: "Tampa, Florida",
 		destination: "Red Deer, Alberta",
-		is_arrived: false
+		hasArrived: false
 	},
 ]

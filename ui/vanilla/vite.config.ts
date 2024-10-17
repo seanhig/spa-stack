@@ -11,12 +11,12 @@ export default defineConfig({
         port: 4200,
         proxy: {
             '/api': {
-                target: 'http://localhost:8080',
+                target: 'http://localhost:8090',
                 changeOrigin: true,
                 secure: false,
             },
             '/swagger': {
-                target: 'http://localhost:8080',
+                target: 'http://localhost:8090',
                 changeOrigin: true,
                 secure: false,
             }

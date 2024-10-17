@@ -39,7 +39,7 @@ var googleClientSecret = configuration["GoogleClientSecret"];
 var microsoftClientId = configuration["MicrosoftClientId"];
 var microsoftClientSecret = configuration["MicrosoftClientSecret"];
 
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
     {
         googleOptions.ClientId = googleClientId ?? throw new Exception("OAUTH: Google ClientId is EMPTY, closing.");
         googleOptions.ClientSecret = googleClientSecret ?? throw new Exception("OAUTH: Google Client Secret is EMPTY, closing.");
@@ -52,7 +52,7 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
         microsoftOptions.SignInScheme = Microsoft.AspNetCore.Identity.IdentityConstants.ExternalScheme;
         microsoftOptions.CallbackPath = "/api/identity/signin-microsoft";
     });
-
+ 
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager();

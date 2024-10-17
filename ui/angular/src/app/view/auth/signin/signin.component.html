@@ -57,12 +57,24 @@
     </div>
     <div class="p-0 mb-3">
       <div class="text-center p-1">
-        <a class="btn btn-lg btn-google btn-outline btn-primary text-start" href="#">
-          <img class="provider-image me-2" src="/images/icons8-google.svg"> Signin Using Google</a>
+        <form ngNoForm method="post" method="POST" action="/api/identity/external-login?provider=Google&returnUrl=/site/home" >
+          <button
+              type="submit"
+              class="btn btn-lg btn-google btn-outline btn-primary text-start" 
+              title="Login using Google">
+              <img class="provider-image me-2" src="/images/icons8-google.svg"> Signin Using Google
+          </button>
+        </form>
       </div>
       <div class="text-center p-1 mb-3">
-        <a class="btn btn-lg btn-microsoft btn-outline btn-primary text-start" href="#">
-          <img class="provider-image me-2" src="/images/icons8-microsoft.svg"> Signin Using Microsoft</a>
+        <form ngNoForm method="post" action="/api/identity/external-login?provider=Microsoft&returnUrl=/site/home" >
+          <button
+              type="submit"
+              class="btn btn-lg btn-google btn-outline btn-primary text-start" 
+              title="Login using Google">
+              <img class="provider-image me-2" src="/images/icons8-microsoft.svg"> Signin Using Microsoft
+          </button>
+        </form>
       </div>  
     </div>
   </div>

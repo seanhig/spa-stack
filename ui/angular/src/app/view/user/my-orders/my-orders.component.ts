@@ -1,9 +1,11 @@
-import { AsyncPipe, DatePipe, DecimalPipe, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe, CurrencyPipe, NgIf } from '@angular/common';
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Order } from '../../../shared/model/order';
-import { OrderController } from '../../../controllers/order.controller';
+import { Guid } from 'guid-typescript';
+import { Order } from '../../../model/order';
+import { WebOrder } from '../../../model/weborder';
+import { OrderController, MODE } from '../../../controllers/order.controller';
 import { NgbdOrderSortableHeader, SortEvent } from '../../../shared/directives/order.sortable.directive';
 import {
   FormGroup,
@@ -20,12 +22,15 @@ import { Router, RouterLink } from '@angular/router';
 
 import { OrdersTableComponent } from '../../shared/orders-table/orders-table.component';
 import { tableConfig } from '../../shared/table.config';
+import { Product } from '../../../model/product';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-my-orders',
   standalone: true,
 	imports: [OrdersTableComponent, 
     DecimalPipe, 
+    CurrencyPipe,
     DatePipe, 
     FormsModule, 
     AsyncPipe, 
@@ -45,20 +50,30 @@ export class MyOrdersComponent {
   pageSizes: number[] = tableConfig.pageSizes;
 
 	orders$: Observable<Order[]>;
+  orderTotal: number = 0.0;
+
+	products$: Observable<Product[]>;
 	total$: Observable<number>;
 
-  @ViewChild('newOrderProductSelect', { static: false }) newOrderProductSelect: ElementRef | undefined;  
+  @ViewChild('productId', { static: false }) newOrderProductSelect: ElementRef | undefined;  
 
 	@ViewChildren(NgbdOrderSortableHeader) headers: QueryList<NgbdOrderSortableHeader> | undefined;
 
-	constructor(public _orderController: OrderController, 
+  public ORDERMODE = MODE;
+
+	constructor(public _authService: AuthService,
+    public _orderController: OrderController,
     private _fb: FormBuilder,
     private _router: Router) {
 		this.orders$ = _orderController.orders$;
+		this.products$ = _orderController.products$;
 		this.total$ = _orderController.total$;
 	}
 
   ngOnInit(): void {
+
+    this._orderController.fetchProducts();
+
     this.buildBasicForm();
     localStorage.clear();
   }
@@ -66,9 +81,9 @@ export class MyOrdersComponent {
   buildBasicForm() {
 
     this.newOrderForm = this._fb.group({
-      newOrderProductSelect: ['', [Validators.required]],
-      newOrderQuantity: ['', [Validators.required]],
-      newOrderDestination: ['', [Validators.required]]
+      productId: ['', [Validators.required]],
+      quantity: ['', [Validators.required]],
+      destination: ['', [Validators.required]]
     });
 
     setTimeout(()=>{ // this will make the execution after the above boolean has changed
@@ -77,18 +92,48 @@ export class MyOrdersComponent {
 
   }
 
-  submitOrder() {
-    this.errorMessage = '';
-  /*     
-    this.auth.register(this.registerForm.value).subscribe({
-      next: (res: any) => {
-        this.router.navigateByUrl('/auth/signin?username=' + this.registerForm.value.email);
-      },
-      error: (err: string) => {
-        this.errorMessage = err;
+  calculateOrderTotal() {
+    var productId = this.newOrderForm.get("productId")?.value;
+    var quantity = this.newOrderForm.get("quantity")?.value;
+
+    console.log("qty: " + quantity);
+    if(quantity == "" || quantity == null || quantity == undefined) { return; }
+
+    this.products$.forEach(products => {
+      for(var i=0; i< products.length; i++) {
+        var p : Product  = products[i];
+        if(p.id == productId) {
+          console.log("price is: " + p.price);
+          var orderTotal = p.price * quantity;
+          console.log("order total: " + orderTotal);
+          this.orderTotal = orderTotal;
+        }
       }
     });
-  */    
+
+    console.log("calculate: productId: " + productId + ", qty: " + quantity);
+  }
+
+  submitOrder() {
+    this.errorMessage = '';
+    console.log("New Order:");
+    //console.log(this.newOrderForm.value);
+
+    var webOrder: WebOrder = this.newOrderForm.value;
+    webOrder.webOrderId = Guid.create().toString();
+    if(this._authService.activeUser !== undefined) {
+      webOrder.customerName = this._authService.activeUser.userName;
+    }
+
+    console.log("sending:");
+    console.log(webOrder);
+
+    try {
+      this._orderController.submitWebOrder(webOrder);
+      console.log("Web Order SENT!");
+    } catch(ex) {
+      console.log("error sending: " + ex);
+    }
   }  
 
 	onSort({ column, direction }: SortEvent) {

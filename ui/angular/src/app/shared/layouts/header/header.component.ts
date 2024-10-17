@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule, JsonPipe, NgIf } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,5 +11,15 @@ import { CommonModule, JsonPipe, NgIf } from '@angular/common';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  @Input() showSignin = true;  
+  @Input() showSignin = true;
+  
+  constructor(public _authService: AuthService) {
+    
+  }
+
+  public signOut() {
+    //alert("You are signed out!  Not really");
+    this._authService.signout();
+  }
+
 }

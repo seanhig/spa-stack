@@ -1,7 +1,17 @@
-<div class="p-5 me-4 bg-light rounded-3">
-    <div class="container-fluid py-1">
+<div class="p-4 me-2 ms-3 bg-light rounded-3">
+    <div *ngIf="_authService.hasActiveUser()" class="container-fluid py-1">
+        <img class="logo me-3 mb-2 mt-1" src="/images/retail-shop-icon-dark.svg" />
+        <h1 class="display-5 fw-bold">Welcome Back</h1>
+        <h2 class="username">{{ _authService.activeUsername() }}</h2>
+        <p class="col-md-8 fs-4 pb-3">We hope you find great stuff to buy!</p>
+        <h5>Go to <a class="fs-5" [routerLink]="['/user/my-orders']" type="button"> My Orders</a> to place an order.</h5>
+    </div>
+    <div *ngIf="!_authService.hasActiveUser()" class="container-fluid py-1">
+        <img class="logo me-3 mb-2 mt-2" src="/images/retail-shop-icon-dark.svg" />
         <h1 class="display-5 fw-bold">Welcome to The General Store</h1>
-        <p class="col-md-8 fs-4">Register to place orders for great stuff!</p>
-        <a class="btn btn-primary btn-lg" [routerLink]="['/auth/register']" type="button">Register</a>
+        <p class="col-md-8 fs-4 pb-3">Sign in or register to place orders for great stuff!</p>
+        <a class="btn btn-success btn-lg" [routerLink]="['/auth/signin']" type="button">Sign In</a>
+        <span class="fs-5 mx-2"> or </span>
+        <a class="fs-5" [routerLink]="['/auth/register']" type="button">Register</a>
     </div>
 </div>

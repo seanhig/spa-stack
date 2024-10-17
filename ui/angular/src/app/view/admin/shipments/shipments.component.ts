@@ -2,7 +2,7 @@ import { AsyncPipe, DecimalPipe, NgFor } from '@angular/common';
 import { Component, QueryList, ViewChildren} from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Shipment } from '../../../shared/model/shipment';
+import { Shipment } from '../../../model/shipment';
 import { ShipmentController } from '../../../controllers/shipment.controller';
 import { NgbdShipmentSortableHeader, SortEvent } from '../../../shared/directives/shipment.sortable.directive';
 import { FormsModule } from '@angular/forms';
@@ -27,6 +27,10 @@ export class ShipmentsComponent {
 	constructor(public _controller: ShipmentController) {
 		this.shipments$ = _controller.shipments$;
 		this.total$ = _controller.total$;
+	}
+
+	ngOnInit() {
+		this._controller.search();
 	}
 
 	onSort({ column, direction }: SortEvent) {

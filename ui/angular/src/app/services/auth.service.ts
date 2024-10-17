@@ -1,39 +1,67 @@
 import { Injectable } from '@angular/core';
-import { of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { User } from '../shared/model/user';
+import { User } from '../model/user';
+import { NewUser } from '../model/newuser';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  authenticated = false;
-  constructor() {
-    this.checkAuth();
+  private _activeUser: User | undefined;
+
+  constructor(private _httpClient: HttpClient, private _router: Router) {
+    this.getCurrentUser();
+  }
+
+
+  public getCurrentUser() {
+    this._httpClient.get<User>("/api/identity/current-user").subscribe(currentUser => {
+      this._activeUser = currentUser;
+    });
+  }
+
+  public getActiveUser() : Observable<User> {
+    if(this._activeUser) {
+      return new Observable((subscriber) => {
+        subscriber.next(this._activeUser);
+        subscriber.complete();
+      });
+    } else {
+      return this._httpClient.get<User>("/api/identity/current-user");
+    }
+  }
+
+  public hasActiveUser(): boolean{
+    if(this._activeUser && this._activeUser.userName != null) { return true;}
+    return false;
+  }
+
+  public activeUsername(): string {
+    var user: string = "";
+    if (this._activeUser) { user = this._activeUser.userName; }
+    return user;
+  }
+
+  get activeUser() {
+    return this._activeUser;
   }
 
   checkAuth() {
-    this.authenticated = localStorage.getItem('demo_login_status')
-      ? true
-      : false;
   }
 
   register(newUser: User) {
-    console.log(newUser);
-    return of({}).pipe(delay(1000));
+}
+
+  signin(credentials: NewUser) {
   }
 
-  signin(credentials: User) {
-    let isAuth: User;
-    isAuth = { email: 'test@example.com', password: '1234' };
-    if (
-      isAuth.email == credentials.email &&
-      isAuth.password == credentials.password
-    ) {
-      this.authenticated = true;
-      localStorage.setItem('demo_login_status', 'true');
-      return of({}).pipe(delay(1000));
-    }
-    return throwError(() => 'Invalid email or password!');
+  signout() {
+    this._httpClient.post("/api/identity/external-logout", {}).subscribe(ok => {
+      this._router.navigate(['/site/home']);
+    });
+
   }
 }

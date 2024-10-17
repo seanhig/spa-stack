@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { User } from '../../../shared/model/user';
+import { User } from '../../../model/user';
 
 @Component({
   selector: 'app-register',
@@ -76,7 +76,7 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.errorMessage = '';
-    this.auth.register(this.registerForm.value).subscribe({
+/*     this.auth.register(this.registerForm.value).subscribe({
       next: (res: any) => {
         this.router.navigateByUrl('/auth/signin?username=' + this.registerForm.value.email);
       },
@@ -84,7 +84,7 @@ export class RegisterComponent implements OnInit {
         this.errorMessage = err;
       },
     });
-  }
+ */  }
 }
 
 export function checkPasswords (c: AbstractControl) {

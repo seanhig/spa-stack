@@ -27,19 +27,21 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col" sortable="order_id" (sort)="onSort($event)">Order #</th>
+                            <th scope="col" sortable="shipmentId" (sort)="onSort($event)">Ship #</th>
+                            <th scope="col" sortable="orderId" (sort)="onSort($event)">Order #</th>
                             <th scope="col" sortable="origin" (sort)="onSort($event)">Origin</th>
                             <th scope="col" sortable="destination" (sort)="onSort($event)">Destination</th>
-                            <th scope="col" sortable="is_arrived" (sort)="onSort($event)">Has Arrived</th>
+                            <th scope="col" sortable="hasArrived" (sort)="onSort($event)">Has Arrived</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @for (shipment of shipments$ | async; track shipment.shipment_id) {
+                        @for (shipment of shipments$ | async; track shipment.shipmentId) {
                             <tr>
-                                <td><ngb-highlight [result]="shipment.order_id.toString()" [term]="_controller.searchTerm" /></td>
+                                <td><ngb-highlight [result]="shipment.shipmentId.toString()" [term]="_controller.searchTerm" /></td>
+                                <td><ngb-highlight [result]="shipment.orderId.toString()" [term]="_controller.searchTerm" /></td>
                                 <td><ngb-highlight [result]="shipment.origin" [term]="_controller.searchTerm" /></td>
                                 <td><ngb-highlight [result]="shipment.destination" [term]="_controller.searchTerm" /></td>
-                                <td><ngb-highlight [result]="shipment.is_arrived ? 'true' : 'false'" [term]="_controller.searchTerm" /></td>
+                                <td><ngb-highlight [result]="shipment.hasArrived ? 'true' : 'false'" [term]="_controller.searchTerm" /></td>
                             </tr>
                         } @empty {
                             <tr>

@@ -51,7 +51,7 @@ export class SigninComponent implements OnInit {
 
   signin() {
     this.errorMessage = '';
-    this.auth.signin(this.signinForm.value).subscribe({
+/*     this.auth.signin(this.signinForm.value).subscribe({
       next: (res: any) => {
         this.router.navigateByUrl('/site/home');
       },
@@ -59,5 +59,5 @@ export class SigninComponent implements OnInit {
         this.errorMessage = err;
       },
     });
-  }
+ */  }
 }

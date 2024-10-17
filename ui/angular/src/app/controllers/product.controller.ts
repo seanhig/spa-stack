@@ -2,8 +2,7 @@ import { Injectable, PipeTransform } from '@angular/core';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
-import { PRODUCTS } from '../services/products';
-import { Product } from '../shared/model/product';
+import { Product } from '../model/product';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { ProductSortColumn, SortDirection } from '../shared/directives/product.sortable.directive';
@@ -53,14 +52,14 @@ export class ProductController {
 
 	private _state: State = {
 		page: 1,
-		pageSize: 5,
+		pageSize: 10,
 		searchTerm: '',
 		sortColumn: '',
 		sortDirection: '',
 	};
 
     constructor(private pipe: DecimalPipe, private _productService: ProductService) {
-		this.search();
+		//this.search();
 	}
 
     get products$() {
@@ -128,7 +127,7 @@ export class ProductController {
 		const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
 		// 1. sort
-		let products = sort(PRODUCTS, sortColumn, sortDirection);
+		let products = sort(this._productResults, sortColumn, sortDirection);
 
 		// 2. filter
 		products = products.filter((product) => matches(product, searchTerm, this.pipe));

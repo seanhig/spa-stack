@@ -2,7 +2,7 @@ import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Order } from '../../../shared/model/order';
+import { Order } from '../../../model/order';
 import { OrderController } from '../../../controllers/order.controller';
 import { NgbdOrderSortableHeader, SortEvent } from '../../../shared/directives/order.sortable.directive';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +30,12 @@ export class AllOrdersComponent {
 		this.orders$ = _controller.orders$;
 		this.total$ = _controller.total$;
 	}
+
+	ngOnInit(): void {
+		console.warn("INIT in Orders");
+		this._controller.search();
+	}
+	
 
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers

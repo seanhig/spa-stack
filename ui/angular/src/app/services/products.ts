@@ -1,4 +1,4 @@
-import { Product } from "../shared/model/product";
+import { Product } from "../model/product";
 
 export const PRODUCTS: Product[] = [
 	{

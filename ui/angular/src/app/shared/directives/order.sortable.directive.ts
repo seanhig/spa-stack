@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
-import { Order } from '../model/order';
+import { Order } from '../../model/order';
 
 export type OrderSortColumn = keyof(Order) |  '';
 

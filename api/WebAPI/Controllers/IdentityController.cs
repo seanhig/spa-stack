@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
             _log.LogInformation(provider);
             _log.LogInformation(returnUrl);
 
-            var redirectUrl = $"https://localhost:8080/api/identity/external-auth-callback?returnUrl={returnUrl}";
+            var redirectUrl = $"https://localhost:8090/api/identity/external-auth-callback?returnUrl={returnUrl}";
             AuthenticationProperties properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             properties.AllowRefresh = true;
 
@@ -134,6 +134,19 @@ namespace WebAPI.Controllers
             return Redirect(baseUrl);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("external-logout")]
+        public async Task<IActionResult> ExternalLogout()
+        {
+            _log.LogInformation("In external-LOGOUT");
+
+            await _signInManager.SignOutAsync();
+
+            _log.LogInformation("SIGNED OUT");
+
+            return Ok();
+        }
     }
 
 }

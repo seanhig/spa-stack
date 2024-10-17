@@ -1,13 +1,17 @@
-import { Injectable, PipeTransform } from '@angular/core';
+import { Injectable, Input, PipeTransform } from '@angular/core';
 
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 
-import { ORDERS } from '../services/orders';
-import { Order } from '../shared/model/order';
+import { Order } from '../model/order';
 import { DecimalPipe } from '@angular/common';
-import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import { catchError, debounceTime, delay, map, switchMap, tap } from 'rxjs/operators';
 import { OrderSortColumn, SortDirection } from '../shared/directives/order.sortable.directive';
 import { OrderService } from '../services/order.service';
+import { Product } from '../model/product';
+import { ProductService } from '../services/product.service';
+import { AuthService } from '../services/auth.service';
+import { WebOrder } from '../model/weborder';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface SearchResult {
 	orders: Order[];
@@ -37,12 +41,16 @@ function sort(orders: Order[], column: OrderSortColumn, direction: string): Orde
 
 function matches(order: Order, term: string, pipe: PipeTransform) {
 	return (
-		order.customer_name.toLowerCase().includes(term.toLowerCase()) ||
-		order.order_id.toString().toLowerCase().includes(term.toLowerCase()) ||
-		order.order_ref.toLowerCase().includes(term.toLowerCase()) 
-
+		order.customerName.toLowerCase().includes(term.toLowerCase()) ||
+		order.orderId.toString().toLowerCase().includes(term.toLowerCase()) ||
+		order.orderRef.toLowerCase().includes(term.toLowerCase())
 	);
 }
+
+export enum MODE {
+	ALL = 0,
+	MyOrders
+};
 
 @Injectable({ providedIn: 'root' })
 export class OrderController {
@@ -50,36 +58,32 @@ export class OrderController {
 	private _search$ = new Subject<void>();
 	private _orderResults: Order[] = [];
 	private _orders$ = new BehaviorSubject<Order[]>([]);
+	private _products$ = new BehaviorSubject<Product[]>([]);
 	private _total$ = new BehaviorSubject<number>(0);
+
+	private _mode: MODE = MODE.ALL;
 
 	private _state: State = {
 		page: 1,
-		pageSize: 5,
+		pageSize: 10,
 		searchTerm: '',
 		sortColumn: '',
 		sortDirection: '',
 	};
 
-    constructor(private pipe: DecimalPipe, private _orderService: OrderService) {
-		this.search();
-/* 		this._search$
-			.pipe(
-				tap(() => this._loading$.next(true)),
-				debounceTime(200),
-				switchMap(() => this._search()),
-				delay(200),
-				tap(() => this._loading$.next(false)),
-			)
-			.subscribe((result) => {
-				this._orders$.next(result.orders);
-				this._total$.next(result.total);
-			});
+	constructor(private pipe: DecimalPipe,
+		private _orderService: OrderService,
+		private _authService: AuthService,
+		private _productService: ProductService
+	) {
+		//this.search();
+	}
 
-		this._search$.next();
- */	}
-
-    get orders$() {
+	get orders$() {
 		return this._orders$.asObservable();
+	}
+	get products$() {
+		return this._products$.asObservable();
 	}
 	get total$() {
 		return this._total$.asObservable();
@@ -96,8 +100,7 @@ export class OrderController {
 	get searchTerm() {
 		return this._state.searchTerm;
 	}
-
-    set page(page: number) {
+	set page(page: number) {
 		this._set({ page });
 	}
 	set pageSize(pageSize: number) {
@@ -112,37 +115,76 @@ export class OrderController {
 	set sortDirection(sortDirection: SortDirection) {
 		this._set({ sortDirection });
 	}
+	set mode(opmode: MODE) {
+		this._mode = opmode;
+	}
 
 	private _set(patch: Partial<State>) {
 		Object.assign(this._state, patch);
 		this._search$.next();
 	}
 
-	public search() {
-		
-		this._orderService.getOrders().subscribe((orders) => {
-			console.log("loaded new orders: " + orders?.length);
-			this._orderResults = orders;
-			this._search$
-				.pipe(
-					tap(() => this._loading$.next(true)),
-					debounceTime(200),
-					switchMap(() => this._search()),
-					delay(200),
-					tap(() => this._loading$.next(false)),
-				)
-				.subscribe((result) => {
-					this._orders$.next(result.orders);
-					this._total$.next(result.total);
-				});
-
-			this._search$.next();			
+	public fetchProducts() {
+		this._productService.getProducts().subscribe(products => {
+			this._products$.next(products);
 		});
 	}
 
-    private _search(): Observable<SearchResult> {
+	public submitWebOrder(webOrder: WebOrder) {
+		this._orderService.submitWebOrder(webOrder);
+	}
+
+	public search() {
+		var that = this;
+		if (this._mode == MODE.ALL) {
+			that._orderService.getOrders().subscribe((orders) => {
+				console.log("loaded new orders: " + orders?.length);
+				this._orderResults = orders;
+				this._search$
+					.pipe(
+						tap(() => this._loading$.next(true)),
+						debounceTime(200),
+						switchMap(() => this._search()),
+						delay(200),
+						tap(() => this._loading$.next(false)),
+					)
+					.subscribe((result) => {
+						this._orders$.next(result.orders);
+						this._total$.next(result.total);
+					});
+
+				this._search$.next();
+			});
+		} else {
+			this._authService.getActiveUser().subscribe(activeUser => {
+				console.log("active user: " + activeUser.userName);
+				that._orderService.getMyOrders(activeUser.userName)
+					.subscribe((orders) => {
+							console.log("loaded new orders: " + orders?.length);
+							this._orderResults = orders;
+							this._search$
+								.pipe(
+									tap(() => this._loading$.next(true)),
+									debounceTime(200),
+									switchMap(() => this._search()),
+									delay(200),
+									tap(() => this._loading$.next(false)),
+								)
+								.subscribe((result) => {
+									this._orders$.next(result.orders);
+									this._total$.next(result.total);
+								});
+							this._search$.next();
+					});
+			});
+		}
+
+
+	}
+
+	private _search(): Observable<SearchResult> {
 		const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
-		
+
 		// 1. sort
 		let orders = sort(this._orderResults, sortColumn, sortDirection);
 

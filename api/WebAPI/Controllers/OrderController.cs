@@ -14,18 +14,34 @@ namespace WebAPI.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+        public const int MAX_RECORDS = 200;
+        private readonly ILogger _log;
+
         private readonly ErpdbContext _context;
 
-        public OrderController(ErpdbContext context)
+        public OrderController(ErpdbContext context, ILogger<OrderController> log)
         {
             _context = context;
+            _log = log;
         }
 
         // GET: api/Order
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders([FromQuery] string customerName = "")
         {
-            return await _context.Orders.ToListAsync();
+            if(customerName != "") {
+                return await _context.Orders
+                    .Where(order => order.CustomerName == customerName)
+                    .OrderByDescending( order => order.OrderDate)
+                    .Take(MAX_RECORDS)
+                    .ToListAsync();
+
+            } else {
+                return await _context.Orders
+                    .OrderByDescending( order => order.OrderDate)
+                    .Take(MAX_RECORDS)
+                    .ToListAsync();
+            }
         }
 
         // GET: api/Order/5

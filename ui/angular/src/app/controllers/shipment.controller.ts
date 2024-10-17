@@ -2,8 +2,7 @@ import { Injectable, PipeTransform } from '@angular/core';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
-import { SHIPMENTS } from '../services/shipments';
-import { Shipment } from '../shared/model/shipment';
+import { Shipment } from '../model/shipment';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { ShipmentSortColumn, SortDirection } from '../shared/directives/shipment.sortable.directive';
@@ -52,14 +51,14 @@ export class ShipmentController {
 
 	private _state: State = {
 		page: 1,
-		pageSize: 5,
+		pageSize: 10,
 		searchTerm: '',
 		sortColumn: '',
 		sortDirection: '',
 	};
 
     constructor(private pipe: DecimalPipe, private _shipmentService: ShipmentService) {
-		this.search();
+//		this.search();
 	}
 
     get shipments$() {
@@ -127,7 +126,7 @@ export class ShipmentController {
 		const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
 		// 1. sort
-		let shipments = sort(SHIPMENTS, sortColumn, sortDirection);
+		let shipments = sort(this._shipmentResults, sortColumn, sortDirection);
 
 		// 2. filter
 		shipments = shipments.filter((shipment) => matches(shipment, searchTerm, this.pipe));

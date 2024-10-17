@@ -1,7 +1,7 @@
 export interface Shipment {
-	shipment_id: number;
-	order_id: number;
+	shipmentId: number;
+	orderId: number;
 	origin: string;
 	destination: string;
-	is_arrived: boolean;
+	hasArrived: boolean;
 }

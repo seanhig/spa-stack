@@ -11,7 +11,7 @@ An evolving scaffold of the latest dotnet core WebAPI + SPA framework
    - With Google External OAuth
    - With Microsoft External OAuth
 
-> __Note__: In development SPA engine must be running prior to starting the WebAPI when you are launching the web from the `dotnet run` environment.  However, the reverse is true if you working in the SPA `:4200` environment, which then proxies over to the `webapi:8080/api` and `webapi:8080/swagger` endpoints.
+> __Note__: In development SPA engine must be running prior to starting the WebAPI when you are launching the web from the `dotnet run` environment.  However, the reverse is true if you working in the SPA `:4200` environment, which then proxies over to the `webapi:8090/api` and `webapi:8090/swagger` endpoints.
 
 
 ## Notes
@@ -107,4 +107,21 @@ Microsoft has made it the Oauth creds quite convoluted.  The Client ID is the Ap
 ```
 dotnet ef migrations add InitialCreate --context ApplicationDbContext --output-dir migrations/userDB
 dotnet ef database update InitialCreate --context ApplicationDbContext
+```
+
+### Kafka and Avro
+
+```
+dotnet add package -v 2.6.0 Confluent.Kafka
+dotnet add package -v 2.6.0 Confluent.SchemaRegistry
+dotnet add package -v 2.6.0 Confluent.SchemaRegistry.Serdes.Protobuf
+dotnet add package -v 2.6.0 Confluent.SchemaRegistry.Serdes.Json 
+dotnet add package -v 2.6.0 Confluent.SchemaRegistry.Serdes.Avro
+
+dotnet tool install --global Apache.Avro.Tools --version 1.12.0
+# avrogen generates messy verbose code.
+
+dotnet tool install Chr.Avro.Cli --global
+dotnet avro generate < Models/Avro/weborder.avsc > Models/WebOrder.cs
+# seems a lot cleaner, lets try it
 ```
