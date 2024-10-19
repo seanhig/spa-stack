@@ -8,10 +8,12 @@
   </PropertyGroup>
 
 
-<!--    <Target Name="BuildSPAWebApp" BeforeTargets="PrepareForBuild">
-      <Exec Command="$(ProjectDir)build-web.sh vanilla" />
+<!--    
+  <Target Name="BuildSPAWebApp" BeforeTargets="PrepareForBuild">
+      <Exec Command="$(ProjectDir)build-spa.sh vanilla" />
   </Target>
  -->
+
   <ItemGroup>
     <PackageReference Include="Avro" Version="1.0.0" />
     <PackageReference Include="Confluent.Kafka" Version="2.6.0" />
