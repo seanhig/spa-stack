@@ -42,17 +42,25 @@ All `frontends` are hosted on `https://localhost:4200`.
 ## Context and Concept: The General Store
 The following diagram outlines the broader concept implemented across the three projects of: [database-stack](https://github.com/seanhig/database-stack), [flink-stack](https://github.com/seanhig/flink-stack) and [spa-stack](https://github.com/seanhig/spa-stack).
 
+### The General Store Workflow
 ![The General Store Overview](docs/Lake-spa-stack-overview.png)
 
-Initially a simple `flink` example of change data capture and stream processing, the example has been extended with various components that would make up a real world flow. 
+Initially a `flink` example of change data capture and stream processing, [Streaming ETL to Iceberg]() has been extended to incorporate the various components that would make up a real world flow:
 
-The [spa-stack]() provides the customer facing store front web application. The `flink-stack`, and the components developed within as examples, handle the `back office` aspects of the system using stream processing and change data capture to enable near real-time data lakes from the incoming order information.  The `flink-stack` also includes a `web order generator` to simulate high volume intake.
+- [Streaming ETL to Iceberg](https://github.com/seanhig/flink-stack/tree/main/examples/streaming-etl-to-iceberg) demonstrates using `Flink SQL` and `Flink CDC Sources and Sinks` to prototype and execute `Flink Jobs` for moving, curating and analyzing data in real time.  Flink CDC turns traditional RDBMS into an activity stream.
+- [Streaming ETL Java](https://github.com/seanhig/flink-stack/tree/main/examples/streaming-etl-java) turns the `Flink SQL` scripts into a deployable `Java Jar`.
+- [Streaming ETL K8s](https://github.com/seanhig/flink-stack/tree/main/examples/k8s) uses the `Flink Kubernetes Operator` to create a `Flink Session Cluster`, into which the `Java Job Jars` can be deployed directly via `Kubernetes YAML` definitions.
+- [Web Order Processor](https://github.com/seanhig/flink-stack/tree/main/examples/kafka/weborder-processor) uses `SpringBoot Kafka and JPA` app to read `Apache AVRO formatted Web Order messages` from an `Apacke Kafka` topic and process them into the `Orders` and `Shipments` tables of the example.
+- [Web Order Generator](https://github.com/seanhig/flink-stack/tree/main/examples/kafka/webordergen) is a `SpringBoot` application that generates incoming Web Orders at a specified frequency to simulate incoming web order transactions for Flink analysis and processing.
+- [SPA Stack - The General Store](https://github.com/seanhig/spa-stack) provides a simple web front end that can read from the source RDBMS systems, and submit new Web Orders to `Apache Kafka`, in a common CQRS style.
 
-The `spa-stack` leverages the `flink-stack` examples to explore relevant aspects of a modern SPA application operating in a high volume and scalable architecture.  
+The [spa-stack]() provides the customer facing store front web application. The `flink-stack`, and the components described above, handle the `back office` aspects of the system using stream processing and change data capture to enable near real-time data lakes from the incoming order information.  The  `web order generator` can be used to simulate high volume order intake.
 
-The end result is a an example application that spans a number of projects and serves as a reference and scaffolding.
+> The entire thing can be run on a laptop with > 32GB Ram.
 
-__The General Store__ overall practically demonstrates the following concepts:
+The `spa-stack` leverages the `flink-stack` examples above to explore relevant aspects of a modern SPA application operating within a high volume and scalable architecture.  
+
+__The General Store__ end-to-end practically demonstrates the following concepts:
 
 - OAuth2 OpenID Connect Authentication w/ SPA Front End
 - RDBMS Persistence via declarative ORM in the API layer
@@ -63,7 +71,7 @@ __The General Store__ overall practically demonstrates the following concepts:
 - Apache Flink / Iceberg integration for near real-time Serde based Data Lake updates
 - Containerization and Orchestration
 
-> It also provides scaffolding and example code to bootstrap real world initiatives, and serves as a set of notes, as there are a lot of complex moving parts - ever evolving and changing.
+> It also provides scaffolding and example code to bootstrap real world initiatives, and serves as a set of notes for what are a lot of complex moving parts - ever evolving and changing.
 
 ## Setup
 
@@ -74,9 +82,15 @@ The following stacks are recommended for exploring the codebase:
 1. [database-stack](https://github.com/seanhig/database-stack) which also provides the `kafka-stack`.
 2. [flink-stack](https://github.com/seanhig/flink-stack) which includes the `streaming etl` general store example shown in the diagram.
 
-Everything runs in `Docker Desktop` and `Docker Kubernetes`.  The entire collection of `stacks` operates using less then `32GB RAM` and can be run on a laptop.
+Everything runs in `Docker Desktop` and `Docker Kubernetes`.  
 
-Once the environment is in place, the spa stack only requires a bit of local configuration.
+The entire collection of `stacks` operates using less then `32GB RAM` and can be run on a laptop.
+
+To setup a `spa-stack`, see the API documentation:
+
+1. [WebAPI](api/WebAPI/README.md) 
+2. [SpringBoot](api/springboot/) - TODO
+3. [ExpressJS](api/express) - TODO
 
 ## Workflow
 
