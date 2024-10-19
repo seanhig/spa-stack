@@ -61,6 +61,23 @@ dotnet dev-certs https --check --trust
 
 `dotnet run` will start up hosting on `https://localhost:8090`.
 
+## Launching Docker Compose
+
+1. `build-spa.sh angular` (creates the /dist folder)
+2. `build.sh` (copies the devcert.pfx for inclusion in the container)
+3. Copy `.env.sample` to `.env` and set the values.
+3. `docker compose up -d`
+
+The __General Store__ will then be available at `https://localhost:8090`.
+
+When hosting in Kubernetes the development certificate will not be used, 
+and the ASP.NET endpoint can be overridden via ENV variable (as per the docker-compose.yml) as:
+
+```
+      - ASPNETCORE_URLS=http://0.0.0.0:8090 
+```
+
+Enabling `Kubernetes` to manage ingress and TLS termination via `cert-manager`.
 
 ## Developer Notes
 
