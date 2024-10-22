@@ -7,7 +7,7 @@ The `frontend` SPA frameworks chosen are `Angular`, `React Typescript` and `Vani
 
 The development environment comes with the codebase in the form of a `devcontainer`, with an out-of-the-box _everything you need to start coding_ approach. Batteries included.
 
-By using `VSCode` as the IDE, the `devcontainer` will build a development environment with all the required dependencies and SDK/JDKs for working with the projects in this `spa-stack`.  
+When using `VSCode` as the IDE, the `devcontainer` will build a development environment with all the required dependencies and SDK/JDKs for working with the projects in this `spa-stack`.  
 
 ## Requirements
 
@@ -19,7 +19,7 @@ By using `VSCode` as the IDE, the `devcontainer` will build a development enviro
 All located in the [api](api) folder.
 
 1. [C# .NET Core 8.0 WebApi](api/WebAPI/)
-2. [Spring Boot 5 REST+](api/springboot/)
+2. [Spring Boot REST+](api/springboot/)
 2. [ExpressJS](api/express/)
 
 Objective is to implement the same backend API, such that the front-ends can interchange backends, and visa versa. 
@@ -45,20 +45,21 @@ The following diagram outlines the broader concept implemented across the three 
 ### The General Store Workflow
 ![The General Store Overview](docs/Lake-spa-stack-overview.png)
 
-Initially a `flink` example of change data capture and stream processing, [Streaming ETL to Iceberg]() has been extended to incorporate the various components that would make up a real world flow:
+Started as a simple `flink` example of change data capture and stream processing, [Streaming ETL to Iceberg](), and was then used as the context to incorporate and explore other components involved:
 
 - [Streaming ETL to Iceberg](https://github.com/seanhig/flink-stack/tree/main/examples/streaming-etl-to-iceberg) demonstrates using `Flink SQL` and `Flink CDC Sources and Sinks` to prototype and execute `Flink Jobs` for moving, curating and analyzing data in real time.  Flink CDC turns traditional RDBMS into an activity stream.
+
 - [Streaming ETL Java](https://github.com/seanhig/flink-stack/tree/main/examples/streaming-etl-java) turns the `Flink SQL` scripts into a deployable `Java Jar`.
+
 - [Streaming ETL K8s](https://github.com/seanhig/flink-stack/tree/main/examples/k8s) uses the `Flink Kubernetes Operator` to create a `Flink Session Cluster`, into which the `Java Job Jars` can be deployed directly via `Kubernetes YAML` definitions.
+
 - [Web Order Processor](https://github.com/seanhig/flink-stack/tree/main/examples/kafka/weborder-processor) uses `SpringBoot Kafka and JPA` app to read `Apache AVRO formatted Web Order messages` from an `Apacke Kafka` topic and process them into the `Orders` and `Shipments` tables of the example.
+
 - [Web Order Generator](https://github.com/seanhig/flink-stack/tree/main/examples/kafka/webordergen) is a `SpringBoot` application that generates incoming Web Orders at a specified frequency to simulate incoming web order transactions for Flink analysis and processing.
+
 - [SPA Stack - The General Store](https://github.com/seanhig/spa-stack) provides a simple web front end that can read from the source RDBMS systems, and submit new Web Orders to `Apache Kafka`, in a common CQRS style.
 
-The [spa-stack]() provides the customer facing store front web application. The `flink-stack`, and the components described above, handle the `back office` aspects of the system using stream processing and change data capture to enable near real-time data lakes from the incoming order information.  The  `web order generator` can be used to simulate high volume order intake.
-
-> The entire thing can be run on a laptop with > 32GB Ram.
-
-The `spa-stack` leverages the `flink-stack` examples above to explore relevant aspects of a modern SPA application operating within a high volume and scalable architecture.  
+The [spa-stack]() provides the customer facing store front web application. The `flink-stack`, and the components described above, handle the `back office` aspects of the system using stream processing and change data capture to enable near real-time data lakes from the incoming order information.  The  `web order generator` can be used to simulate high volume order intake, which is useful in exploring `Flink queries` operating on incoming streams of data.
 
 __The General Store__ end-to-end practically demonstrates the following concepts:
 
@@ -71,13 +72,9 @@ __The General Store__ end-to-end practically demonstrates the following concepts
 - Apache Flink / Iceberg integration for near real-time Serde based Data Lake updates
 - Containerization and Orchestration
 
-> It also provides scaffolding and example code to bootstrap real world initiatives, and serves as a set of notes for what are a lot of complex moving parts - ever evolving and changing.
-
 ## Setup
 
-To make use of the `spa-stack`, at a minimum, the `MySQL` and `PostgreSQL` tables from the [Flink-Stack Streaming ETL to Iceberg Example](https://github.com/seanhig/flink-stack/tree/main/examples/streaming-etl-to-iceberg) must exist.
-
-The following stacks are recommended for exploring the codebase:
+The following stacks are recommended for attempting to run the `spa-stack`:
 
 1. [database-stack](https://github.com/seanhig/database-stack) which also provides the `kafka-stack`.
 2. [flink-stack](https://github.com/seanhig/flink-stack) which includes the `streaming etl` general store example shown in the diagram.
@@ -92,19 +89,15 @@ To setup a `spa-stack`, see the API documentation:
 2. [SpringBoot](api/springboot/) - TODO
 3. [ExpressJS](api/express) - TODO
 
+The `Angular` + `.NET Core WebApi` combination forms the initial implementation and serves as the baseline.  
+
+Setup and configuration is described in the API READMEs, which also deal with `Docker containerization` and prep for `Kubernetes` deployments.  See the [.NET Core WebApi](api/WebAPI/) implementation for more details.
+
 ## Workflow
 
 During `development` the `frontend` SPA engine (ng or vite) is started first.  The API backend then proxies to the SPA front end (on `:4200`).  The backend implements the `HTTPS` required for `OAuth2` development and testing, and so the `backend URL` is used for most development. 
 
 For `production`, the `backends` host the `frontend SPA` as static HTML, and are built as a single deployable container. This model is well suited to `App Service` container deployments, as well as `Kubernetes`. 
-
-> While in certain situations one might choose to break these into seperate CDN `frontend` deployments and `backend` containerized API, this is always easily done as an optimization.  For many applications, a single container deployed to a scalable container app service can be a simple, scalable and workable approach, reducing complexity, cost and the maintenance fragility that comes with overly fragmented solutions.
-
-### Initial Implementation
-
-The `Angular` + `.NET Core WebApi` combination forms the initial implementation of the SPA front end and serves as the baseline.  
-
-Setup and configuration is described in the API READMEs, which also deal with `Docker containerization` and prep for `Kubernetes` deployments.  See the [.NET Core WebApi](api/WebAPI/) implementation for more details.
 
 #### Initial UI Creation Notes
 ```
