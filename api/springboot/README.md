@@ -83,7 +83,7 @@ provider:
         issuer-uri: https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0
 
 ```
-Note the hardcoded tenant id in the `issuer-uri`.  This must be used with Microsoft common login.
+__Note:__ the hardcoded tenant id in the `issuer-uri`.  This must be used with Microsoft common login.
 
 If the `issuer-uri` is incorrect, but valid (such as using a different tenant, or MS uri), the error will come back as:
 
@@ -93,10 +93,14 @@ If the `issuer-uri` is incorrect, but valid (such as using a different tenant, o
 
 This is not entirely obvious.  The token can even be verified on [jwt.io](jwt.io)... which is what helps to solve the issue, as it contains the `issuer`.  Once these are properly rationalized, the error goes away.
 
-Another `gotcha` is that `Microsoft OIDC` requires that `oidc` be specified in the `scope` (while Google does not).
+__Also Note:__ there is a custom scope added `api://d2307635-995a-4cee-99ca-a7de762f1d3f/WebAccess`.  It is required, and must be created as part of the `Azure App Registration`. This is purely to prevent Microsoft from producing an invalid token.  [See this stack article](https://stackoverflow.com/questions/66235040/spring-security-microsoft-oauth2-login-errors).
 
-When the scope includes `oidc` Spring Identity changes the User class from `UserPrincipal` to `DefaultOidcUser`.  This will cause a `ClassCastException` until you realize this is going on, and the classes are not related.
+Another `gotcha` is that `Microsoft OIDC` __requires__ that `oidc` be specified in the `scope` (while Google does not).
 
-As `DefaultOidcUser` does not contain a `getId()` accessor, `getEmail()` was used as the embedded token user reference.
+In `SpringBoot Identity` when the scope includes `oidc` the User class returned from `.getPrincipal()` is changed from `UserPrincipal` to `DefaultOidcUser`.  This will cause a `ClassCastException` until you realize this is going on, and the classes are not related.
 
-With these changes in place both `Google` and `Microsoft` OIDC login are working in SpringBoot.
+As `DefaultOidcUser` does not contain a `getId()` accessor, `getEmail()` was used as the embedded token user reference.  
+
+> TODO: More investigation into this behaviour is required.
+
+With the above changes in place both `Google` and `Microsoft` OIDC login are working in SpringBoot.

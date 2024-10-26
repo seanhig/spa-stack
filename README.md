@@ -83,6 +83,44 @@ Everything runs in `Docker Desktop` and `Docker Kubernetes`.
 
 The entire collection of `stacks` operates using less then `32GB RAM` and can be run on a laptop.
 
+## General Setup
+Specifics are covered in the `api` backend READMEs. Connection strings have been left in the configuration for ease of setup, as they all align with the `database-stack` and `kafka-stack` settings.  `OIDC` configuration items are not included as they are true `secrets`.  These must be setup on an individual basis.
+
+### OIDC Client Setup
+`Google` and `Microsoft` OIDC providers are currently used, this requires setting up accounts and registering for `client id` and `client secret` values (not covered here).  These are setup once and used for all of the `backends`.
+
+The `Authorized origins` (when specified) should be as follows:
+
+```
+http://localhost:8090
+http://localhost:4200
+https://localhost:8090
+```
+
+The `Authorized Redirect URIs` should be as follows:
+
+#### Google
+```
+# WebAPI
+http://localhost:8090/api/identity/signin-google
+https://localhost:8090/api/identity/signin-google
+# SpringBoot
+http://localhost:8090/api/oauth2/callback/google
+http://localhost:4200/api/oauth2/callback/google
+https://localhost:8090/api/oauth2/callback/google
+```
+
+#### Microsoft
+```
+# WebAPI
+http://localhost:8090/api/identity/signin-microsoft
+https://localhost:8090/api/identity/signin-microsoft
+# SpringBoot
+http://localhost:8090/api/oauth2/callback/microsoft
+http://localhost:4200/api/oauth2/callback/microsoft
+https://localhost:8090/api/oauth2/callback/microsoft
+```
+
 To setup a `spa-stack`, see the API documentation:
 
 1. [WebAPI](api/WebAPI/README.md) 
@@ -91,15 +129,18 @@ To setup a `spa-stack`, see the API documentation:
 
 The `Angular` + `.NET Core WebApi` combination forms the initial implementation and serves as the baseline.  
 
-Setup and configuration is described in the API READMEs, which also deal with `Docker containerization` and prep for `Kubernetes` deployments.  See the [.NET Core WebApi](api/WebAPI/) implementation for more details.
+`Angular` + `SpringBoot` is an alternative implementation.
 
 ## Workflow
 
-During `development` the `frontend` SPA engine (ng or vite) is started first.  The API backend then proxies to the SPA front end (on `:4200`).  
+During `development` the `frontend` SPA engine (ng or vite) is started first.  
+
+- The `WebAPI` backend then proxies to the SPA front end (on `:4200`).  
+- For `SpringBoot`, the `Angular NG server` proxies all `api` calls to the backend (on `:8090`).
 
 > The backend can optionally implement `HTTPS`, which is required for `OAuth2` on everything but `localhost`. 
 
-For `production`, the `backends` host the `frontend SPA` as static HTML, and are built as a single deployable container. This model is well suited to `App Service` container deployments, as well as `Kubernetes`. 
+For `production`, the `backends` host the `frontend SPA` as static HTML, and are built as a single deployable container. This model is well suited to `App Service` container deployments, as well as `Kubernetes`, however, to scale, a `shared session` strategy needs to be implemented (TODO). 
 
 #### Initial UI Creation Notes
 ```
