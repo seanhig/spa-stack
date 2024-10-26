@@ -3,3 +3,7 @@
 
 scratch.txt
 wwwroot
+
+.DS_Store
+.env
+

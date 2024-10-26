@@ -1,0 +1,62 @@
+spring:
+#  main:
+#    web-application-type: reactive
+  application:
+    name: springboot-angular
+  banner:
+    location: classpath:banner.txt
+# Google OAuth2 Configuration
+  security:
+    oauth2:
+      client:
+         registration:
+            google:
+              client-id: ${GOOGLECLIENTID}
+              client-secret: ${GOOGLECLIENTSECRET}
+              redirectUri: '{baseUrl}/api/oauth2/callback/{registrationId}'
+              scope: 'email, profile'
+#  cloud:
+#    gateway:
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            allowedOrigins: "http://localhost:4200"
+#            allowedMethods:
+#              - GET
+#              - PUT
+#              - POST
+#              - PATCH
+#              - DELETE
+#              - OPTIONS
+#      routes:
+#        - id: main
+#          uri: http://localhost:4200
+#          predicates:
+#            - Path=/**       
+
+server:
+  port: 8090
+#  ssl:
+#    key-store-type: PKCS12
+#    key-store: "classpath:keystore/devcert.pfx"
+#    key-store-password: "mycertpassword"
+#    enabled: true  
+logging:
+  level: 
+    root: INFO
+app: 
+  auth:
+    tokenSecret: ${AUTH_TOKEN_SECRET}
+    tokenExpirationMsec: 864000000
+  oauth2:
+    authorizedRedirectUris: http://localhost:4200/oauth2/redirect
+
+#zuul:
+#  routes:
+#    api: /api/*
+#    auth: /auth/*
+#    oauth2: /oauth2/*
+#    app:
+#      path: /**
+#      url: http://localhost:4200
+
