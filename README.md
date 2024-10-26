@@ -24,7 +24,7 @@ All located in the [api](api) folder.
 
 Objective is to implement the same backend API, such that the front-ends can interchange backends, and visa versa. 
 
-> As of this writing the `Angular + WebAPI` is mostly functional and serves as the baseline and initial implementation.
+> As of this writing the `Angular + WebAPI` is mostly functional and serves as the baseline and initial implementation. `Angular + SpringBoot` is nearly identical, and the backend can be swapped for all but Kafka submission.
 
 All `backends` are hosted on `https://localhost:8090`.
 
@@ -86,7 +86,7 @@ The entire collection of `stacks` operates using less then `32GB RAM` and can be
 To setup a `spa-stack`, see the API documentation:
 
 1. [WebAPI](api/WebAPI/README.md) 
-2. [SpringBoot](api/springboot/) - TODO
+2. [SpringBoot](api/springboot/README.md)
 3. [ExpressJS](api/express) - TODO
 
 The `Angular` + `.NET Core WebApi` combination forms the initial implementation and serves as the baseline.  

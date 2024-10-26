@@ -20,6 +20,31 @@ Scaffold for SpringBoot REST backend.
 2. Load the environment variables into the shell `. ./loadenv.sh` using the script.
 3. Run the application (Eg. `mvn spring-boot:run`)
 
+### Frontend to Back
+`Zuul` proxy is no longer supported in Spring, and was replaced with a `Spring Cloud Gateway`, which oddly does not work in the same project that uses `Spring Identity`, and there are class conflicts.
+
+All this is to say that at the present time no analog can be found in the SpringBoot world that will approximate the functionality of Microsoft's `SPAProxy` when working with `Angular` or other frontend frameworks.
+
+Until something can be put in place, the development workflow uses the frontend of `http://localhost:4200`, and leverages `Angular` and `Vite`'s `proxy.conf.json` to forward all specified `routes`.
+
+Eg.
+```
+{
+  "/api/**": {
+    "target": "http://localhost:8090",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/swagger/**": {
+    "target": "http://localhost:8090",
+    "secure": false,
+    "changeOrigin": true
+  }
+
+}
+```
+
+
 ### The Users Table
 The first time the SpringBoot app is executed JPA will auto-create the users table in the specified JDBC location.
 
