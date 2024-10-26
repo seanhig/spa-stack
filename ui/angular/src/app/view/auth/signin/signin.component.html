@@ -2,8 +2,8 @@
   <div class="card col-4">
     <div class="p-4">
       <div class="text-center mb-4"></div>
-      <h1 class="mb-1 text-16">Sign In</h1>
-      <form [formGroup]="signinForm" (ngSubmit)="signin()">
+      <h2 class="mb-1 text-16">Sign In</h2>
+      <form [formGroup]="signinForm" (ngSubmit)="signin()" style="display:none;">
         <div class="form-group p-1">
           <label for="email">Email address</label>
           <input id="email" class="form-control form-control-rounded" formControlName="email" type="email"

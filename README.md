@@ -63,7 +63,7 @@ The [spa-stack]() provides the customer facing store front web application. The 
 
 __The General Store__ end-to-end practically demonstrates the following concepts:
 
-- OAuth2 OpenID Connect Authentication w/ SPA Front End
+- OpenID Connect (OIDC) Authentication w/ SPA Front End
 - RDBMS Persistence via declarative ORM in the API layer
 - Decoupling high volume intake sources using Apache Kafka and messaging.
 - The use of AVRO Serde for intake, and Iceberg Serde for upsertable data lake
@@ -95,7 +95,9 @@ Setup and configuration is described in the API READMEs, which also deal with `D
 
 ## Workflow
 
-During `development` the `frontend` SPA engine (ng or vite) is started first.  The API backend then proxies to the SPA front end (on `:4200`).  The backend implements the `HTTPS` required for `OAuth2` development and testing, and so the `backend URL` is used for most development. 
+During `development` the `frontend` SPA engine (ng or vite) is started first.  The API backend then proxies to the SPA front end (on `:4200`).  
+
+> The backend can optionally implement `HTTPS`, which is required for `OAuth2` on everything but `localhost`. 
 
 For `production`, the `backends` host the `frontend SPA` as static HTML, and are built as a single deployable container. This model is well suited to `App Service` container deployments, as well as `Kubernetes`. 
 

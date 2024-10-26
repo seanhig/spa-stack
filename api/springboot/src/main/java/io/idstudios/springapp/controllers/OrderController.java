@@ -30,7 +30,7 @@ public class OrderController {
     List<Order> all(@RequestParam Optional<String> customerName) {
 
         if(customerName.isPresent()) {
-            log.warn("Using the Matcher for: " + customerName.get());
+            log.info("Using the Matcher for: " + customerName.get());
             ExampleMatcher matcher = ExampleMatcher.matching() 
                 .withMatcher("customerName", 
                 new GenericPropertyMatcher().contains().ignoreCase()); 
@@ -41,7 +41,7 @@ public class OrderController {
             return _orderRepository.findAll(Example.of(orderExample, matcher));
         
         } else {
-            log.warn("Getting all the orders");
+            log.info("Getting all the orders");
             return _orderRepository.findAll();
         }
     }

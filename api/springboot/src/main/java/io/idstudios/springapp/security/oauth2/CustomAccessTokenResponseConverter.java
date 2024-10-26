@@ -24,7 +24,10 @@ public class CustomAccessTokenResponseConverter implements Converter<Map<String,
 
     @Override
     public OAuth2AccessTokenResponse convert(Map<String, Object> tokenResponseParameters) {
+
         String accessToken = (String) tokenResponseParameters.get(OAuth2ParameterNames.ACCESS_TOKEN);
+
+        log.debug(accessToken);
 
         OAuth2AccessToken.TokenType accessTokenType = OAuth2AccessToken.TokenType.BEARER;
 

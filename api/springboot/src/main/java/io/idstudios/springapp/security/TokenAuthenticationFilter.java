@@ -39,19 +39,18 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         if(cookieToken.isPresent()) {
             String cookieValue = cookieToken.get().getValue();
             try {
-                log.warn("Using AuthToken from COOKIE!");
+                log.info("Using AuthToken from COOKIE!");
                 return URLDecoder.decode( cookieValue, "UTF-8" ); //.substring("Bearer ".length());
             } catch(UnsupportedEncodingException ex) {
                 log.error("Something Unexpected in the Decode!", ex);
             }
-            //return new String(Base64.getDecoder().decode(cookieValue)).substring("Bearer ".length());
         } 
         else 
         {
             String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
             if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-                log.warn("Using AuthToken from HEADER!");
+                log.info("Using AuthToken from HEADER!");
                 return bearerToken.substring("Bearer ".length());
             }    
         }
@@ -67,8 +66,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJWTFromRequest(request);
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Long userId = tokenProvider.getUserIdFromToken(jwt);
-                UserDetails userDetails = userDetailsService.loadUserById(userId);
+//                Long userId = tokenProvider.getUserIdFromToken(jwt);
+                String userEmail = tokenProvider.getUserEmailFromToken(jwt);
+//                UserDetails userDetails = userDetailsService.loadUserById(userId);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

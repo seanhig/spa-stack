@@ -89,13 +89,13 @@ public class SecurityConfig {
 
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.rememberMe( rememberMe -> {
+/*         http.rememberMe( rememberMe -> {
             rememberMe.alwaysRemember(true);
             rememberMe.tokenValiditySeconds(30*5);
             rememberMe.rememberMeCookieName("mouni");
             rememberMe.key("somesecret");
         });
-        
+ */        
         return http.build();
     }
 

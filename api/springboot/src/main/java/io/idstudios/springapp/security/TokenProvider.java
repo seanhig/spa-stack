@@ -9,6 +9,7 @@ import io.idstudios.springapp.config.AppProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,18 +23,39 @@ public class TokenProvider {
     private Algorithm ALGORITHM;
 
     public String createToken(Authentication authentication) {
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        String idToken = "";
+
+        if(authentication.getPrincipal() instanceof UserPrincipal) {
+            idToken = ((UserPrincipal) authentication.getPrincipal()).getEmail();
+        } else if (authentication.getPrincipal() instanceof DefaultOidcUser) {
+            DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
+            idToken = oidcUser.getEmail();
+            if(idToken == null) {
+                log.warn("EMAIL is NULL from OIDC!");
+            }
+        } else {
+            log.error("Principal is NOT KNOWN!");
+        }
 
         ALGORITHM = Algorithm.HMAC256(appProperties.getAuth().getTokenSecret());
 
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
 
+        log.info("Setting token Subject as: " + idToken);
         return JWT.create()
-                .withSubject(Long.toString(userPrincipal.getId()))
+                .withSubject(idToken)
                 .withIssuedAt(now)
                 .withExpiresAt(expirationDate)
                 .sign(ALGORITHM);
+    }
+
+    public String getUserEmailFromToken(String token) {
+        JWTVerifier verifier = JWT.require(ALGORITHM).build();
+        DecodedJWT decodedJWT = verifier.verify(token);
+        String subject = decodedJWT.getSubject();
+        return subject;
     }
 
     public Long getUserIdFromToken(String token) {

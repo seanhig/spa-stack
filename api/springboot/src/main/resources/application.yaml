@@ -1,39 +1,34 @@
 spring:
-#  main:
-#    web-application-type: reactive
-  application:
-    name: springboot-angular
-  banner:
-    location: classpath:banner.txt
-# Google OAuth2 Configuration
-  security:
-    oauth2:
-      client:
-         registration:
-            google:
-              client-id: ${GOOGLECLIENTID}
-              client-secret: ${GOOGLECLIENTSECRET}
-              redirectUri: '{baseUrl}/api/oauth2/callback/{registrationId}'
-              scope: 'email, profile'
-#  cloud:
-#    gateway:
-#      globalcors:
-#        corsConfigurations:
-#          '[/**]':
-#            allowedOrigins: "http://localhost:4200"
-#            allowedMethods:
-#              - GET
-#              - PUT
-#              - POST
-#              - PATCH
-#              - DELETE
-#              - OPTIONS
-#      routes:
-#        - id: main
-#          uri: http://localhost:4200
-#          predicates:
-#            - Path=/**       
-
+    application:
+        name: springboot-angular
+    banner:
+        location: classpath:banner.txt
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: ${GOOGLECLIENTID}
+                        client-secret: ${GOOGLECLIENTSECRET}
+                        redirectUri: '{baseUrl}/api/oauth2/callback/{registrationId}'
+                        scope: 'email, profile'
+                    microsoft:
+                        client-id: ${MICROSOFTCLIENTID}
+                        client-secret: ${MICROSOFTCLIENTSECRET}
+                        scope: openid, email, profile, api://d2307635-995a-4cee-99ca-a7de762f1d3f/WebAccess
+                        client-name: Microsoft
+                        authorization-grant-type: authorization_code
+                        provider: microsoft
+                        redirect-uri: '{baseUrl}/api/oauth2/callback/{registrationId}'
+                provider:
+                    microsoft:
+                        authorization-uri: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+                        key-set-uri: https://login.microsoftonline.com/common/discovery/v2.0/keys
+                        token-uri: https://login.microsoftonline.com/common/oauth2/v2.0/token
+                        user-info-uri: https://graph.microsoft.com/oidc/userinfo
+                        userNameAttribute: sub
+                        issuer-uri: https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0
+   
 server:
   port: 8090
 #  ssl:
@@ -49,14 +44,5 @@ app:
     tokenSecret: ${AUTH_TOKEN_SECRET}
     tokenExpirationMsec: 864000000
   oauth2:
-    authorizedRedirectUris: http://localhost:4200/oauth2/redirect
-
-#zuul:
-#  routes:
-#    api: /api/*
-#    auth: /auth/*
-#    oauth2: /oauth2/*
-#    app:
-#      path: /**
-#      url: http://localhost:4200
+    authorizedRedirectUris: http://localhost:4200
 

@@ -8,8 +8,8 @@ An evolving scaffold of the latest dotnet core WebAPI + SPA framework, built on 
 - [NSwag](https://github.com/RicoSuter/NSwag) and the `/swagger` url.
 - [EF Core](https://learn.microsoft.com/en-us/ef/core/)
 - [ASP.NET Core Identity](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization?view=aspnetcore-8.0)
-   - With Google External OAuth
-   - With Microsoft External OAuth
+   - With Google External OIDC
+   - With Microsoft External OIDC
 - [.NET Client for Kafka](https://docs.confluent.io/kafka-clients/dotnet/current/overview.html) and [Avrogen](https://www.nuget.org/packages/Apache.Avro.Tools/)
 
 > __Note__: In development SPA engine must be running prior to starting the WebAPI when you are launching the web from the `dotnet run` environment.  However, the reverse is true if you working in the SPA `:4200` environment, which then proxies over to the `webapi:8090/api` and `webapi:8090/swagger` endpoints.
@@ -36,7 +36,7 @@ The `appsettings.json.sample` file must be copied to `appsettings.json` and fill
 
 The `datbase-stack` and `kafka-stack` connection strings have been left in the codebase as they are local secrets and purely for development purposes.  
 
-However the `OAuth2` provider `Client Ids and Secrets` are true secrets.  These must be registered manually by the developer and the values placed into the configuration.
+However the `OIDC` provider `Client Ids and Secrets` are true secrets.  These must be registered manually by the developer and the values placed into the configuration.
 
 > __Note:__ when registering redirect URI values for the OAuth providers, the redirects will be `https://localhost:8090/api/identity/google-signin` and/or `https://localhost:8090/api/identity/microsoft-signin`, respectively.
 

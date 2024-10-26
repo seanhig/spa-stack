@@ -37,12 +37,16 @@ public class IdentityController {
 
     @PostMapping("/external-login")
     void newEmployee(HttpServletResponse response, @RequestParam String provider, @RequestParam String returnUrl) {
-        // for now we can just assume Google.
 
-        String googleAuthUrl = "/api/oauth2/authorize/google?redirect_uri=http://localhost:4200";
-        log.warn("Executing the external google login: " + googleAuthUrl);
+        log.info("Signing in using [" + provider + "] provider");
+        log.info("Return URL:  " + returnUrl);
+
+        returnUrl = "http://localhost:4200";
+        String authUrl = "/api/oauth2/authorize/" + provider.toLowerCase() + "?redirect_uri=" + returnUrl;
+
         try {
-            response.sendRedirect(googleAuthUrl);
+            log.debug("Redirecting to authUrl: " + authUrl);
+            response.sendRedirect(authUrl);
         } catch(IOException ex) {
             log.error("Unable to send redirect!", ex);
         }

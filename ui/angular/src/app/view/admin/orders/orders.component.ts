@@ -32,7 +32,6 @@ export class AllOrdersComponent {
 	}
 
 	ngOnInit(): void {
-		console.warn("INIT in Orders");
 		this._controller.search();
 	}
 	
