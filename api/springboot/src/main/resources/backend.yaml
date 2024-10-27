@@ -1,0 +1,28 @@
+hibernate:
+    cache:
+        use_query_cache: false
+        use_second_level_cache: false
+    hbm2ddl:
+        auto: none
+spring:
+    erpdb:
+        datasource:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+            jdbcUrl: jdbc:mysql://host.docker.internal:3306/erpdb
+            password: Fender2000
+            username: root
+    shipdb:
+        datasource:
+            jdbcUrl: jdbc:postgresql://host.docker.internal:5432/shipdb
+            password: Fender2000
+            username: postgres
+    userdb:
+        datasource:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+                hbm2ddl:
+                    auto: update
+            jdbcUrl: jdbc:mysql://host.docker.internal:3306/spa_stack
+            password: Fender2000
+            username: root

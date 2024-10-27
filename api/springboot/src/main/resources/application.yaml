@@ -28,21 +28,57 @@ spring:
                         user-info-uri: https://graph.microsoft.com/oidc/userinfo
                         userNameAttribute: sub
                         issuer-uri: https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0
-   
+    kafka:
+#        ssl:
+#            key-store-location: classpath:server-keystore.jks
+#            key-store-password: password
+#            key-password: password
+#            trust-store-location: classpath:server-truststore.jks
+#            trust-stor-password: password
+        properties:
+#            security:
+#                protocol: SSL
+            auto:
+                register:
+                    schemas: true
+        bootstrap-servers: http://host.docker.internal:29092   
+        producer:
+            acks: all
+            retries: 50
+            properties:
+                retry:
+                    backoff:
+                        ms: 250
+                schema:
+                    registry:
+                        url: http://host.docker.internal:8081
+ #                       ssl:
+ #                           keystore:
+ #                               location: /var/kafka-demo-app/conf/server-keystore.jks
+ #                               password: password
+ #                               type: JKS
+ #                           key:
+ #                               password: password
+ #                           truststore:
+ #                               location: /var/kafka-demo-app/conf/server-truststore.jks  
+ #                               password: password  
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 server:
-  port: 8090
+    port: 8090
 #  ssl:
 #    key-store-type: PKCS12
 #    key-store: "classpath:keystore/devcert.pfx"
 #    key-store-password: "mycertpassword"
 #    enabled: true  
 logging:
-  level: 
-    root: INFO
+    level: 
+        root: INFO
 app: 
-  auth:
-    tokenSecret: ${AUTH_TOKEN_SECRET}
-    tokenExpirationMsec: 864000000
-  oauth2:
-    authorizedRedirectUris: http://localhost:4200
+    kafka-topic: weborders
+    auth:
+        tokenSecret: ${AUTH_TOKEN_SECRET}
+        tokenExpirationMsec: 864000000
+    oauth2:
+        authorizedRedirectUris: http://localhost:4200
 

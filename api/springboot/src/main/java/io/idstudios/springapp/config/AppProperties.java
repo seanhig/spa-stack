@@ -13,6 +13,7 @@ public class AppProperties {
 
     private final Auth auth = new Auth();
     private final OAuth2 oAuth2 = new OAuth2();
+    private final String kafkaTopic = "weborders";
 
     @Getter
     @Setter
