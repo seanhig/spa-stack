@@ -11,8 +11,9 @@ Scaffold for SpringBoot REST backend.
 - SpringBoot Identity
     - With Google Authentication
     - With Microsoft Authentication
+- SpringBoot Kafka
 
-> Currently has near feature parity to WebAPI and can use the same frontend Angular UI.  Kafka integration is all that remains.
+> Feature parity to WebAPI using the same frontend Angular UI. 
 
 ## Setup
 

@@ -129,7 +129,7 @@ To setup a `spa-stack`, see the API documentation:
 
 The `Angular` + `.NET Core WebApi` combination forms the initial implementation and serves as the baseline.  
 
-`Angular` + `SpringBoot` is an alternative implementation.
+`Angular` + `SpringBoot` also works as an alternate `backend` implementation.
 
 ## Workflow
 
