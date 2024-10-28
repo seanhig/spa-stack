@@ -20,10 +20,10 @@ dotenv.config();
 erpdbDataSource
     .initialize()
     .then(() => {
-        logger.info("Data Source has been initialized!")
+        logger.info("[erpDB] Data Source has been initialized!")
     })
     .catch((err) => {
-        logger.error("Error during Data Source initialization:", err)
+        logger.error("Error during erpDB Data Source initialization:", err)
     })
 
 const app: Express = express();
