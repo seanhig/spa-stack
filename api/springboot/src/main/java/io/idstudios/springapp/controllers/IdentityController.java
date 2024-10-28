@@ -5,16 +5,22 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.idstudios.springapp.model.payload.LoginRequest;
+import io.idstudios.springapp.model.payload.LoginResponse;
 import io.idstudios.springapp.model.payload.UserResponse;
 import io.idstudios.springapp.security.CurrentUser;
 import io.idstudios.springapp.security.UserPrincipal;
+import io.idstudios.springapp.service.LoginService;
 import io.idstudios.springapp.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -23,6 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @RequestMapping("/identity")
 public class IdentityController {
+    private final LoginService loginService;
     private final UserService _userService;
 
     @GetMapping("/current-user")
@@ -33,6 +40,11 @@ public class IdentityController {
         }
 
         return ResponseEntity.ok(_userService.getUserInfoById(userPrincipal.getId()));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(loginService.login(loginRequest));
     }
 
     @PostMapping("/external-login")
@@ -52,5 +64,11 @@ public class IdentityController {
         }
 
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Object> logout() {
+        return ResponseEntity.ok(null);
+    }
+
 
 }
