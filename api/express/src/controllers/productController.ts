@@ -10,7 +10,7 @@ var router = express.Router();
 router.get('/', async function (req, res, next) {
 
     logger.info("Loading products...");
-    const products = await erpdbDataSource.getRepository(Product).find()
+    const products = await erpdbDataSource.getRepository(Product).find({ take: 200 })
     res.send(products);
 
 });

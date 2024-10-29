@@ -19,7 +19,9 @@ Scaffold for SpringBoot REST backend.
 
 1. Copy the `env.sample` to `.env` and fill in the required secrets.
 2. Load the environment variables into the shell `. ./loadenv.sh` using the script.
-3. Run the application (Eg. `mvn spring-boot:run`)
+3. Run the application:
+
+ `mvn spring-boot:run`
 
 ### Frontend to Back
 `Zuul` proxy is no longer supported in Spring, and was replaced with a `Spring Cloud Gateway`, which oddly does not work in the same project that uses `Spring Identity`, and there are class conflicts.

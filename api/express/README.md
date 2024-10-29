@@ -1,13 +1,21 @@
-# ExpressJS REST API + SPA
+# ExpressJS TypeScript REST API + SPA
 
-Scaffold for ExpressJS REST backend.
-
-> Now this is going to be fun!  I'm going to avoid Typescript for this project to explore modern JavaScript (ES2021) in Node.js.
+Scaffold for ExpressJS REST backend w/ TypeScript for better tooling and ORM support.
 
 ## What's Working
 
 - ExpressJS REST
-- TypeORM (because Sequelize doesn't do Javascript)
+- TypeORM 
 - PassportJS
     - With Google Authentication
     - With Microsoft Authentication
+- KafkaJS
+
+## Setup
+
+1. Copy the `env.sample` to `.env` and fill in the required secrets.
+2. Run the application:
+
+`npm run dev`
+
+

@@ -1,16 +1,15 @@
 
 import { DataSource } from "typeorm"
-import { Product } from '../model/product';
-import { Order } from '../model/order';
+import { User } from '../model/user';
 
-export const erpdbDataSource = new DataSource({
+export const userdbDataSource = new DataSource({
     type: "mysql",
     host: "host.docker.internal",
     port: 3306,
     username: "root",
     password: "Fender2000",
-    database: "erpdb",
+    database: "spa_stack",
     synchronize: false,
     logging: false,
-    entities: [Product, Order],
+    entities: [User],
 })
