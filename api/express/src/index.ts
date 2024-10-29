@@ -65,8 +65,10 @@ initializeDataSources(() => {
     });
 
     app.use((err: any, req: Request, res: Response, next: Function) => {
-        console.error(err.stack);
-        res.status(500).send('An error occurred');
+        var msg : string = "ExpressJS Server Error: " + err.message;
+        logger.error(msg, err);
+        console.error(err);
+        res.status(500).send(msg);
     });
 });
 
