@@ -40,7 +40,13 @@ However the `OIDC` provider `Client Ids and Secrets` are true secrets.  These mu
 
 > __Note:__ when registering redirect URI values for the OAuth providers, the redirects will be `https://localhost:8090/api/identity/google-signin` and/or `https://localhost:8090/api/identity/microsoft-signin`, respectively.
 
-### Configure HTTPS (Required for OAuth)
+### Launching
+
+`dotnet run` will start up hosting on `https://localhost:8090` or `http://localhost:8090` (depending on launchSettings.json).
+
+> Make sure the `database-stack`, `kafka-stack` and `flink-stack` relevant components are running.
+
+### Configure HTTPS (Optional)
 
 On the `host` machine, create the cert and trust it.  Place the cert in the `.devcontainer` folder:
 ```
@@ -56,10 +62,6 @@ In the `.devcontainer` environment, register and trust the same certificate.
 dotnet dev-certs https --clean --import /host/.devcontainer/devcert.pfx -p mycertpassword
 dotnet dev-certs https --check --trust
 ```
-
-## Launching
-
-`dotnet run` will start up hosting on `https://localhost:8090`.
 
 ## Launching Docker Compose
 

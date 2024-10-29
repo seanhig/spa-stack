@@ -24,7 +24,13 @@ All located in the [api](api) folder.
 
 Objective is to implement the same backend API, such that the front-ends can interchange backends, and visa versa. 
 
-> As of this writing the `Angular + WebAPI` is mostly functional and serves as the baseline and initial implementation. `Angular + SpringBoot` is nearly identical, and the backend can be swapped for all but Kafka submission.
+At the present time all of the API backends support the core happy path of:
+
+1. User is presented with a home page and signin 
+2. User authenticates using OIDC to either Microsoft or Google
+3. User then has access to additional links, and can then browse to the `My Orders` link, where they can place new orders via a Kafka message, or view existing orders already processed from Kafka by the `weborder-processor` component of the `flink-stack`.
+
+> as desribed below in [The General Store](#context-and-concept-the-general-store)
 
 All `backends` are hosted on `https://localhost:8090`.
 
@@ -36,6 +42,8 @@ All located in the [ui](ui) folder.
 3. [VanillaJS](ui/vanilla/)
 
 Each of these will implement a slightly different UI approach to the standardized API backend.
+
+Only the `Angular` frontend is presently complete for the current happy path.  Additional UIs will be developed once the core API features are near complete.
 
 All `frontends` are hosted on `https://localhost:4200`.
 
@@ -125,13 +133,9 @@ To setup a `spa-stack`, see the API documentation:
 
 1. [WebAPI](api/WebAPI/README.md) 
 2. [SpringBoot](api/springboot/README.md)
-3. [ExpressJS](api/express) - TODO
+3. [ExpressJS](api/express/README.md)
 
-The `Angular` + `.NET Core WebApi` combination forms the initial implementation and serves as the baseline.  
-
-`Angular` + `SpringBoot` also works as an alternate `backend` implementation.
-
-## Workflow
+## Development Workflow
 
 During `development` the `frontend` SPA engine (ng or vite) is started first.  
 
@@ -156,3 +160,12 @@ The `Vite` projects and `Angular` are all configured to build to the same locati
 
 This is covered in the respective project READMEs.
 
+
+### Editorial
+After a few years of not doing web development (mostly cloud architecture), I wanted to refresh on my favorite full stack platforms.  This was largely an excuse to do that and build out some useful scaffolds, and it was a great chance to compare.  
+
+__Microsoft__: docs were really good and so was the tooling, I still enjoy .NET Core.  It took me about __5 days__ to sort everything out.
+
+__SpringBoot__: docs were not so good.  I think the solution involves a lot more code then would be ideal. It took a bit longer at __7 days__, and was not as enjoyable as .NET.  That said, it wasn't as bad as I expected, and I haven't done Java web development in years.
+
+__ExpressJS__: docs were old, and I had to rely on sample code examples...  but I'm convinced the only reason people choose the other two backends is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish.  If you are going to do REST, I think ExpressJS is still the king.  And with TypeScript, can it be beat?

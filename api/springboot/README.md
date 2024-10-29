@@ -23,6 +23,8 @@ Scaffold for SpringBoot REST backend.
 
  `mvn spring-boot:run`
 
+> Make sure the `database-stack`, `kafka-stack` and `flink-stack` relevant components are running.
+
 ### Frontend to Back
 `Zuul` proxy is no longer supported in Spring, and was replaced with a `Spring Cloud Gateway`, which oddly does not work in the same project that uses `Spring Identity`, and there are class conflicts.
 

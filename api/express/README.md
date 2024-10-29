@@ -4,12 +4,14 @@ Scaffold for ExpressJS REST backend w/ TypeScript for better tooling and ORM sup
 
 ## What's Working
 
-- ExpressJS REST
-- TypeORM 
-- PassportJS
+- [ExpressJS](https://expressjs.com) REST
+- [TypeORM](https://typeorm.io) 
+- [PassportJS](https://www.passportjs.org)
     - With Google Authentication
     - With Microsoft Authentication
-- KafkaJS
+- [KafkaJS](https://kafka.js.org)
+    - With Schema Registry Support
+    - With AVRO Serde 
 
 ## Setup
 
@@ -17,5 +19,7 @@ Scaffold for ExpressJS REST backend w/ TypeScript for better tooling and ORM sup
 2. Run the application:
 
 `npm run dev`
+
+> Make sure the `database-stack`, `kafka-stack` and `flink-stack` relevant components are running.
 
 
