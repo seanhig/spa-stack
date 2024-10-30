@@ -13,8 +13,11 @@
                             <div class="col-6">
                                 <div class="input-group mb-1">
                                     <label class="input-group-text" for="product_id">Product:</label>
-                                    <select class="form-select" id="product_id" (blur)="calculateOrderTotal()"
-                                        (change)="calculateOrderTotal()" formControlName="product_id">
+                                    <select class="form-select" 
+                                        id="product_id" 
+                                        (blur)="calculateOrderTotal()"
+                                        (change)="calculateOrderTotal()" 
+                                        formControlName="product_id">
                                         @for (product of products$ | async; track product.id) {
 
                                         <option value="{{ product.id }}">{{ product.name }} - ({{ product.price |

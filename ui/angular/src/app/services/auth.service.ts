@@ -13,24 +13,32 @@ export class AuthService {
   private _activeUser: User | undefined;
 
   constructor(private _httpClient: HttpClient, private _router: Router) {
-    this.getCurrentUser();
+    this.getCurrentUser(() => {});
   }
 
 
-  public getCurrentUser() {
+  public getCurrentUser(callback: Function) {
     this._httpClient.get<User>("/api/identity/current-user").subscribe(currentUser => {
       this._activeUser = currentUser;
+      callback?.()
     });
   }
 
   public getActiveUser() : Observable<User> {
     if(this._activeUser) {
+      console.log("returning cached active user");
       return new Observable((subscriber) => {
         subscriber.next(this._activeUser);
         subscriber.complete();
       });
     } else {
-      return this._httpClient.get<User>("/api/identity/current-user");
+      return new Observable((subscriber) => {
+        console.log("fetching active user");
+        this.getCurrentUser(() => {
+          subscriber.next(this._activeUser);
+          subscriber.complete();  
+        })
+      });
     }
   }
 

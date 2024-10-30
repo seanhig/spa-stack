@@ -2,8 +2,6 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { catchError, Observable, subscribeOn, tap, throwError } from "rxjs";
 import { Order } from "../model/order";
-
-import { ORDERS } from '../services/orders';
 import { WebOrder } from "../model/weborder";
 
 @Injectable({

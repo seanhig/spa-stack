@@ -45,7 +45,7 @@ export default function configurePassport(app: Express) {
 
         }
     ));
-    logger.info("Registered passport google strategy");
+    logger.info("Registered Google passport strategy");
 
     passport.use(new MicrosoftStrategy({
         clientID: process.env.MICROSOFTCLIENTID,
@@ -76,7 +76,7 @@ export default function configurePassport(app: Express) {
 
         }
     ));
-    logger.info("Registered passport microsoft strategy");
+    logger.info("Registered Microsoft passport strategy");
 
     passport.serializeUser(function(user, done) {
         done(null, user);

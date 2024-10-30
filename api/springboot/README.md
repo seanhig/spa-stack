@@ -18,8 +18,7 @@ Scaffold for SpringBoot REST backend.
 ## Setup
 
 1. Copy the `env.sample` to `.env` and fill in the required secrets.
-2. Load the environment variables into the shell `. ./loadenv.sh` using the script.
-3. Run the application:
+2. Run the application:
 
  `mvn spring-boot:run`
 

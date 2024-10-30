@@ -5,7 +5,7 @@ import {
   readAVSCAsync,
 } from "@kafkajs/confluent-schema-registry";
 import logger from '../util/logger'
-
+import authorize from './authorizer';
 
 const TOPIC = "weborders";
 
@@ -18,12 +18,9 @@ declare type WebOrder = {
   quantity: number;
 };
 
-
 var router = express.Router();
 
-// WebOrder
-
-router.post('/', async function(req, res, next) {
+router.post('/', authorize, async function(req, res, next) {
 
   const webOrder: WebOrder = { 
     web_order_id: req.body.web_order_id,

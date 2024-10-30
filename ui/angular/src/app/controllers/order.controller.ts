@@ -67,8 +67,8 @@ export class OrderController {
 		page: 1,
 		pageSize: 10,
 		searchTerm: '',
-		sortColumn: '',
-		sortDirection: '',
+		sortColumn: 'orderDate',
+		sortDirection: 'desc',
 	};
 
 	constructor(private pipe: DecimalPipe,
@@ -143,9 +143,9 @@ export class OrderController {
 				this._search$
 					.pipe(
 						tap(() => this._loading$.next(true)),
-						debounceTime(200),
+						debounceTime(100),
 						switchMap(() => this._search()),
-						delay(200),
+						delay(0),
 						tap(() => this._loading$.next(false)),
 					)
 					.subscribe((result) => {

@@ -65,10 +65,19 @@ initializeDataSources(() => {
     });
 
     app.use((err: any, req: Request, res: Response, next: Function) => {
-        var msg : string = "ExpressJS Server Error: " + err.message;
-        logger.error(msg, err);
-        console.error(err);
-        res.status(500).send(msg);
+
+        var msg : string = `ExpressJS Server Error: ${err.message}`;
+        var httpCode: number = 500;
+
+        if(err.name == "AuthError") {
+            httpCode = 401;
+        } else {
+            logger.error(msg, err);
+            console.error(err);            
+        }
+        logger.warn(`returning a ${httpCode}`);
+        res.status(httpCode).send(msg);    
+
     });
 });
 

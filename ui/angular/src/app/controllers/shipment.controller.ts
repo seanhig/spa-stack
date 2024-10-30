@@ -108,9 +108,9 @@ export class ShipmentController {
 			this._search$
 				.pipe(
 					tap(() => this._loading$.next(true)),
-					debounceTime(200),
+					debounceTime(100),
 					switchMap(() => this._search()),
-					delay(200),
+					delay(0),
 					tap(() => this._loading$.next(false)),
 				)
 				.subscribe((result) => {

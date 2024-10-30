@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, ErrorHandler } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { NgIf } from '@angular/common';
+import { interval, of, map, catchError, combineLatest, take, Observable } from 'rxjs';
+import { User } from '../../../../model/user';
+import { LOCATION_UPGRADE_CONFIGURATION } from '@angular/common/upgrade';
+
+
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +18,8 @@ import { NgIf } from '@angular/common';
 export class SidebarComponent {
   _isAdminMode : boolean = false;
 
-  constructor(public _authService : AuthService) {
+  constructor(public _authService : AuthService, 
+    private _router : Router) {
     
   }
 
@@ -22,11 +28,12 @@ export class SidebarComponent {
   }
 
   ngOnInit() {
-    this._authService.getActiveUser().subscribe(activeUser => {
-      if(activeUser && activeUser.userName != null) {
-        this._isAdminMode = true;
-      }
-      
+
+    this._authService.getActiveUser().subscribe((activeUser: User) => {
+        console.log('current user: ' + activeUser.email);
+        if(activeUser && activeUser.userName != null) {
+          this._isAdminMode = true;
+        }
     })
   }
 
