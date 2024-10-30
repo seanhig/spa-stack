@@ -10,6 +10,18 @@ export default defineConfig({
     outDir: '../../.dist/app/browser'
   },
   server: {
-    port: 4200
+    port: 4200,
+    proxy: {
+      '/api': {
+          target: 'http://localhost:8090',
+          changeOrigin: true,
+          secure: false,
+      },
+      '/swagger': {
+          target: 'http://localhost:8090',
+          changeOrigin: true,
+          secure: false,
+      }
+  }
   }
 })

@@ -137,12 +137,11 @@ To setup a `spa-stack`, see the API documentation:
 
 ## Development Workflow
 
-During `development` the `frontend` SPA engine (ng or vite) is started first.  
+The preferred approach is to work from the `frontend`, leveraging `proxy.conf.json` and `vite.config.ts` to proxy `api` calls to the `backend`.
 
-- The `WebAPI` backend then proxies to the SPA front end (on `:4200`).  
-- For `SpringBoot`, the `Angular NG server` proxies all `api` calls to the backend (on `:8090`).
+This means working from `http://localhost:4200`.
 
-> The backend can optionally implement `HTTPS`, which is required for `OAuth2` on everything but `localhost`. 
+> There is an odd problem with Safari where this does not work with WebAPI, and will result in cookie not found errors.  If developing with Safari and WebAPI, the work must occur on the backend `https://localhost:8090` using the `https` profile.
 
 For `production`, the `backends` host the `frontend SPA` as static HTML, and are built as a single deployable container. This model is well suited to `App Service` container deployments, as well as `Kubernetes`, however, to scale, a `shared session` strategy needs to be implemented (TODO). 
 

@@ -55,6 +55,7 @@ var microsoftClientSecret = configuration["MicrosoftClientSecret"];
 //
 //    Attempting to allow Safari to work without HTTPS, but always get a cookie not found error
 //    Works fine in Chrome/Firefox when using Angular proxy.  
+//    Oddly this problem only affects WebApi and ASPNET Identity
 //    
 //    }).AddCookie(options =>
 //    {

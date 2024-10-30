@@ -39,7 +39,7 @@
                     <td><ngb-highlight [result]="order.orderDate | date" [term]="_controller.searchTerm" /></td>
                     <td><ngb-highlight [result]="order.orderRef" [term]="_controller.searchTerm" /></td>
                     <td><ngb-highlight [result]="order.customerName" [term]="_controller.searchTerm" /></td>
-                    <td><ngb-highlight [result]="order.productId | number" [term]="_controller.searchTerm" /></td>
+                    <td><ngb-highlight [result]="_controller.getProductName(order.productId)" [term]="_controller.searchTerm" /></td>
                     <td><ngb-highlight [result]="order.orderQty | number" [term]="_controller.searchTerm" /></td>
                     <td><ngb-highlight [result]="order.orderTotal | currency" [term]="_controller.searchTerm" /></td>
                     <td><ngb-highlight [result]="order.orderStatus | number" [term]="_controller.searchTerm" /></td>

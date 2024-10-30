@@ -19,7 +19,7 @@ public class AboutController {
         }
     }
 
-    private AboutResponse aboutResponse = new AboutResponse("SpringBoot REST 3!", "v1.0.0" );
+    private AboutResponse aboutResponse = new AboutResponse("SpringBoot REST 3.x", "v1.0.0" );
 
     @GetMapping("")
     public ResponseEntity<AboutResponse> getAbout() {

@@ -59,6 +59,7 @@ export class OrderController {
 	private _orderResults: Order[] = [];
 	private _orders$ = new BehaviorSubject<Order[]>([]);
 	private _products$ = new BehaviorSubject<Product[]>([]);
+	private _products: Product[] = [];
 	private _total$ = new BehaviorSubject<number>(0);
 
 	private _mode: MODE = MODE.ALL;
@@ -77,6 +78,7 @@ export class OrderController {
 		private _productService: ProductService
 	) {
 		//this.search();
+		this.fetchProducts();
 	}
 
 	get orders$() {
@@ -126,12 +128,24 @@ export class OrderController {
 
 	public fetchProducts() {
 		this._productService.getProducts().subscribe(products => {
+			this._products = products;
 			this._products$.next(products);
 		});
 	}
 
 	public submitWebOrder(webOrder: WebOrder) : Observable<Object> {
 		return this._orderService.submitWebOrder(webOrder);
+	}
+
+	public getProductName(productId: number) : string {
+		
+		for(var i=0; i < this._products.length ; i++) {
+			var p : Product = this._products[i];
+			if(p.id == productId) { 
+				return p.name; 
+			}
+		}
+		return productId.toString();
 	}
 
 	public search() {
