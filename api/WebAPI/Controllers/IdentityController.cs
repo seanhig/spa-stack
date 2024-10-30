@@ -24,18 +24,22 @@ namespace WebAPI.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly ILogger _log;
+        private readonly IConfiguration _config;
+
 
         private SignInManager<IdentityUser> _signInManager;
         private UserManager<IdentityUser> _userManager;
 
         public IdentityController(SignInManager<IdentityUser> signinMgr,
-        UserManager<IdentityUser> userMgr,
-        ILogger<IdentityController> log)
-        {
-            this._log = log;
-            this._signInManager = signinMgr;
-            this._userManager = userMgr;
-        }
+            UserManager<IdentityUser> userMgr,
+            IConfiguration configuration,
+            ILogger<IdentityController> log)
+            {
+                this._log = log;
+                this._signInManager = signinMgr;
+                this._userManager = userMgr;
+                this._config = configuration;
+            }
 
         [HttpGet]
         [AllowAnonymous]
@@ -66,7 +70,9 @@ namespace WebAPI.Controllers
             _log.LogInformation(provider);
             _log.LogInformation(returnUrl);
 
-            var redirectUrl = $"https://localhost:8090/api/identity/external-auth-callback?returnUrl={returnUrl}";
+            var redirectUrl = this._config["RedirectURI"] + "?returnUrl=" + returnUrl;
+            _log.LogInformation("RedirectURL: " + redirectUrl);
+            
             AuthenticationProperties properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             properties.AllowRefresh = true;
 

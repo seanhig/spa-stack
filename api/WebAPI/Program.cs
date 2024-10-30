@@ -45,13 +45,23 @@ var microsoftClientSecret = configuration["MicrosoftClientSecret"];
         googleOptions.ClientSecret = googleClientSecret ?? throw new Exception("OAUTH: Google Client Secret is EMPTY, closing.");
         googleOptions.SignInScheme = Microsoft.AspNetCore.Identity.IdentityConstants.ExternalScheme;
         googleOptions.CallbackPath = "/api/identity/signin-google";
-    }).AddCookie().AddMicrosoftAccount(microsoftOptions =>
+    }).AddMicrosoftAccount(microsoftOptions =>
     {
         microsoftOptions.ClientId = microsoftClientId ?? throw new Exception("OAUTH: Microsoft ClientId is EMPTY, closing.");
         microsoftOptions.ClientSecret = microsoftClientSecret ?? throw new Exception("OAUTH: Microsoft Client Secret is EMPTY, closing.");
         microsoftOptions.SignInScheme = Microsoft.AspNetCore.Identity.IdentityConstants.ExternalScheme;
         microsoftOptions.CallbackPath = "/api/identity/signin-microsoft";
-    });
+    }).AddCookie();
+//
+//    Attempting to allow Safari to work without HTTPS, but always get a cookie not found error
+//    Works fine in Chrome/Firefox when using Angular proxy.  
+//    
+//    }).AddCookie(options =>
+//    {
+//        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+//        options.Cookie.SameSite = SameSiteMode.None;  
+//    }
+//    );
  
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -88,6 +98,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
     app.UseSwaggerUi();
+
+    app.UseCookiePolicy(new CookiePolicyOptions
+    {
+        MinimumSameSitePolicy = SameSiteMode.None,
+        Secure = CookieSecurePolicy.SameAsRequest
+    });
 }
 
 // UseProxyToSpaDevelopmentServer Quote broken in the minimal API model

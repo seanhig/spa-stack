@@ -10,7 +10,7 @@ namespace WebAPI.Controllers
     {
         private readonly ILogger _log;
 
-        private object aboutResponse = new { ApiName = "This is WebAPI!", Version = "v1.0.0" };
+        private object aboutResponse = new { ApiName = ".NET Core 8.0 WebAPI", Version = "v1.0.0" };
 
         public AboutController(ILogger<AboutController> log) {
             _log = log;
