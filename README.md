@@ -172,4 +172,6 @@ __Microsoft__: docs were really good and so was the tooling, I still enjoy .NET 
 
 __SpringBoot__: docs were not so good.  I think the solution involves a lot more code then would be ideal. It took a bit longer at __7 days__, and was not as enjoyable as .NET.  That said, it wasn't as bad as I expected.  A solid #3 on the list.
 
-__ExpressJS__: docs were old, and I had to rely on sample code examples...  but I'm convinced the only reason people choose the other two backends is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish.  If you are going to do REST, I think ExpressJS is still the king.  And with TypeScript, can it be beat?
+__ExpressJS__: docs were old, and I had to rely on sample code examples to lose the commonjs require syntax and do things in TypeScript...  but I'm convinced the only reason people choose the other two backends is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish.  If you are going to do REST, I think ExpressJS is still the king.  And with TypeScript, can it be beat?
+
+> The reason VSCode is so great is because Node.js is so great.  It is built on [Electron](https://www.electronjs.org) and was started and proofed before Microsoft even bought Github (remember [Atom](https://atom-editor.cc)?).  There is a reason it isn't written in C#... for those that doubt the power of Node.js... meditate on that.
