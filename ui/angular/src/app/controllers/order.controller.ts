@@ -59,7 +59,7 @@ export class OrderController {
 	private _orderResults: Order[] = [];
 	private _orders$ = new BehaviorSubject<Order[]>([]);
 	private _products$ = new BehaviorSubject<Product[]>([]);
-	private _products: Product[] = [];
+	private _productMap: Map<number, string> = new Map();
 	private _total$ = new BehaviorSubject<number>(0);
 
 	private _mode: MODE = MODE.ALL;
@@ -128,7 +128,9 @@ export class OrderController {
 
 	public fetchProducts() {
 		this._productService.getProducts().subscribe(products => {
-			this._products = products;
+			products.forEach(p => {
+				this._productMap.set(p.id, p.name);
+			})
 			this._products$.next(products);
 		});
 	}
@@ -138,14 +140,7 @@ export class OrderController {
 	}
 
 	public getProductName(productId: number) : string {
-		
-		for(var i=0; i < this._products.length ; i++) {
-			var p : Product = this._products[i];
-			if(p.id == productId) { 
-				return p.name; 
-			}
-		}
-		return productId.toString();
+		return this._productMap.get(productId) ?? "[product name]";
 	}
 
 	public search() {
@@ -179,9 +174,9 @@ export class OrderController {
 							this._search$
 								.pipe(
 									tap(() => this._loading$.next(true)),
-									debounceTime(200),
+									debounceTime(100),
 									switchMap(() => this._search()),
-									delay(200),
+									delay(0),
 									tap(() => this._loading$.next(false)),
 								)
 								.subscribe((result) => {
