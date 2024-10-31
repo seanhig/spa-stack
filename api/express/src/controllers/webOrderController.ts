@@ -18,7 +18,7 @@ declare type WebOrder = {
   quantity: number;
 };
 
-var router = express.Router();
+let router = express.Router();
 
 router.post('/', authorize, async function(req, res, next) {
 

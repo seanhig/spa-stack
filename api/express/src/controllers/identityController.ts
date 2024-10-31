@@ -3,7 +3,7 @@ import passport from 'passport'
 import logger from '../util/logger'
 import authorize from './authorizer'
 
-var router = express.Router();
+let router = express.Router();
 
 // Identity
 

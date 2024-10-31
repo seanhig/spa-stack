@@ -5,13 +5,13 @@ import { erpdbDataSource } from '../config/erpdbDataSource';
 import { Equal } from 'typeorm';
 import authorize from './authorizer';
 
-var router = express.Router();
+let router = express.Router();
 
 // Order
 
 router.get('/', authorize, async function (req, res, next) {
 
-    var query : any = {
+    let query : any = {
         order: {
             orderDate: {
                 name: "DESC"
@@ -21,7 +21,7 @@ router.get('/', authorize, async function (req, res, next) {
     }
 
     if (req.query.customerName) {
-        var customerName: string = req.query.customerName.toString();
+        let customerName: string = req.query.customerName.toString();
         logger.info("Loading orders for: " + customerName);
         query.where = {
             customerName: Equal(customerName)

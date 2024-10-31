@@ -4,7 +4,7 @@ import { erpdbDataSource } from '../config/erpdbDataSource';
 import logger from '../util/logger';
 import authorize from './authorizer';
 
-var router = express.Router();
+let router = express.Router();
 
 // Product
 

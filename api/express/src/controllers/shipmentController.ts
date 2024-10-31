@@ -4,7 +4,7 @@ import { shipdbDataSource } from '../config/shipdbDataSource';
 import logger from '../util/logger';
 import authorize from './authorizer';
 
-var router = express.Router();
+let router = express.Router();
 
 // Shipment
 

@@ -4,8 +4,8 @@ import Google from 'passport-google-oidc'
 import Microsoft from 'passport-microsoft'
 import logger from './util/logger'
 
-var GoogleStrategy = Google.Strategy;
-var MicrosoftStrategy = Microsoft.Strategy;
+let GoogleStrategy = Google.Strategy;
+let MicrosoftStrategy = Microsoft.Strategy;
 
 export default function configurePassport(app: Express) {
 

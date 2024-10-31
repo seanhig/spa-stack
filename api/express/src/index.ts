@@ -66,8 +66,8 @@ initializeDataSources(() => {
 
     app.use((err: any, req: Request, res: Response, next: Function) => {
 
-        var msg : string = `ExpressJS Server Error: ${err.message}`;
-        var httpCode: number = 500;
+        let msg : string = `ExpressJS Server Error: ${err.message}`;
+        let httpCode: number = 500;
 
         if(err.name == "AuthError") {
             httpCode = 401;
