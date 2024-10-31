@@ -32,7 +32,7 @@ At the present time all of the API backends support the core happy path of:
 
 > as desribed below in [The General Store](#context-and-concept-the-general-store)
 
-All `backends` are hosted on `https://localhost:8090`.
+All `backends` are hosted on `http://localhost:8090`.
 
 ## The SPA Frontends
 All located in the [ui](ui) folder.
@@ -45,7 +45,7 @@ Each of these will implement a slightly different UI approach to the standardize
 
 Only the `Angular` frontend is presently complete for the current happy path.  Additional UIs will be developed once the core API features are near complete.
 
-All `frontends` are hosted on `https://localhost:4200`.
+All `frontends` are hosted on `http://localhost:4200`.
 
 ## Context and Concept: The General Store
 The following diagram outlines the broader concept implemented across the three projects of: [database-stack](https://github.com/seanhig/database-stack), [flink-stack](https://github.com/seanhig/flink-stack) and [spa-stack](https://github.com/seanhig/spa-stack).
@@ -170,6 +170,6 @@ After a few years of not doing web development (mostly cloud architecture), I wa
 
 __Microsoft__: docs were really good and so was the tooling, I still enjoy .NET Core.  It took me about __5 days__ to sort everything out.
 
-__SpringBoot__: docs were not so good.  I think the solution involves a lot more code then would be ideal. It took a bit longer at __7 days__, and was not as enjoyable as .NET.  That said, it wasn't as bad as I expected, and I haven't done Java web development in years.
+__SpringBoot__: docs were not so good.  I think the solution involves a lot more code then would be ideal. It took a bit longer at __7 days__, and was not as enjoyable as .NET.  That said, it wasn't as bad as I expected.  A solid #3 on the list.
 
 __ExpressJS__: docs were old, and I had to rely on sample code examples...  but I'm convinced the only reason people choose the other two backends is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish.  If you are going to do REST, I think ExpressJS is still the king.  And with TypeScript, can it be beat?
