@@ -76,8 +76,8 @@ export class OrderController {
 		private _orderService: OrderService,
 		private _authService: AuthService,
 		private _productService: ProductService
-	) {
-		//this.search();
+	) 
+	{
 		this.fetchProducts();
 	}
 

@@ -33,8 +33,13 @@ router.post('/external-login', function (req, res, next) {
     }
 });
 
-router.post('/logout', function (req, res, next) {
+// TODO: real logouts
+router.post('/external-logout', function (req, res, next) {
+    res.send(200);
+});
 
+router.post('/logout', function (req, res, next) {
+    res.send(200);
 });
 
 export default router;

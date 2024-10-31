@@ -43,7 +43,9 @@ export class AuthService {
   }
 
   public hasActiveUser(): boolean{
-    if(this._activeUser && this._activeUser.userName != null) { return true;}
+    if(this._activeUser && this._activeUser.userName != null) { 
+      return true;
+    }
     return false;
   }
 
@@ -52,7 +54,7 @@ export class AuthService {
     if (this._activeUser) { user = this._activeUser.userName; }
     return user;
   }
-
+  
   get activeUser() {
     return this._activeUser;
   }
@@ -67,6 +69,7 @@ export class AuthService {
   }
 
   signout() {
+    this._activeUser = undefined;
     return this._httpClient.post("/api/identity/external-logout",  {})
     .pipe(
       catchError(this.handleError)

@@ -59,7 +59,6 @@ export class ProductController {
 	};
 
     constructor(private pipe: DecimalPipe, private _productService: ProductService) {
-		//this.search();
 	}
 
     get products$() {

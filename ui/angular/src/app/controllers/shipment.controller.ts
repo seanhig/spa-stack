@@ -58,7 +58,6 @@ export class ShipmentController {
 	};
 
     constructor(private pipe: DecimalPipe, private _shipmentService: ShipmentService) {
-//		this.search();
 	}
 
     get shipments$() {

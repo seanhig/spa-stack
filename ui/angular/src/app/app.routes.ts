@@ -41,6 +41,7 @@ export const routes: Routes = [
     },
     {
         path: 'user',
+        canActivate: [AuthGuard], 
         loadComponent: () =>
             import('./shared/layouts/main/main.component').then(
                 (m) => m.MainComponent
@@ -50,11 +51,11 @@ export const routes: Routes = [
     },
     {
         path: 'admin',
-/*         canActivate: [AuthGuard], */
-         loadComponent: () =>
-            import('./shared/layouts/main/main.component').then(
-                (m) => m.MainComponent
-            ),
+        canActivate: [AuthGuard], 
+        loadComponent: () =>
+        import('./shared/layouts/main/main.component').then(
+            (m) => m.MainComponent
+        ),
         children: adminRoutes
     },
     {
