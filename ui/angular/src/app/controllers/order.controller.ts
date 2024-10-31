@@ -144,9 +144,8 @@ export class OrderController {
 	}
 
 	public search() {
-		var that = this;
 		if (this._mode == MODE.ALL) {
-			that._orderService.getOrders().subscribe((orders) => {
+			this._orderService.getOrders().subscribe((orders) => {
 				console.log("loaded new orders: " + orders?.length);
 				this._orderResults = orders;
 				this._search$
@@ -167,7 +166,7 @@ export class OrderController {
 		} else {
 			this._authService.getActiveUser().subscribe(activeUser => {
 				console.log("active user: " + activeUser.userName);
-				that._orderService.getMyOrders(activeUser.userName)
+				this._orderService.getMyOrders(activeUser.userName)
 					.subscribe((orders) => {
 							console.log("loaded new orders: " + orders?.length);
 							this._orderResults = orders;

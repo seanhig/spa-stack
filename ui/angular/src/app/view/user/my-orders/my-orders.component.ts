@@ -126,18 +126,18 @@ export class MyOrdersComponent {
   }
 
   calculateOrderTotal() {
-    var productId = this.newOrderForm.get("product_id")?.value;
-    var quantity = this.newOrderForm.get("quantity")?.value;
+    let productId = this.newOrderForm.get("product_id")?.value;
+    let quantity = this.newOrderForm.get("quantity")?.value;
 
     console.log("qty: " + quantity);
     if(quantity == "" || quantity == null || quantity == undefined) { return; }
 
     this.products$.forEach(products => {
-      for(var i=0; i< products.length; i++) {
-        var p : Product  = products[i];
+      for(let i=0; i< products.length; i++) {
+        let p : Product  = products[i];
         if(p.id == productId) {
           console.log("price is: " + p.price);
-          var orderTotal = p.price * quantity;
+          let orderTotal = p.price * quantity;
           console.log("order total: " + orderTotal);
           this.orderTotal = orderTotal;
         }
@@ -158,7 +158,7 @@ export class MyOrdersComponent {
   submitOrder() {
     this.errorMessage = '';
 
-    var webOrder: WebOrder = this.newOrderForm.value;
+    let webOrder: WebOrder = this.newOrderForm.value;
     webOrder.web_order_id = Guid.create().toString();
     webOrder.order_date = Date.now();
     if(this._authService.activeUser !== undefined) {
@@ -171,13 +171,13 @@ export class MyOrdersComponent {
     this._orderController.submitWebOrder(webOrder).subscribe({ 
       next: () => {
         console.log("submitted web order!");
-        var msg = "Web Order <strong>#" + webOrder.web_order_id + "</strong> has been placed!";
+        let msg = "Web Order <strong>#" + webOrder.web_order_id + "</strong> has been placed!";
         this._successMessage$.next(msg);
           },
       error: (error) => {
         console.error("submitting web order:" + error);
         console.log(error);
-        var msg = "Error placing Web Order: " + error.toString();
+        let msg = "Error placing Web Order: " + error.toString();
         this._errorMessage$.next(msg);
       },
       complete: () => {

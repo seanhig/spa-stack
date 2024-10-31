@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   public activeUsername(): string {
-    var user: string = "";
+    let user: string = "";
     if (this._activeUser) { user = this._activeUser.userName; }
     return user;
   }
