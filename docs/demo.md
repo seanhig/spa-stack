@@ -1,6 +1,6 @@
 # SPA Stack Demo
 
-> Note that everything is developed and run from a `.devcontainer` docker image, while all of the dependent services are also hosted in docker ([flink-stack](https://github.com/seanhig/flink-stack) and [database-stack, kafka-stack](https://github.com/seanhig/database-stack)).
+> Note that everything is developed and operated from a `.devcontainer` docker image, while all of the dependent services are also hosted in docker ([flink-stack](https://github.com/seanhig/flink-stack) and [database-stack, kafka-stack](https://github.com/seanhig/database-stack)).
 
 1. Start the `backend`:
 
@@ -59,7 +59,7 @@ A confirmation will be displayed that the order was placed.
 <img src="images/9-conduktor.jpg" />
 
 
-10. We can see in our `My Orders` list that the new order has been registered in the `backend` databases.
+10. We can see in our `My Orders` list that the new order has been registered in the `backend MySQL and Postgres` databases.
 
 <img src="images/10-order-processed.jpg" />
 
@@ -71,6 +71,6 @@ A confirmation will be displayed that the order was placed.
 
 ### Bonus
 
-Just for fun we can switch the backend to `ExpressJS` and do it again.
+Just for fun we can switch the backend to `ExpressJS` and do it again.  All `backends` have feature parity and support the same service contract.
 
 <img src="images/11-about-expressjs.jpg" />
