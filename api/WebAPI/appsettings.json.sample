@@ -41,6 +41,7 @@
   "GoogleClientSecret": "",
   "MicrosoftClientId": "",
   "MicrosoftClientSecret": "",
+  "RedirectURI": "http://localhost:8090/api/identity/external-auth-callback",
   "KafkaBootstrapServers": "host.docker.internal:29092",
   "KafkaSchemaRegistryUrl": "http://host.docker.internal:8081"
 

@@ -51,7 +51,7 @@ All `frontends` are hosted on `https://localhost:4200`.
 The following diagram outlines the broader concept implemented across the three projects of: [database-stack](https://github.com/seanhig/database-stack), [flink-stack](https://github.com/seanhig/flink-stack) and [spa-stack](https://github.com/seanhig/spa-stack).
 
 ### The General Store Workflow
-![The General Store Overview](docs/Lake-spa-stack-overview.png)
+![The General Store Overview](docs/images/Lake-spa-stack-overview.png)
 
 Started as a simple `flink` example of change data capture and stream processing, [Streaming ETL to Iceberg](), and was then used as the context to incorporate and explore other components involved:
 
@@ -79,6 +79,10 @@ __The General Store__ end-to-end practically demonstrates the following concepts
 - Apache Flink's ability to execute SQL JOIN and aggregation semantics cross-system
 - Apache Flink / Iceberg integration for near real-time Serde based Data Lake updates
 - Containerization and Orchestration
+
+### Demo
+
+For a quick demo of the `spa-stack` component of the solution see [here](docs/demo.md)
 
 ## Setup
 
@@ -112,10 +116,11 @@ The `Authorized Redirect URIs` should be as follows:
 # WebAPI
 http://localhost:8090/api/identity/signin-google
 https://localhost:8090/api/identity/signin-google
+http://localhost:4200/api/identity/signin-google
 # SpringBoot
 http://localhost:8090/api/oauth2/callback/google
-http://localhost:4200/api/oauth2/callback/google
 https://localhost:8090/api/oauth2/callback/google
+http://localhost:4200/api/oauth2/callback/google
 ```
 
 #### Microsoft
