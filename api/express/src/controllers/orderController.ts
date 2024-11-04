@@ -1,7 +1,7 @@
 import express from 'express';
 import logger from '../util/logger'
 import { Order } from '../model/order';
-import { erpdbDataSource } from '../config/erpdbDataSource';
+import { erpdbDataSource } from '../orm';
 import { Equal } from 'typeorm';
 import authorize from './authorizer';
 

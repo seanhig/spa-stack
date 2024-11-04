@@ -1,6 +1,6 @@
 import express from 'express';
 import { Shipment } from '../model/shipment';
-import { shipdbDataSource } from '../config/shipdbDataSource';
+import { shipdbDataSource } from '../orm';
 import logger from '../util/logger';
 import authorize from './authorizer';
 

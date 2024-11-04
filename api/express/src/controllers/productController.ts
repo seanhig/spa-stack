@@ -1,6 +1,6 @@
 import express from 'express';
 import { Product } from '../model/product';
-import { erpdbDataSource } from '../config/erpdbDataSource';
+import { erpdbDataSource } from '../orm';
 import logger from '../util/logger';
 import authorize from './authorizer';
 

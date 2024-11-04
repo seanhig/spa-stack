@@ -20,7 +20,7 @@ All located in the [api](api) folder.
 
 1. [C# .NET Core 8.0 WebApi](api/WebAPI/)
 2. [Spring Boot REST+](api/springboot/)
-2. [ExpressJS](api/express/)
+2. [ExpressJS 5.0](api/express/)
 
 Objective is to implement the same backend API, such that the front-ends can interchange backends, and visa versa. 
 
@@ -174,6 +174,7 @@ __Microsoft__: docs were really good and so was the tooling, I still enjoy .NET 
 
 __SpringBoot__: docs were not so good.  I think the solution involves a lot more code then would be ideal. It took a bit longer at __7 days__, and was not as enjoyable as .NET.  That said, it wasn't as bad as I expected.  A solid #3 on the list.
 
-__ExpressJS__: docs were old, and I had to rely on sample code examples to lose the commonjs require syntax and do things in TypeScript...  but I'm convinced the only reason people choose the other two backends is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish.  If you are going to do REST, I think ExpressJS is still the king.  And with TypeScript, can it be beat?
+__ExpressJS__: ExpressJS 5.0 seems to be a return, as Koa looks deprecated... I'm convinced the only reason people choose the other two backends is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish, and such a small amount of code.  If you are going to do REST, I think Node.js/ExpressJS is still the king.  
 
-> The reason VSCode is so great is because Node.js is so great.  It is built on [Electron](https://www.electronjs.org) and was started and proofed before Microsoft even bought Github (remember [Atom](https://atom-editor.cc)?).  There is a reason it isn't written in C#... for those that doubt the power of Node.js... meditate on that.
+> I looked into the latest cool tools... Fastify/Restify, Hapi.  Took a stab at Fastify, but it wasn't as smooth and effortless as good old ExpressJS, and the dates on the github repos suggest ExpressJS is still alive and well, while some of it's "replacements" seem to have faded into the sunset (Koa).  Arbitrary change is boring.  
+
