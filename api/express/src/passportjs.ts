@@ -12,10 +12,15 @@ export default function configurePassport(app: Express) {
     app.use(passport.initialize());
     app.use(passport.session());
 
+    const oidcCallbackHost = process.env.OIDC_CALLBACK_HOST.toString();
+    logger.info("Using OIDC Callback Host: " + oidcCallbackHost);
+    const googleCallback = oidcCallbackHost + "/api/oauth2/callback/google";
+    const microsoftCallback = oidcCallbackHost + "/api/oauth2/callback/microsoft";
+
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLECLIENTID,
         clientSecret: process.env.GOOGLECLIENTSECRET,
-        callbackURL: "http://localhost:4200/api/oauth2/callback/google",
+        callbackURL: googleCallback,
         scope: [
             'https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/userinfo.email'
@@ -50,7 +55,7 @@ export default function configurePassport(app: Express) {
     passport.use(new MicrosoftStrategy({
         clientID: process.env.MICROSOFTCLIENTID,
         clientSecret: process.env.MICROSOFTCLIENTSECRET,
-        callbackURL: "http://localhost:4200/api/oauth2/callback/microsoft",
+        callbackURL: microsoftCallback,
         scope: ['user.read']
     },
         function (accessToken, refreshToken, profile, done) {

@@ -48,9 +48,17 @@ initializeDataSources(() => {
 
     if(process.env.ENVIRONMENT?.toLowerCase() == "production") {
         // we'll script a copy of the .dist folder into public
-        //app.use(express.static(path.join(__dirname, 'public')));
-        app.use('/', express.static('../../.dist/app/browser'))
-        app.use('/', indexController);
+        app.use(express.static(path.join(__dirname, 'public')));
+
+        // these are the SPA routes to prevent Express from throwing a 404 on a browser refresh
+        app.use('/site/home', express.static(path.join(__dirname, 'public')));
+        app.use('/auth/signin', express.static(path.join(__dirname, 'public')));
+        app.use('/user/my-orders', express.static(path.join(__dirname, 'public')));
+        app.use('/admin/orders', express.static(path.join(__dirname, 'public')));
+        app.use('/admin/products', express.static(path.join(__dirname, 'public')));
+        app.use('/admin/shipments', express.static(path.join(__dirname, 'public')));
+        
+        logger.info("Hosting SPA at public root");
     }
 
     app.use('/api/about', aboutController);
