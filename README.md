@@ -138,7 +138,11 @@ To setup a `spa-stack`, see the API documentation:
 
 1. [WebAPI](api/WebAPI/README.md) 
 2. [SpringBoot](api/springboot/README.md)
-3. [ExpressJS](api/express/README.md)
+3. [ExpressJS w/ TypeScript](api/express/README.md)
+
+and _The Winner:_
+
+4. [Pure ExpressJS](api/expressjs/README.md)
 
 ## Development Workflow
 
