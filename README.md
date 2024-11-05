@@ -176,5 +176,11 @@ __SpringBoot__: docs were not so good.  I think the solution involves a lot more
 
 __ExpressJS__: ExpressJS 5.0 seems to be a return, as Koa looks deprecated... I'm convinced the only reason people choose the other two backends (C#/Java) is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish, and such a small amount of code.  If you are going to do REST, I think Node.js/ExpressJS is still the king.  
 
+There are two versions in __ExpressJS__:  
+
+The original `express` api was built using TypeORM, which required TypeScript, and so this version uses a `minimalist's TypeScript` to support the ORM.
+
+The `expressjs` version dumps TypeScript and ORM in favor of pure modern Javascript and simple database access.  As this version is the most elegant, it takes the __#1 spot__ of the lot.
+
 > I looked into the latest cool tools... Fastify/Restify, Hapi.  Took a stab at Fastify, but it wasn't as smooth and effortless as good old ExpressJS, and the dates on the github repos suggest ExpressJS is still alive and well, while some of it's "replacements" seem to have faded into the sunset (Koa).  Arbitrary change is boring.  
 

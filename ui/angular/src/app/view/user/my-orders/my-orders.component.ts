@@ -2,7 +2,7 @@ import { AsyncPipe, DatePipe, DecimalPipe, CurrencyPipe, NgIf } from '@angular/c
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Guid } from 'guid-typescript';
+import { v4 as uuidv4 } from 'uuid';
 import { Order } from '../../../model/order';
 import { WebOrder } from '../../../model/weborder';
 import { OrderController, MODE } from '../../../controllers/order.controller';
@@ -159,7 +159,7 @@ export class MyOrdersComponent {
     this.errorMessage = '';
 
     let webOrder: WebOrder = this.newOrderForm.value;
-    webOrder.web_order_id = Guid.create().toString();
+    webOrder.web_order_id = uuidv4();
     webOrder.order_date = Date.now();
     if(this._authService.activeUser !== undefined) {
       webOrder.customer_name = this._authService.activeUser.userName;

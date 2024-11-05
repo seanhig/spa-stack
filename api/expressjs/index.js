@@ -5,6 +5,7 @@ import passport from 'passport'
 import session from 'express-session'
 import cookieSession from 'cookie-session'
 import cookieParser from 'cookie-parser'
+import { fileURLToPath } from 'url';
 
 import logger from './src/logger.js'
 import morgan from './src/morgan.js'
@@ -18,6 +19,9 @@ import orderService from './src/api/orderService.js'
 import productService from './src/api/productService.js'
 import shipmentService from './src/api/shipmentService.js'
 import webOrderService from './src/api/webOrderService.js'
+
+const __filename = fileURLToPath(import.meta.url); 
+const __dirname = path.dirname(__filename); 
 
 dotenv.config();
 
@@ -36,21 +40,15 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }));
 
-/*  
-app.use(session({
-secret: 'my-secret',
-resave: false,
-cookie: { secure: false },
-    saveUninitialized: true
-}));
-*/
 
+// stub functions to make the latest passportjs 
+// work with cookieSession
 const regenerate = callback => {
-	console.log('regenerating')
+	console.log('regenerating passport stub')
 	callback()
 }
 const save = callback => {
-	console.log('saving')
+	console.log('saving passport stub')
 	callback()
 }
 app.use((req, res, next)=>{

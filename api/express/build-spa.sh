@@ -13,3 +13,6 @@ rm -r ./$TARGETDIR/*
 cp -ar ../../.dist/app/browser/* ./$TARGETDEVDIR/
 cp -ar ../../.dist/app/browser/* ./$TARGETDIR/
 echo "refreshed distribution directory ${TARGETDIR}, dev: ${TARGETDEVDIR}"
+
+
+
