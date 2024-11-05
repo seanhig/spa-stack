@@ -40,7 +40,6 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }));
 
-
 // stub functions to make the latest passportjs 
 // work with cookieSession
 const regenerate = callback => {
