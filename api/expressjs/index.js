@@ -59,7 +59,7 @@ app.use((req, res, next)=>{
 app.use(passport.initialize());
 app.use(passport.session());
 
-configurePassport(app);
+await configurePassport(app);
 
 await db.initializeConnections();
 
