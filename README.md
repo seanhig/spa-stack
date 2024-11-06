@@ -169,9 +169,7 @@ The `Vite` projects and `Angular` are all configured to build to the same locati
 
 #### Initial API Creation
 
-This is covered in the respective project READMEs. C# and SpringBoot templates came from VSCode (C# and RedHat Java extensions respectively), ExpressJS used the express generator, but to support TypeScript and modern ESM the template was heavily modified, and now it _is_ the template. 
-
-[ts-node](https://typestrong.org/ts-node/) made TypeScript with ExpressJS painless, but I still prefer the pure js version.
+This is covered in the respective project READMEs. C# and SpringBoot templates came from VSCode (C# and RedHat Java extensions respectively), ExpressJS used the express generator, but to support TypeScript and modern ESM the template was heavily modified, and now it _is_ the template. Of course all this was supplanted by `Bun`, which seems to be the way forward.
 
 ### Editorial
 After a few years of not doing web development (mostly cloud architecture), I wanted to refresh on my favorite full stack platforms.  This was largely an excuse to do that and build out some useful scaffolds, and it was a great chance to compare.  
