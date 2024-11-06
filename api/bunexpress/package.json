@@ -8,7 +8,8 @@
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.0",
     "@types/morgan": "^1.9.9",
-    "@types/passport": "^1.0.17"
+    "@types/passport": "^1.0.17",
+    "@types/passport-microsoft": "^1.0.3"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

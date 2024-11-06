@@ -1,11 +1,9 @@
 import { type Express, type Request, type Response } from "express"
 import passport from 'passport'
-import Google from 'passport-google-oidc'
-import Microsoft from 'passport-microsoft'
 import logger from './logger'
 
-let GoogleStrategy = Google.Strategy;
-let MicrosoftStrategy = Microsoft.Strategy;
+let GoogleStrategy = require("passport-google-oidc").Strategy;
+let MicrosoftStrategy = require("passport-microsoft").Strategy;
 
 export default function configurePassport(app: Express) {
     return new Promise<void>(async (resolve, reject) => {
@@ -28,7 +26,7 @@ export default function configurePassport(app: Express) {
                     'https://www.googleapis.com/auth/userinfo.email'
                 ]
             },
-                function (source, profile, done) {
+                function (source : any, profile: any, done : Function) {
         
                     logger.info("Google auth success: ");
                     logger.info("source: " + source);
@@ -60,7 +58,7 @@ export default function configurePassport(app: Express) {
                 callbackURL: microsoftCallback,
                 scope: ['user.read']
             },
-                function (accessToken, refreshToken, profile, done) {
+                function (accessToken: string, refreshToken: string, profile: any, done: Function) {
         
                     logger.info("Microsoft auth success: ");
                     console.log(profile);
@@ -85,11 +83,11 @@ export default function configurePassport(app: Express) {
             ));
             logger.info("Registered Microsoft passport strategy");
         
-            passport.serializeUser(function(user, done) {
+            passport.serializeUser(function(user: Express.User, done) {
                 done(null, user);
             });
               
-            passport.deserializeUser(function(user, done) {
+            passport.deserializeUser(function(user: Express.User, done) {
                 done(null, user);
             });
         
@@ -108,7 +106,7 @@ export default function configurePassport(app: Express) {
             resolve();
         } catch(ex) {
             logger.error("Error initializing passportjs!", ex);
-            resolve(ex);
+            resolve();
         }
     });   
 }
