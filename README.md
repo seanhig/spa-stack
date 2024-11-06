@@ -20,7 +20,9 @@ All located in the [api](api) folder.
 
 1. [C# .NET Core 8.0 WebApi](api/WebAPI/)
 2. [Spring Boot REST+](api/springboot/)
-2. [ExpressJS 5.0](api/express/)
+3. [ExpressJS 5.0 in TypeScript](api/express/)
+4. [ExpressJS 5.0 in Javascript](api/expressjs/)
+5. [Bun ExpressJS 5.0 in TypeScript](api/bunexpress/)
 
 Objective is to implement the same backend API, such that the front-ends can interchange backends, and visa versa. 
 
@@ -138,11 +140,12 @@ To setup a `spa-stack`, see the API documentation:
 
 1. [WebAPI](api/WebAPI/README.md) 
 2. [SpringBoot](api/springboot/README.md)
-3. [ExpressJS w/ TypeScript](api/express/README.md)
+3. [ExpressJS in TypeScript](api/express/README.md)
+4. [Pure ExpressJS](api/expressjs/README.md)
 
 and _The Winner:_
 
-4. [Pure ExpressJS](api/expressjs/README.md)
+5. [Bun ExpressJS in TypeScript](api/bunexpress/README.md)
 
 ## Development Workflow
 
@@ -179,11 +182,19 @@ __SpringBoot__: docs were not so good.  I think the solution involves a lot more
 
 __ExpressJS__: ExpressJS 5.0 seems to be a return, as Koa looks deprecated... I'm convinced the only reason people choose the other two backends (C#/Java) is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish, and such a small amount of code.  If you are going to do REST, I think Node.js/ExpressJS is still the king.  
 
-There are two versions in __ExpressJS__:  
+There are three variants in __ExpressJS__:  
 
-The original `express` api was built using TypeORM, which required TypeScript, and so this version uses a `minimalist's TypeScript` to support the ORM.
+1. `express`, the original TypeScript version using `node.js`.  
+2. `expressjs`, a pure Javascript implementation using modern Javascript.
+3. `bunexpress`, the `node.js` replacement that does native TypeScript and JSX.
 
-The `expressjs` version dumps TypeScript and ORM in favor of pure modern Javascript and simple database access.  As this version is the most elegant, it takes the __#1 spot__ of the lot.
+The original `express` api was built using TypeORM, which required TypeScript, and so this version uses a `minimalist's TypeScript` to support the ORM, but falls short of strict mode largely due to passportjs.
 
-> I looked into the latest cool tools... Fastify/Restify, Hapi.  Took a stab at Fastify, but it wasn't as smooth and effortless as good old ExpressJS, and the dates on the github repos suggest ExpressJS is still alive and well, while some of it's "replacements" seem to have faded into the sunset (Koa).  Arbitrary change is boring.  
+The `expressjs` version dumps TypeScript and ORM in favor of pure modern Javascript and simple database access.  As this version is the most elegant, it held the __#1 spot__ of the lot, until [Bun](https://bun.sh).
+
+[Bun ExpressJS](./api/bunexpress/README.md) __is #1__.
+
+I like the speed and Node.js compatability. It only took a few hours to port the `express` version to Bun.  And built int TypeScript support is going to eliminate a lot of the noise of using TypeScript.
+
+> I also looked into the latest cool tools... Fastify/Restify, Hapi.  Took a stab at Fastify, but it wasn't as smooth and effortless as good old ExpressJS, and the dates on the github repos suggest ExpressJS is still alive and well, while some of it's "replacements" seem to have faded into the sunset (Koa).  Arbitrary change is boring.  
 

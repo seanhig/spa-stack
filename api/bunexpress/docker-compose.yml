@@ -1,0 +1,28 @@
+
+
+name: spa-stack-bunexpress-ng
+
+services:
+  
+  spa-ng-express:
+    image: idstudios/spa-stack-bunexpress-angular:1.0.0
+    build: .
+    container_name: 'spa-bunexpress-ng'
+    restart: no
+    ports: 
+      - 8090:8090
+    environment:
+      - ERPDB_URL=${ERPDB_URL}
+      - SHIPDB_URL=${SHIPDB_URL}
+      - USERDB_URL=${USERDB_URL}
+      - GOOGLECLIENTID=${GOOGLECLIENTID}
+      - GOOGLECLIENTSECRET=${GOOGLECLIENTSECRET}
+      - MICROSOFTCLIENTID=${MICROSOFTCLIENTID}
+      - MICROSOFTCLIENTSECRET=${MICROSOFTCLIENTSECRET}
+      - KAFKABOOTSTRAPSERVERS=${KAFKABOOTSTRAPSERVERS}
+      - KAFKASCHEMAREGISTRYURL=${KAFKASCHEMAREGISTRYURL}
+      - OIDC_CALLBACK_HOST=${OIDC_CALLBACK_HOST} #can leave this blank outside of dev, otherwise point to host:port
+
+
+
+ 

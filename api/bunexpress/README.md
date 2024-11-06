@@ -1,11 +1,11 @@
-# ExpressJS REST API + SPA
+# Bun + ExpressJS 5 REST API + SPA
 
-Scaffold for ExpressJS REST backend using only Javascript and without the overhead of ORM.
+Scaffold for [Bun](https://bun.sh) with TypeScript and the ExpressJS REST backend.
 
 ## What's Working
 
 - [ExpressJS](https://expressjs.com) REST
-- [Postgres](https://node-postgres.com) and [MySQL](https://github.com/mysqljs/mysql)
+- [TypeORM](https://typeorm.io) 
 - [PassportJS](https://www.passportjs.org)
     - With Google Authentication
     - With Microsoft Authentication
@@ -13,13 +13,18 @@ Scaffold for ExpressJS REST backend using only Javascript and without the overhe
     - With Schema Registry Support
     - With AVRO Serde 
 
+## Install Bun
+Install `bun` in the `.devcontainer`:
+
+`curl -fsSL https://bun.sh/install | bash`
+
 ## Setup
 
 1. Copy the `env.sample` to `.env` and fill in the required secrets.
-2. Install deps `npm install`
-3. Run the application:
+2. Install deps `bun install`
+2. Run the application:
 
-`npm start`
+`bun run index.ts`
 
 > Make sure the `database-stack`, `kafka-stack` and `flink-stack` relevant components are running.
 
