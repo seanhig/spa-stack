@@ -20,9 +20,9 @@ All located in the [api](api) folder.
 
 1. [C# .NET Core 8.0 WebApi](api/WebAPI/)
 2. [Spring Boot REST+](api/springboot/)
-3. [ExpressJS 5.0 in TypeScript](api/express/)
-4. [ExpressJS 5.0 in Javascript](api/expressjs/)
-5. [Bun ExpressJS 5.0 in TypeScript](api/bunexpress/)
+3. [ExpressJS 5 in TypeScript](api/express/)
+4. [ExpressJS 5 in Javascript](api/expressjs/)
+5. [Bun ExpressJS 5 in TypeScript](api/bunexpress/)
 
 Objective is to implement the same backend API, such that the front-ends can interchange backends, and visa versa. 
 
@@ -192,7 +192,7 @@ The `expressjs` version dumps TypeScript and ORM in favor of pure modern Javascr
 
 [Bun ExpressJS](./api/bunexpress/README.md) __is #1__.
 
-I like the speed and Node.js compatability. It only took a few hours to port the `express` version to Bun.  And built int TypeScript support is going to eliminate a lot of the noise of using TypeScript.
+I like the speed and Node.js compatability of [Bun](https://bun.sh). It only took a few hours to port the `express` version.  Having TypeScript built in, and optional, is a major advance.  Browsers should take note.  I also found it interesting that it uses Safari's engine and not the Google V8 to realize the performance gains. Chrome dethroned? 
 
 > I also looked into the latest cool tools... Fastify/Restify, Hapi.  Took a stab at Fastify, but it wasn't as smooth and effortless as good old ExpressJS, and the dates on the github repos suggest ExpressJS is still alive and well, while some of it's "replacements" seem to have faded into the sunset (Koa).  Arbitrary change is boring.  
 
