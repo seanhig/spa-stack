@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import { Order } from '../model/order';
 import { erpdbDataSource } from '../orm';
 import { Equal } from 'typeorm';
@@ -7,7 +7,7 @@ const logger = require('pino')()
 
 let router = express.Router();
 
-router.get('/', authorize, async function (req, res, next) {
+router.get('/', authorize, async function (req: Request, res: Response, next: NextFunction) {
 
     let query : any = {
         order: {

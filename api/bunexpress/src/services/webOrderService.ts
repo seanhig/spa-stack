@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import { Kafka } from "kafkajs";
 import {
   SchemaRegistry,
@@ -21,7 +21,7 @@ declare type WebOrder = {
 
 let router = express.Router();
 
-router.post('/', authorize, async function(req, res, next) {
+router.post('/', authorize, async function(req: Request, res: Response, next: NextFunction) {
 
   const webOrder: WebOrder = { 
     web_order_id: req.body.web_order_id,

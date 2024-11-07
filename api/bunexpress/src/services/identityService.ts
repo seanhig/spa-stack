@@ -1,11 +1,11 @@
-import express from 'express'
+import express, { type Request, type Response, type NextFunction, type Express } from 'express';
 import passport from 'passport'
 import authorize from './authorizer'
 const logger = require('pino')()
 
 let router = express.Router();
 
-router.get('/current-user', function (req, res, next) {
+router.get('/current-user', function (req: Request, res: Response, next: NextFunction) {
     if (req.user) {
         logger.info("There is a request user!");
         console.log(req.user);
@@ -16,7 +16,7 @@ router.get('/current-user', function (req, res, next) {
     }
 });
 
-router.post('/external-login', function (req, res, next) {
+router.post('/external-login', function (req: Request, res: Response, next: NextFunction) {
     if (req.query.provider?.toString().toLowerCase() == "google") {
         logger.info("authenticating with Google");
         passport.authenticate('google', {
@@ -32,11 +32,11 @@ router.post('/external-login', function (req, res, next) {
 });
 
 // TODO: real logouts
-router.post('/external-logout', function (req, res, next) {
+router.post('/external-logout', function (req: Request, res: Response, next: NextFunction) {
     res.send(200);
 });
 
-router.post('/logout', function (req, res, next) {
+router.post('/logout', function (req: Request, res: Response, next: NextFunction) {
     res.send(200);
 });
 
