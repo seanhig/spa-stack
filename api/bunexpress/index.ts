@@ -4,10 +4,7 @@ import path from 'path'
 import passport from 'passport'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
-import cookieSession from 'cookie-session'
-import logger from './src/logger'
 
-import indexService from './src/services/indexService'
 import aboutService from './src/services/aboutService'
 import identityService from './src/services/identityService'
 import orderService from './src/services/orderService'
@@ -15,17 +12,17 @@ import productService from './src/services/productService'
 import shipmentService from './src/services/shipmentService'
 import webOrderService from './src/services/webOrderService'
 
-import morganConfig from './src/morgan'
-
 import initializeDataSources from './src/orm';
 import configurePassport from './src/passportjs';
+
+const logger = require('pino')()
+const pinoHttp = require('pino-http')()
 
 const app: Express = express();
 const port = process.env.PORT || 8090;
 
 app.use(express.json());
-app.use(express.json());
-app.use(morganConfig);
+app.use(pinoHttp);
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -40,7 +37,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 await configurePassport(app);
-
 await initializeDataSources();
 
 if(process.env.SPASTACK_ENV?.toLowerCase() == "production") {
@@ -82,7 +78,6 @@ app.use((err: any, req: Request, res: Response, next: Function) => {
   }
   logger.warn(`returning a ${httpCode}`);
   res.status(httpCode).send(msg);    
-
 });
 
 

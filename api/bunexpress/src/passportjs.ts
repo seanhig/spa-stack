@@ -1,6 +1,7 @@
 import { type Express, type Request, type Response } from "express"
 import passport from 'passport'
-import logger from './logger'
+//import logger from './logger'
+const logger = require('pino')()
 
 let GoogleStrategy = require("passport-google-oidc").Strategy;
 let MicrosoftStrategy = require("passport-microsoft").Strategy;

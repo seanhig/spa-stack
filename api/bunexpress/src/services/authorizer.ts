@@ -1,7 +1,7 @@
 
-import logger from '../logger'
+const logger = require('pino')()
 
-export default function authorize(req, res, next) {
+export default function authorize(req: any, res: any, next: Function) {
 
     if(!req.user) {
         logger.warn("Anonymous user for authorized area!");

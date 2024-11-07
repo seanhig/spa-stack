@@ -1,11 +1,9 @@
 import express from 'express'
 import passport from 'passport'
-import logger from '../logger'
 import authorize from './authorizer'
+const logger = require('pino')()
 
 let router = express.Router();
-
-// Identity
 
 router.get('/current-user', function (req, res, next) {
     if (req.user) {
@@ -19,14 +17,14 @@ router.get('/current-user', function (req, res, next) {
 });
 
 router.post('/external-login', function (req, res, next) {
-    if (req.query.provider.toString().toLowerCase() == "google") {
+    if (req.query.provider?.toString().toLowerCase() == "google") {
         logger.info("authenticating with Google");
         passport.authenticate('google', {
             session: false,
             successRedirect: '/',
             failureRedirect: '/auth/signin'
         })(req, res, next);
-    } else if (req.query.provider.toString().toLowerCase() == "microsoft") {
+    } else if (req.query.provider?.toString().toLowerCase() == "microsoft") {
         passport.authenticate('microsoft', { session: false })(req, res, next);
     } else {
         logger.error("uknown authentication provider: " + req.query.provider);

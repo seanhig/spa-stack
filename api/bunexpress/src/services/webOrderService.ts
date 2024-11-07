@@ -4,8 +4,9 @@ import {
   SchemaRegistry,
   readAVSCAsync,
 } from "@kafkajs/confluent-schema-registry";
-import logger from '../logger'
 import authorize from './authorizer';
+
+const logger = require('pino')()
 
 const TOPIC = "weborders";
 
@@ -33,11 +34,11 @@ router.post('/', authorize, async function(req, res, next) {
 
   const kafka = new Kafka({
     clientId: 'spa-stack',
-    brokers: [process.env.KAFKABOOTSTRAPSERVERS] 
+    brokers: [process.env.KAFKABOOTSTRAPSERVERS!] 
   });
 
   const registry = new SchemaRegistry({
-    host: process.env.KAFKASCHEMAREGISTRYURL,
+    host: process.env.KAFKASCHEMAREGISTRYURL!,
   });
   
   // create a producer which will be used for producing messages

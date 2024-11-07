@@ -5,7 +5,8 @@ import { Order } from './model/order';
 import { Shipment } from './model/shipment';
 import { User } from './model/user';
 
-import logger from './logger'
+//import logger from './logger'
+const logger = require('pino')()
 
 export let erpdbDataSource : DataSource;
 export let shipdbDataSource : DataSource;

@@ -1,13 +1,11 @@
 import express from 'express';
-import logger from '../logger'
 import { Order } from '../model/order';
 import { erpdbDataSource } from '../orm';
 import { Equal } from 'typeorm';
 import authorize from './authorizer';
+const logger = require('pino')()
 
 let router = express.Router();
-
-// Order
 
 router.get('/', authorize, async function (req, res, next) {
 

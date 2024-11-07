@@ -1,12 +1,10 @@
 import express from 'express';
 import { Shipment } from '../model/shipment';
 import { shipdbDataSource } from '../orm';
-import logger from '../logger';
 import authorize from './authorizer';
+const logger = require('pino')()
 
 let router = express.Router();
-
-// Shipment
 
 router.get('/', authorize, async function (req, res, next) {
 
