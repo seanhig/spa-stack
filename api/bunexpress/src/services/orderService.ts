@@ -3,7 +3,7 @@ import { Order } from '../model/order';
 import { erpdbDataSource } from '../orm';
 import { Equal } from 'typeorm';
 import authorize from './authorizer';
-const logger = require('pino')()
+import logger from '../logger'
 
 let router = express.Router();
 

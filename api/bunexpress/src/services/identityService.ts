@@ -1,7 +1,7 @@
 import express, { type Request, type Response, type NextFunction, type Express } from 'express';
 import passport from 'passport'
 import authorize from './authorizer'
-const logger = require('pino')()
+import logger from '../logger'
 
 let router = express.Router();
 

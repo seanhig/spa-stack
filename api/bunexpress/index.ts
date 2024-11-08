@@ -16,8 +16,7 @@ import initializeDataSources from './src/orm'
 import configurePassport from './src/passportjs'
 import { kafkaService } from './src/kafka'
 import morganConfig from './src/morganConfig'
-
-const logger = require('pino')()
+import logger from './src/logger'
 
 const app: Express = express();
 const port = process.env.PORT || 8090;
@@ -71,7 +70,7 @@ app.use('/api/shipment', shipmentService);
 app.use('/api/weborders', webOrderService);
 
 app.listen(port, () => {
-    logger.info(`Server is running at http://localhost:${port}`);
+    logger.warn(`Server is running at http://localhost:${port}`);
 });
 
 app.use((err: any, req: Request, res: Response, next: Function) => {

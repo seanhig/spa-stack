@@ -4,8 +4,7 @@ import {
   readAVSCAsync,
 } from "@kafkajs/confluent-schema-registry";
 import type { initialize } from "passport";
-
-const logger = require('pino')()
+import logger from './logger'
 
 export type WebOrder = {
   web_order_id: string;

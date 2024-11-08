@@ -2,7 +2,7 @@ import express, { type Request, type Response, type NextFunction } from 'express
 import { Shipment } from '../model/shipment';
 import { shipdbDataSource } from '../orm';
 import authorize from './authorizer';
-const logger = require('pino')()
+import logger from '../logger'
 
 let router = express.Router();
 

@@ -1,5 +1,5 @@
 
-const logger = require('pino')()
+import logger from '../logger'
 
 export default function authorize(req: any, res: any, next: Function) {
 
