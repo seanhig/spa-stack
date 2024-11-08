@@ -1,23 +1,8 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
-import { Kafka } from "kafkajs";
-import {
-  SchemaRegistry,
-  readAVSCAsync,
-} from "@kafkajs/confluent-schema-registry";
+import { type WebOrder, kafkaService } from '../kafka'
 import authorize from './authorizer';
 
 const logger = require('pino')()
-
-const TOPIC = "weborders";
-
-declare type WebOrder = {
-  web_order_id: string;
-  order_date: number;
-  customer_name: string;
-  destination: string;
-  product_id: number;
-  quantity: number;
-};
 
 let router = express.Router();
 
@@ -32,82 +17,8 @@ router.post('/', authorize, async function(req: Request, res: Response, next: Ne
     quantity: parseInt(req.body.quantity)
   }
 
-  const kafka = new Kafka({
-    clientId: 'spa-stack',
-    brokers: [process.env.KAFKABOOTSTRAPSERVERS!] 
-  });
-
-  const registry = new SchemaRegistry({
-    host: process.env.KAFKASCHEMAREGISTRYURL!,
-  });
-  
-  // create a producer which will be used for producing messages
-  const producer = kafka.producer();
-  
-  const registerSchema = async () => {
-    try {
-      const schema = await readAVSCAsync("src/model/avro/weborder.avsc");
-      const { id } = await registry.register(schema);
-      return id;
-    } catch (e) {
-      logger.error("error registering Kafka schema", e);
-      throw e;
-    }
-  };
-
-  const produceToKafka = async (registryId: number, message: WebOrder) => {
-    await producer.connect();
-  
-    // compose the message: the key is a string
-    // the value will be encoded using the avro schema
-    const outgoingMessage = {
-      key: message.customer_name,
-      value: await registry.encode(registryId, message),
-    };
-  
-    // send the message to the previously created topic
-    await producer.send({
-      topic: TOPIC,
-      messages: [outgoingMessage],
-    });
-  
-    // disconnect the producer
-    await producer.disconnect();
-  };
-  
-
-  const createTopic = async () => {
-    try {
-      const topicExists = (await kafka.admin().listTopics()).includes(TOPIC);
-      if (!topicExists) {
-        await kafka.admin().createTopics({
-          topics: [
-            {
-              topic: TOPIC,
-              numPartitions: 1,
-              replicationFactor: 1,
-            },
-          ],
-        });
-      }
-    } catch (error) {
-      logger.error("error creating Kafka topic!", error);
-    }
-  };
-
-  await createTopic();
-  try {
-    const registryId = await registerSchema();
-    
-    if (registryId) {
-      registryId && (await produceToKafka(registryId, webOrder));
-      logger.info(`Produced message to Kafka: ${JSON.stringify(webOrder)}`);
-      res.send(webOrder);
-    }
-  } catch (error) {
-    logger.error('There was an error producing the Kafka WebOrder', error);
-    throw error;
-  }
+  await kafkaService.submitWebOrder(webOrder);
+  res.send(webOrder);
 
 });
 
