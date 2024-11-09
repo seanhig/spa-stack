@@ -4,6 +4,7 @@ import path from 'path'
 import passport from 'passport'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
+import figlet from 'figlet'
 
 import aboutService from './src/services/aboutService'
 import identityService from './src/services/identityService'
@@ -69,6 +70,15 @@ app.use('/api/order', orderService);
 app.use('/api/shipment', shipmentService);
 app.use('/api/weborders', webOrderService);
 
+let bannerText = await figlet.text("SpaStack", {
+    font: "Standard",
+    horizontalLayout: "default",
+    verticalLayout: "default",
+    width: 80,
+    whitespaceBreak: true,
+  })
+console.log(bannerText);
+  
 app.listen(port, () => {
     logger.warn(`Server is running at http://localhost:${port}`);
 });
