@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"idstudios/gin-web-service/datasource/erpdb"
+	"idstudios/gin-web-service/datasource/shipdb"
+	"idstudios/gin-web-service/datasource/userdb"
 	"idstudios/gin-web-service/services"
 	"log/slog"
 	"net/http"
@@ -16,26 +19,13 @@ import (
 
 func main() {
 
+	router := gin.Default()
+
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading .env file")
 		return
 	}
-
-	router := gin.Default()
-
-	apiRouter := router.Group("/api")
-	apiRouter.Group("/about").GET("", services.AboutHandler)
-
-	apiRouter.Group("/identity").GET("/current-user", services.IdentityCurrentUserHandler)
-	apiRouter.Group("/identity").POST("/external-login", services.IdentityExternalLoginHandler)
-	apiRouter.Group("/identity").POST("/external-logout", services.IdentityExternalLogoutHandler)
-
-	apiRouter.Group("/product").GET("", services.ProductFetchHandler)
-	apiRouter.Group("/order").GET("", services.OrderFetchHandler)
-	apiRouter.Group("/shipment").GET("", services.ShipmentFetchHandler)
-
-	apiRouter.Group("/weborder").POST("", services.WebOrderSubmitHandler)
 
 	if strings.ToLower(os.Getenv("ENVIRONMENT")) == "production" {
 
@@ -63,6 +53,34 @@ func main() {
 			}),
 		)
 		slog.SetDefault(logger)
+	}
+
+	apiRouter := router.Group("/api")
+	apiRouter.Group("/about").GET("", services.AboutHandler)
+
+	apiRouter.Group("/identity").GET("/current-user", services.IdentityCurrentUserHandler)
+	apiRouter.Group("/identity").POST("/external-login", services.IdentityExternalLoginHandler)
+	apiRouter.Group("/identity").POST("/external-logout", services.IdentityExternalLogoutHandler)
+
+	apiRouter.Group("/product").GET("", services.ProductFetchHandler)
+	apiRouter.Group("/order").GET("", services.OrderFetchHandler)
+	apiRouter.Group("/shipment").GET("", services.ShipmentFetchHandler)
+
+	apiRouter.Group("/weborder").POST("", services.WebOrderSubmitHandler)
+
+	_, erpdberr := erpdb.Connect()
+	if erpdberr != nil {
+		return
+	}
+
+	_, shipdberr := shipdb.Connect()
+	if shipdberr != nil {
+		return
+	}
+
+	_, userdberr := userdb.Connect()
+	if userdberr != nil {
+		return
 	}
 
 	httpPort := fmt.Sprintf(":%s", os.Getenv("PORT"))

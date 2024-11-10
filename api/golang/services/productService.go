@@ -1,11 +1,18 @@
 package services
 
 import (
+	"idstudios/gin-web-service/datasource/erpdb"
+	"log/slog"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func ProductFetchHandler(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, gin.H{"product_id": "123"})
+	products, err := erpdb.FindAllProducts()
+	if err != nil {
+		slog.Error("Error fetching products.")
+		slog.Error(err.Error())
+	}
+	c.IndentedJSON(http.StatusOK, products)
 }

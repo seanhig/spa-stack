@@ -1,11 +1,18 @@
 package services
 
 import (
+	"idstudios/gin-web-service/datasource/shipdb"
+	"log/slog"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func ShipmentFetchHandler(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, gin.H{"shipment_id": "123"})
+	shipments, err := shipdb.FindAllShipments()
+	if err != nil {
+		slog.Error("Error fetching shipments.")
+		slog.Error(err.Error())
+	}
+	c.IndentedJSON(http.StatusOK, shipments)
 }
