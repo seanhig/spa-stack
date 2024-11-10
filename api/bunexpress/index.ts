@@ -41,9 +41,15 @@ await initializeDataSources();
 await kafkaService.initialize();
 
 if (process.env.SPASTACK_ENV?.toLowerCase() == "production") {
-    // use pino structured http logging in production, though we may need to dial it back
-    const pinoHttp = require('pino-http')()
-    app.use(pinoHttp);
+
+    // better to rely on the api gateway for request metrics capture,
+    // so I probably would leave http logging OFF in production
+    // but if we are going to use it, we'll use the structured form
+    if(process.env.HTTP_LOGGING) {
+        // use pino structured http request logging in production
+        const pinoHttp = require('pino-http')()
+        app.use(pinoHttp);
+    }
 
     // we'll script a copy of the .dist folder into public
     app.use(express.static(path.join(__dirname, 'public')));
@@ -58,7 +64,7 @@ if (process.env.SPASTACK_ENV?.toLowerCase() == "production") {
 
     logger.info("Hosting SPA at public root");
 } else {
-    // use morgan http logging in dev for pretty print
+    // use morgan http logging in dev for pretty print easy to read
     // until we can sort out the recipe for pino
     app.use(morganConfig);
 }
