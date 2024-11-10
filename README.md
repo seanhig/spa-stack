@@ -20,13 +20,12 @@ All located in the [api](api) folder.
 
 1. [C# .NET Core 8.0 WebApi](api/WebAPI/)
 2. [Spring Boot REST+](api/springboot/)
-3. [ExpressJS 5 in TypeScript](api/express/)
-4. [ExpressJS 5 in Javascript](api/expressjs/)
-5. [Bun ExpressJS 5 in TypeScript](api/bunexpress/)
+3. [Bun ExpressJS 5 in TypeScript](api/bunexpress/)
+4. [GoLang/Gin REST](api/golang/)
 
 Objective is to implement the same backend API, such that the front-ends can interchange backends, and visa versa. 
 
-At the present time all of the API backends support the core happy path of:
+At the present time all of the API backends (except Go) support the core happy path of:
 
 1. User is presented with a home page and signin 
 2. User authenticates using OIDC to either Microsoft or Google
@@ -140,12 +139,8 @@ To setup a `spa-stack`, see the API documentation:
 
 1. [WebAPI](api/WebAPI/README.md) 
 2. [SpringBoot](api/springboot/README.md)
-3. [ExpressJS in TypeScript](api/express/README.md)
-4. [Pure ExpressJS](api/expressjs/README.md)
-
-and _The Winner:_
-
-5. [Bun ExpressJS in TypeScript](api/bunexpress/README.md)
+3. [Bun ExpressJS in TypeScript](api/bunexpress/README.md)
+3. [GoLang/Gin](api/golang/README.md)
 
 ## Development Workflow
 
@@ -180,19 +175,24 @@ __SpringBoot__: docs were not so good.  I think the solution involves a lot more
 
 __ExpressJS__: ExpressJS 5.0 seems to be a return, as Koa looks deprecated... I'm convinced the only reason people choose the other two backends (C#/Java) is because they don't know Node/ExpressJS!  Took about __1.5 days to get it working__, start to finish, and such a small amount of code.  If you are going to do REST, I think Node.js/ExpressJS is still the king.  
 
-There are three variants in __ExpressJS__:  
+There were three variants explored for __ExpressJS__:  
 
-1. `express`, the original TypeScript version using `node.js`.  
+1. `express`, the original TypeScript version using `node.js` and `ts-node`.  
 2. `expressjs`, a pure Javascript implementation using modern Javascript.
 3. `bunexpress`, the `node.js` replacement that does native TypeScript and JSX.
 
-The original `express` api was built using TypeORM, which required TypeScript, and so this version uses a `minimalist's TypeScript` to support the ORM, but falls short of strict mode largely due to passportjs.
+The original `express` api was built using TypeORM, which required TypeScript, and so this version uses a `minimalist's TypeScript` to support the ORM, but falls short of strict mode.
 
 The `expressjs` version dumps TypeScript and ORM in favor of pure modern Javascript and simple database access.  As this version is the most elegant, it held the __#1 spot__ of the lot, until [Bun](https://bun.sh).
 
-[Bun ExpressJS](./api/bunexpress/README.md) __is #1__.
+[Bun ExpressJS](./api/bunexpress/README.md) __is #1__.  
 
-I like the speed and Node.js compatability of [Bun](https://bun.sh). It only took a few hours to port the `express` version.  Having TypeScript built in, and optional, is a major advance.  Browsers should take note.  I also found it interesting that it uses Safari's engine and not the Google V8 to realize the performance gains. Chrome dethroned? 
+I like the speed and Node.js compatability of [Bun](https://bun.sh). It only took a few hours to port the `express` version.  Having TypeScript built in, and optional, is a major advance.  Browsers should take note.  I also found it interesting that it uses Safari's engine and not the Google V8 to realize the performance gains. 
 
 > I also looked into the latest cool tools... Fastify/Restify, Hapi.  Took a stab at Fastify, but it wasn't as smooth and effortless as good old ExpressJS, and the dates on the github repos suggest ExpressJS is still alive and well, while some of it's "replacements" seem to have faded into the sunset (Koa).  Arbitrary change is boring.  
+
+__Go__: Still a work in progress, but nearly as agile as the Bun implementation, and insanely fast.  Bun is already _fast enough_, surely... but if I needed `black friday speed`, I'd switch to `Go`.  Compared to C# and Java, a very minimal amount of code required.  Did I mention insanely fast? 
+
+> C# and Java are showing their age, imho.  No matter how you `OOP` it, you always get a bloated codebase with more complexity then there ought to be.  When I look at OIDC in `bun/passport`, as compared to `ASPNET Core` or `Spring`, and all the associated code and complexity behind the implementations, it is a stark contrast.  
+
 
