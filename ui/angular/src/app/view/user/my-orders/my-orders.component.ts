@@ -158,12 +158,17 @@ export class MyOrdersComponent {
   submitOrder() {
     this.errorMessage = '';
 
-    let webOrder: WebOrder = this.newOrderForm.value;
-    webOrder.web_order_id = uuidv4();
-    webOrder.order_date = Date.now();
-    if(this._authService.activeUser !== undefined) {
-      webOrder.customer_name = this._authService.activeUser.userName;
-    }
+    let formWebOrder: WebOrder = this.newOrderForm.value;
+    let customerName = this._authService.activeUser ? this._authService.activeUser.userName : "";
+
+    let webOrder: WebOrder = {
+      web_order_id: uuidv4(),
+      order_date: new Date(),
+      customer_name: customerName,
+      destination: formWebOrder.destination,
+      product_id: parseInt(formWebOrder.product_id.toString()),
+      quantity: parseInt(formWebOrder.quantity.toString()),
+    };
 
     console.log("sending web order:");
     console.log(webOrder);

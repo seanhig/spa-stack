@@ -78,7 +78,7 @@ func main() {
 	apiRouter.Group("/order").GET("", services.OrderFetchHandler)
 	apiRouter.Group("/shipment").GET("", services.ShipmentFetchHandler)
 
-	apiRouter.Group("/weborder").POST("", services.WebOrderSubmitHandler)
+	apiRouter.Group("/weborders").POST("", services.WebOrderSubmitHandler)
 
 	auth.ConfigureOIDC(apiRouter)
 
