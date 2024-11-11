@@ -21,11 +21,17 @@ type WebOrder struct {
 	Quantity     int       `json:"quantity" avro:"quantity"`
 }
 
-func SendMessage(webOrder WebOrder) (*WebOrder, error) {
+type kafkaProducer struct {
+	Producer     *kafka.Producer
+	SchemaClient schemaregistry.Client
+	Ser          *avrov2.Serializer
+}
 
+var kp *kafkaProducer
+
+func InitKafka() (*kafkaProducer, error) {
 	bootstrapServers := os.Getenv("KAFKABOOTSTRAPSERVERS")
 	schemaUrl := os.Getenv("KAFKASCHEMAREGISTRYURL")
-	topic := "weborders"
 
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": bootstrapServers})
 
@@ -34,7 +40,7 @@ func SendMessage(webOrder WebOrder) (*WebOrder, error) {
 		return nil, err
 	}
 
-	slog.Info(fmt.Sprintf("Created Producer %v", p))
+	slog.Info(fmt.Sprintf("Created Kafka Producer %v", p))
 
 	client, err := schemaregistry.NewClient(schemaregistry.NewConfig(schemaUrl))
 
@@ -50,17 +56,39 @@ func SendMessage(webOrder WebOrder) (*WebOrder, error) {
 		return nil, err
 	}
 
+	pr := kafkaProducer{}
+	pr.Producer = p
+	pr.SchemaClient = client
+	pr.Ser = ser
+
+	return &pr, nil
+
+}
+
+func SendWebOrderMessage(webOrder WebOrder) (*WebOrder, error) {
+
+	topic := "weborders"
+
+	if kp == nil {
+		kpt, err := InitKafka()
+		if err != nil {
+			slog.Info(fmt.Sprintf("Failed to initialize Kafka: %s", err))
+			return nil, err
+		}
+		kp = kpt
+	}
+
 	deliveryChan := make(chan kafka.Event)
 
 	slog.Info(fmt.Sprintf("Sending weborder id: %s", webOrder.WebOrderId))
 
-	payload, err := ser.Serialize(topic, &webOrder)
+	payload, err := kp.Ser.Serialize(topic, &webOrder)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Failed to serialize payload: %s", err))
 		return nil, err
 	}
 
-	err = p.Produce(&kafka.Message{
+	err = kp.Producer.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Key:            []byte(webOrder.CustomerName),
 		Value:          payload,

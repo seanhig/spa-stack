@@ -21,7 +21,7 @@ func WebOrderSubmitHandler(c *gin.Context) {
 		c.AbortWithError(500, err)
 	}
 
-	submittedOrder, err := SendMessage(incomingWebOrder)
+	submittedOrder, err := SendWebOrderMessage(incomingWebOrder)
 	if err != nil {
 		slog.Error("Failure sending web order to kafka", slog.Any("err", err))
 		c.AbortWithError(500, err)
