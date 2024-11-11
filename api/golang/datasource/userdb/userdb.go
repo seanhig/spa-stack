@@ -8,6 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
+type User struct {
+	Id        uint   `json:"id"`
+	Email     string `json:"email"`
+	UserName  string `sql:"-" json:"userName"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
 func Connect() (*gorm.DB, error) {
 	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
 	dsn := os.Getenv("USERDB_URL")

@@ -10,11 +10,11 @@ import (
 )
 
 type Shipment struct {
-	ShipmentId  uint
-	OrderId     uint
-	Origin      string
-	Destination string
-	HasArrived  bool
+	ShipmentId  uint   `json:"shipmentId"`
+	OrderId     uint   `json:"orderId"`
+	Origin      string `json:"origin"`
+	Destination string `json:"destination"`
+	HasArrived  bool   `json:"hasArrived"`
 }
 
 func Connect() (*gorm.DB, error) {

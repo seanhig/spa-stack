@@ -31,6 +31,7 @@ export class SidebarComponent {
 
     this._authService.getActiveUser().subscribe((activeUser: User) => {
         console.log('current user: ' + activeUser.email);
+        console.log(activeUser);
         if(activeUser && activeUser.userName != null) {
           this._isAdminMode = true;
         }

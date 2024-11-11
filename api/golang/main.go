@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
+	"idstudios/gin-web-service/auth"
 	"idstudios/gin-web-service/datasource/erpdb"
 	"idstudios/gin-web-service/datasource/shipdb"
 	"idstudios/gin-web-service/datasource/userdb"
@@ -11,9 +13,12 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/lmittmann/tint"
+	"github.com/markbates/goth/gothic"
 	"github.com/mattn/go-isatty"
 )
 
@@ -26,6 +31,12 @@ func main() {
 		fmt.Println("Error loading .env file")
 		return
 	}
+
+	gob.Register(&userdb.User{})
+
+	mystore := cookie.NewStore([]byte("secret"))
+	router.Use(sessions.Sessions("mysession", mystore))
+	gothic.Store = mystore
 
 	if strings.ToLower(os.Getenv("ENVIRONMENT")) == "production" {
 
@@ -56,6 +67,7 @@ func main() {
 	}
 
 	apiRouter := router.Group("/api")
+
 	apiRouter.Group("/about").GET("", services.AboutHandler)
 
 	apiRouter.Group("/identity").GET("/current-user", services.IdentityCurrentUserHandler)
@@ -67,6 +79,8 @@ func main() {
 	apiRouter.Group("/shipment").GET("", services.ShipmentFetchHandler)
 
 	apiRouter.Group("/weborder").POST("", services.WebOrderSubmitHandler)
+
+	auth.ConfigureOIDC(apiRouter)
 
 	_, erpdberr := erpdb.Connect()
 	if erpdberr != nil {

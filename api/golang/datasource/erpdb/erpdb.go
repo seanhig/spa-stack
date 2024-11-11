@@ -11,21 +11,21 @@ import (
 )
 
 type Product struct {
-	Id          uint    // Standard field for the primary key
-	Name        string  // A regular string field
-	Description *string // A pointer to a string, allowing for null values
-	Price       float32 `sql:"type:decimal(10,2);"`
+	Id          uint    `json:"id"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Price       float32 `sql:"type:decimal(10,2);" json:"price"`
 }
 
 type Order struct {
-	OrderId      uint
-	OrderRef     string
-	OrderDate    *time.Time
-	CustomerName string
-	OrderTotal   float32
-	OrderQty     uint
-	ProductId    uint
-	OrderStatus  uint
+	OrderId      uint       `json:"orderId"`
+	OrderRef     string     `json:"orderRef"`
+	OrderDate    *time.Time `json:"orderDate"`
+	CustomerName string     `json:"customerName"`
+	OrderTotal   float32    `sql:"type:decimal(10,2);" json:"orderTotal"`
+	OrderQty     uint       `json:"orderQty"`
+	ProductId    uint       `json:"productId"`
+	OrderStatus  uint       `json:"orderStatus"`
 }
 
 func Connect() (*gorm.DB, error) {
