@@ -7,7 +7,7 @@ Scaffold for [GoLang](https://go.dev) REST backend.  It's insanely fast.
 ## What's Working
 
 - [Gin](https://gin-gonic.com) REST
-- [GORM](https://gorm.io/) ORM 
+- [GORM](https://gorm.io/) ORM to MySQL and Postgres
 - [GOTH](https://github.com/markbates/goth)
     - With Google Provider
     - With Microsoft Provider

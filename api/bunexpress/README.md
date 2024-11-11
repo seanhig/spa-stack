@@ -5,7 +5,7 @@ Scaffold for [Bun](https://bun.sh) with TypeScript and the ExpressJS REST backen
 ## What's Working
 
 - [ExpressJS](https://expressjs.com) REST
-- [TypeORM](https://typeorm.io) 
+- [TypeORM](https://typeorm.io) to MySQL and Postgres
 - [PassportJS](https://www.passportjs.org)
     - With Google Authentication
     - With Microsoft Authentication
