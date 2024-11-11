@@ -191,8 +191,9 @@ I like the speed and Node.js compatability of [Bun](https://bun.sh). It only too
 
 > I also looked into the latest cool tools... Fastify/Restify, Hapi.  Took a stab at Fastify, but it wasn't as smooth and effortless as good old ExpressJS, and the dates on the github repos suggest ExpressJS is still alive and well, while some of it's "replacements" seem to have faded into the sunset (Koa).  Arbitrary change is boring.  
 
-__Go__: Still a work in progress, but nearly as agile as the Bun implementation, and insanely fast.  Bun is already _fast enough_, surely... but if I needed `black friday speed`, I'd switch to `Go`.  Compared to C# and Java, a very minimal amount of code required.  Did I mention insanely fast? 
+__Go__: Go is nearly as agile as the Bun implementation, and insanely fast.  A noob to `Go`, it still only took less then __2 days__ to assemble a working `Go-Gin` API. Bun is already _fast enough_, surely... but if I needed `black friday speed`, I'd switch to `Go`.  Compared to C# and Java, a very minimal amount of code required.  And insanely fast.
 
-> C# and Java are showing their age, imho.  No matter how you `OOP` it, you always get a bloated codebase with more complexity then there ought to be.  When I look at OIDC in `bun/passport`, as compared to `ASPNET Core` or `Spring`, and all the associated code and complexity behind the implementations, it is a stark contrast.  
+[GoLang/Gin](api/golang/README.md) is __#1b__.  
 
+> C# and Java are showing their age, imho.  No matter how you `OOP` it, you always get a bloated codebase with more complexity then there ought to be.  The simplicity of OIDC and/or ORM in `bun/passport`, or in `golang`, is revealing  compared to the `OOP` stalwarts `ASPNET Core` and `Spring`.
 
