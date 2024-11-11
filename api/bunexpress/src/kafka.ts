@@ -8,7 +8,7 @@ import logger from './logger'
 
 export type WebOrder = {
   web_order_id: string;
-  order_date: number;
+  order_date: Date;
   customer_name: string;
   destination: string;
   product_id: number;
