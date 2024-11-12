@@ -13,8 +13,11 @@ import (
 	"os"
 	"strings"
 
+	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-contrib/sessions/memcached"
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -30,9 +33,23 @@ func main() {
 
 	gob.Register(&userdb.User{})
 
-	mystore := cookie.NewStore([]byte("secret"))
-	router.Use(sessions.Sessions("mysession", mystore))
-	gothic.Store = mystore
+	if os.Getenv("REDIS_SERVER") != "" {
+		slog.Info("Using REDIS for session storage")
+		redisStore, _ := redis.NewStore(10, "tcp", os.Getenv("REDIS_SERVER"), os.Getenv("REDIS_PASSWORD"), []byte(os.Getenv("REDIS_SECRET")))
+		router.Use(sessions.Sessions("spastack", redisStore))
+		gothic.Store = redisStore
+	} else if os.Getenv("MEMCACHED_SERVER") != "" {
+		slog.Info("Using MEMCACHED for session storage")
+		memstore := memcached.NewStore(memcache.New(os.Getenv("MEMCACHED_SERVER")), "", []byte(os.Getenv("MEMCACHED_SECRET")))
+		router.Use(sessions.Sessions("spastack", memstore))
+		gothic.Store = memstore
+	} else {
+		// preference would be for the cookie store, no shared state
+		slog.Info("Using Cookies for session storage")
+		cookieStore := cookie.NewStore([]byte("secret"))
+		router.Use(sessions.Sessions("spastack", cookieStore))
+		gothic.Store = cookieStore
+	}
 
 	apiRouter := router.Group("/api")
 

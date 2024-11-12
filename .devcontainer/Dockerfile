@@ -17,6 +17,8 @@ RUN wget https://go.dev/dl/go1.23.3.linux-amd64.tar.gz
 RUN sudo tar -C /usr/local -xzf go1.23.3.linux-amd64.tar.gz
 RUN "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
 
+RUN apt-get install redis-tools
+
 # install java
 RUN apt install openjdk-17-jdk -y
 RUN apt install maven -y
