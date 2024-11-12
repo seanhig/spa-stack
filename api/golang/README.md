@@ -38,5 +38,5 @@ __On Host__
 2. optionally execute `./build.sh` to verify the build. `docker compose` will do this if the image does not exist.
 3. `docker compose up -d`
 
-This will launch using the existing `.env` settings.
+This will launch using the existing `.env` settings as per the `docker-compose.yml` config.
 
