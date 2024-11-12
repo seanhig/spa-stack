@@ -44,7 +44,7 @@ func FindAllShipments() ([]Shipment, error) {
 	}
 
 	var shipments []Shipment
-	result := db.Find(&shipments)
+	result := db.Find(&shipments).Order("order_id DESC").Limit(200)
 	if result.Error != nil {
 		return nil, result.Error
 	}

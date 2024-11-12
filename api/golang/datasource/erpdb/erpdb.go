@@ -55,7 +55,7 @@ func FindAllOrders() ([]Order, error) {
 	}
 
 	var orders []Order
-	result := db.Find(&orders)
+	result := db.Find(&orders).Order("order_date DESC").Limit(200)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -72,7 +72,7 @@ func FindOrdersByCustomer(customerName string) ([]Order, error) {
 	}
 
 	var orders []Order
-	result := db.Where("customer_name = ?", customerName).Find(&orders)
+	result := db.Where("customer_name = ?", customerName).Find(&orders).Order("order_date DESC").Limit(200)
 	if result.Error != nil {
 		return nil, result.Error
 	}
