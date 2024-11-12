@@ -26,10 +26,17 @@ Scaffold for [GoLang](https://go.dev) REST backend.  It's insanely fast.
 > Make sure the `database-stack`, `kafka-stack` and `flink-stack` relevant components are running.
 
 
-## Notes
+## Docker Build
+Since we are working in a `.devcontainer` it would be troublesome (but not impossible) to build and run our docker containers DnD style.  Better to have them running alongside the `.devcontainer` in our Docker Desktop.
 
-```
-go mod init idstudios/gin-web-service
-go install github.com/gin-gonic/gin@latest
+__In `.devcontainer`__
 
-```
+1. Run `./build-spa.sh angular` from the project directory.  This will build and place the `angular` SPA into the `public` folder.
+
+__On Host__
+
+2. optionally execute `./build.sh` to verify the build. `docker compose` will do this if the image does not exist.
+3. `docker compose up -d`
+
+This will launch using the existing `.env` settings.
+
