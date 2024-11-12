@@ -1,8 +1,6 @@
 # Go REST API + SPA
 
-A GoLang implementation... 
-
-Scaffold for [GoLang](https://go.dev) REST backend.  It's insanely fast.
+Scaffold for [GoLang](https://go.dev) implementation of the REST backend.  It's insanely fast.
 
 ## What's Working
 
