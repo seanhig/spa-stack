@@ -1,6 +1,7 @@
 package services
 
 import (
+	"idstudios/gin-web-service/kafka"
 	"log/slog"
 	"net/http"
 
@@ -9,19 +10,13 @@ import (
 
 func WebOrderSubmitHandler(c *gin.Context) {
 
-	/* 	jsonData, err := io.ReadAll(c.Request.Body)
-	   	if err != nil {
-	   		// Handle error
-	   	}
-	   	slog.Info(fmt.Sprintf("Request Body: %s", jsonData))
-	*/
-	var incomingWebOrder WebOrder
+	var incomingWebOrder kafka.WebOrder
 	if err := c.BindJSON(&incomingWebOrder); err != nil {
 		slog.Error("Unable to BindJSON for incomingWebOrder:", slog.Any("err", err))
 		c.AbortWithError(500, err)
 	}
 
-	submittedOrder, err := SendWebOrderMessage(incomingWebOrder)
+	submittedOrder, err := kafka.SendWebOrderMessage(incomingWebOrder)
 	if err != nil {
 		slog.Error("Failure sending web order to kafka", slog.Any("err", err))
 		c.AbortWithError(500, err)
