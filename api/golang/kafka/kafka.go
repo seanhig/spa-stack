@@ -108,7 +108,9 @@ func SendWebOrderMessage(webOrder WebOrder) (*WebOrder, error) {
 			*m.TopicPartition.Topic, m.TopicPartition.Partition, m.TopicPartition.Offset))
 	}
 
-	close(deliveryChan)
+	// according to the go docs, the sender should be closing this
+	// hopefully confluent's sample code is the issue
+	//close(deliveryChan)
 
 	return &webOrder, nil
 
