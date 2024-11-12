@@ -18,7 +18,7 @@ Scaffold for [GoLang](https://go.dev) REST backend.  It's insanely fast.
 ## Setup
 
 1. Copy the `env.sample` to `.env` and fill in the required secrets.
-2. Install deps `go get .`
+2. Install deps `go get .` or `go mod download`
 2. Run the application:
 
 `go run .`

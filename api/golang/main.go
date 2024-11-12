@@ -15,56 +15,24 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/lmittmann/tint"
 	"github.com/markbates/goth/gothic"
 	"github.com/mattn/go-isatty"
+	sloggin "github.com/samber/slog-gin"
 )
 
 func main() {
 
-	router := gin.Default()
-
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		return
-	}
+	router := loadConfiguredRouter()
 
 	gob.Register(&userdb.User{})
 
 	mystore := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", mystore))
 	gothic.Store = mystore
-
-	if strings.ToLower(os.Getenv("ENVIRONMENT")) == "production" {
-
-		logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-		slog.SetDefault(logger)
-		slog.Info("Use JSON logging in production")
-
-		fs := http.FileServer(http.Dir("public/"))
-		http.Handle("/", http.StripPrefix("/public/", fs))
-
-		http.Handle("/site/home", http.StripPrefix("/public/", fs))
-		http.Handle("/auth/signin", http.StripPrefix("/public/", fs))
-		http.Handle("/user/my-orders", http.StripPrefix("/public/", fs))
-		http.Handle("/admin/products", http.StripPrefix("/public/", fs))
-		http.Handle("/admin/orders", http.StripPrefix("/public/", fs))
-		http.Handle("/admin/shipments", http.StripPrefix("/public/", fs))
-
-		slog.Info("Hosting SPA at public")
-	} else {
-		w := os.Stdout
-		logger := slog.New(
-			tint.NewHandler(w, &tint.Options{
-				Level:   slog.LevelInfo,
-				NoColor: !isatty.IsTerminal(w.Fd()),
-			}),
-		)
-		slog.SetDefault(logger)
-	}
 
 	apiRouter := router.Group("/api")
 
@@ -79,6 +47,12 @@ func main() {
 	apiRouter.Group("/shipment").GET("", services.ShipmentFetchHandler)
 
 	apiRouter.Group("/weborders").POST("", services.WebOrderSubmitHandler)
+
+	if strings.ToLower(os.Getenv("ENVIRONMENT")) == "production" {
+		router.NoRoute(func(c *gin.Context) {
+			c.Redirect(http.StatusTemporaryRedirect, "/")
+		})
+	}
 
 	auth.ConfigureOIDC(apiRouter)
 
@@ -99,5 +73,51 @@ func main() {
 
 	httpPort := fmt.Sprintf(":%s", os.Getenv("PORT"))
 	slog.Info(fmt.Sprintf("Server is listening on %s", httpPort))
-	http.ListenAndServe(httpPort, router)
+	router.Run(httpPort)
+}
+
+func loadConfiguredRouter() *gin.Engine {
+	var router *gin.Engine
+
+	godotenv.Load()
+
+	if strings.ToLower(os.Getenv("ENVIRONMENT")) == "production" {
+		gin.SetMode(gin.ReleaseMode)
+
+		if strings.ToLower(os.Getenv("LOG_TYPE")) != "text" {
+			router = routerWithJSONLogging()
+			slog.Info("Use JSON logging in production")
+		} else {
+			router = routerWithDefaultLogging()
+			slog.Info("Use Default logging in production")
+		}
+		router.Use(static.Serve("/", static.LocalFile("./public", true)))
+		slog.Info("Hosting SPA at public")
+	} else {
+		router = routerWithDefaultLogging()
+	}
+	return router
+}
+
+func routerWithDefaultLogging() *gin.Engine {
+	router := gin.Default()
+	w := os.Stdout
+	logger := slog.New(
+		tint.NewHandler(w, &tint.Options{
+			Level:   slog.LevelInfo,
+			NoColor: !isatty.IsTerminal(w.Fd()),
+		}),
+	)
+	slog.SetDefault(logger)
+	return router
+}
+
+func routerWithJSONLogging() *gin.Engine {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
+
+	router := gin.New()
+	router.Use(sloggin.New(logger))
+	router.Use(gin.Recovery())
+	return router
 }
